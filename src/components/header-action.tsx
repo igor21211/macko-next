@@ -33,12 +33,6 @@ export default function HeaderAction() {
   if (isMobile) {
     return (
       <div className="flex h-[74px] flex-col items-center justify-center gap-y-5">
-        <Button variant="nav" onClick={onOpenSearch} aria-label={t('search')} className="flex flex-row justify-center items-center gap-x-3">
-          <span className="text-sm font-medium text-textDark">
-            {t('search')}
-          </span>
-          <Image src="/figma-images/search_icon_1.svg" alt="Search" width={24} height={24} />
-        </Button>
         <Separator orientation="horizontal" className=" border-accent w-full h-[1px]" />
         <div className="flex flex-row items-center gap-x-4">
         <Select value={locale} onValueChange={handleLocaleChange} open={langOpen} onOpenChange={setLangOpen}>

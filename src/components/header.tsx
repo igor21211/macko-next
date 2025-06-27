@@ -5,6 +5,8 @@ import ModalProgress from '@/components/modal-progress';
 import { useFullScreen } from '@/hooks/modal/use-full-screen';
 import { useMedia } from 'react-use';
 import MobileHeaderAction from './mobile-header-action';
+import SearchInput from './search-input';
+import { Separator } from './ui/separator';
 
 export default function Header() {
   const { open } = useFullScreen();
@@ -14,16 +16,28 @@ export default function Header() {
 
   return (
     <header className="h-[74px] w-full bg-white shadow-sm">
-      <div className="flex h-full items-center justify-between px-8">
+      <div className="flex h-full items-center justify-between px-3">
         <div className="flex flex-none items-center">
           <HeaderLogo />
         </div>
         <div className="flex items-center">
           <ModalProgress />
-        </div>
-        <div>
+        </div> 
+        <div className="flex flex-row items-center">
+         
           {isMobile ? (
+            <>
+             <div className="flex items-center">
+          <Separator orientation="vertical" className="border-[#EDF2F7] border-r-2 h-[80px]" />
+          </div>
+          <div className="flex items-center">
+            <SearchInput />
+          </div>
+          <div className="flex items-center justify-center mr-3">
+            <Separator orientation="vertical" className="border-[#EDF2F7] border-r-2 h-[80px]" />
+            </div>
             <MobileHeaderAction />
+            </>
           ) : (
             <HeaderAction />
           )}

@@ -10,10 +10,10 @@ export default function MobileHeaderAction() {
       <Sheet open={isOpen} onOpenChange={setIsOpen}>
         <SheetTrigger asChild>
           <Button variant="ghost" size="icon">
-            <Menu />
+            <Menu className="size-10 text-dark cursor-pointer " />
           </Button>
         </SheetTrigger>
-        <SheetContent side="right" className="p-0">
+        <SheetContent side="right" className="p-0 w-full md:w-[500px] ">
           <SheetHeader className="mb-17">
             <SheetTitle className="text-2xl font-medium text-textDark text-center">Меню</SheetTitle>
           </SheetHeader>

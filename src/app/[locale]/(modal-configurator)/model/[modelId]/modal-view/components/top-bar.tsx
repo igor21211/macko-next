@@ -2,7 +2,6 @@
 
 import { Separator } from "@/components/ui/separator";
 import { useCostConfiguration } from "@/hooks/modal/use-cost-configuration";
-import { useFullScreen } from "@/hooks/modal/use-full-screen";
 import Image from "next/image";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
@@ -12,7 +11,6 @@ import { useRouter } from "next/navigation";
 export const TopBar = () => {
   const t = useTranslations('ModalView');
   const router = useRouter();
-  const { open } = useFullScreen();
   const { onOpen } = useCostConfiguration();
   const isMobile = useMedia('(max-width: 1024px)', false);
   const isTablet = useMedia('(max-width: 1680px)', false);
@@ -22,7 +20,6 @@ export const TopBar = () => {
   }
 
 
-  if (open) return null;
   if (isMobile) {
     return (
       <div className="fixed bottom-0 left-0 w-full z-50 bg-primary h-[74px] flex">

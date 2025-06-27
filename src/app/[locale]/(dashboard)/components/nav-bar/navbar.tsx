@@ -9,6 +9,9 @@ import { Menu } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import NavAction from './components/nav-action';
 import { useTranslations } from 'next-intl';
+import SearchInput from '@/components/search-input';
+import { Separator } from '@/components/ui/separator';
+import FiltersButton from '@/components/filters-button';
 
 
 export default function Navbar() {
@@ -38,10 +41,26 @@ const routes = [
 
   if (isMobile) {
     return (
+      <div className="flex flex-row gap-x-6 items-center">
+        <div className="flex items-center ">
+        <Separator orientation="vertical" className="border-[#EDF2F7] border-r-2 h-[80px]" />
+        </div>
+        <div>
+          <FiltersButton />
+        </div>
+        <div className="flex items-center ">
+        <Separator orientation="vertical" className="border-[#EDF2F7] border-r-2 h-[80px]" />
+        </div>
+      <div>
+        <SearchInput />
+        </div>
+        <div className="flex items-center ">
+        <Separator orientation="vertical" className="border-[#EDF2F7] border-r-2 h-[80px]" />
+        </div>
       <Sheet open={isOpen} onOpenChange={setIsOpen}>
         <SheetTrigger asChild>
-          <Button variant="ghost" size="icon">
-            <Menu />
+          <Button variant="ghost" size="icon" className="w-16 h-16">
+            <Menu className="size-12 text-dark" />
           </Button>
         </SheetTrigger>
         <SheetContent side="right" className="w-full md:max-w-[500px]">
@@ -66,6 +85,7 @@ const routes = [
           </div>
         </SheetContent>
       </Sheet>
+      </div>
     );
   }
   return (

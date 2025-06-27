@@ -5,7 +5,7 @@ import { Switch } from "@/components/ui/switch";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 import Image from "next/image";
-import { useTranslations } from "next-intl";
+//import { useTranslations } from "next-intl";
 
 const colors = [
     { id: 1, name: 'ALUMINIUM', price: 1000 },
@@ -62,7 +62,7 @@ const outsideColors = [
     const [selected, setSelected] = useState(1);
     const [selectedInside, setSelectedInside] = useState(1);
         const [selectedOutside, setSelectedOutside] = useState(1);
-        const t = useTranslations('Sidebar');
+        //const t = useTranslations('Sidebar');
 
     const handleSelect = (id: number) => {
         setSelected(id);
@@ -81,14 +81,14 @@ const outsideColors = [
             <div className="flex flex-row justify-between items-center mb-4">
             <div className="flex flex-col items-start">
             <h3 className="font-sans text-heading-sidebar font-medium text-[#1A202C] uppercase tracking-[0.06em]">
-                {t('color')}
+                Колір
             </h3>
             <Button
                     type="button"
                     variant="ghost"
                     className="font-sans text-accent hover:text-none cursor-pointer hover:bg-transparent px-0 py-0 h-auto  shadow-none"
                 >
-                 {t('expanded_settings')}
+                 Розширені налаштування
                 </Button>
                 </div>
                 <div className="flex flex-row items-center gap-x-2">
@@ -106,7 +106,7 @@ const outsideColors = [
                 ))}
             </div>
             <h3 className="font-sans text-heading-sidebar font-medium text-textDark uppercase tracking-[0.06em] mb-4">
-                {t('inside')}
+                Внутрішній колір
             </h3>
             <div className="flex flex-wrap gap-x-2 gap-y-2 mb-4">
                 {insideColors.map((color) => (
@@ -116,7 +116,7 @@ const outsideColors = [
                 ))}
             </div>
              <h3 className="font-sans text-heading-sidebar font-medium text-textDark uppercase tracking-[0.06em] mb-4">
-                {t('outside')}
+                Зовнішній колір
             </h3>
             <div className="flex flex-wrap gap-x-2 gap-y-2 mb-4">
                 {outsideColors.map((color) => (
