@@ -1,0 +1,231 @@
+<svg id="C06" data-name="C06" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 140 294">
+  <defs>
+    <style>
+      .doorBG, .doorstroke, .doorstroke2, .handle, .glass {stroke: #aeaeae; stroke-miterlimit: 10; stroke-width: 0.25px;}
+      .doorBG {fill: url(#BG-gradient);}
+      .doorstroke {fill: url(#BG-gradient);}
+      .doorstroke2 {fill: url(#BG-gradient);}
+      .handle {fill: url(#handle-gradient);}
+      .glass {fill: url(#glass-gradient);}
+      .Solid { fill: #38383a; } /* цвет солидов молдинга и цвет алюминия */
+      .Molding-L { fill: url(#Molding-L); } /* left */
+      .Molding-T { fill: url(#Molding-T); -webkit-filter: drop-shadow( 0px 1px 1px rgba(0, 0, 0, .7)); filter: drop-shadow( 0px 1px 1px rgba(0, 0, 0, .7));} /* top */
+      .Molding-R { fill: url(#Molding-R); } /* right */
+      .Molding-B { fill: url(#Molding-B); -webkit-filter: drop-shadow( 0px 1px 1px rgba(0, 0, 0, .7)); filter: drop-shadow( 0px 1px 1px rgba(0, 0, 0, .7));} /* bottom */
+	  .shadow {-webkit-filter: drop-shadow( 0px 2px 1px rgba(0, 0, 0, .6)); filter: drop-shadow( 0px 2px 1px rgba(0, 0, 0, .6));}
+    </style>
+
+
+<!-- Блок для петель и новой ручки -->
+		<style>
+	<!-- Блок для петель -->
+		  /* door hinge */
+		  .hinge_cover, .hinge_axis {stroke: #aeaeae;}
+		  .hinge_stroke {stroke: #424242;}
+		  .hinge_cover, .hinge_axis, .hinge_stroke {stroke-miterlimit: 10; stroke-width: 0.25px;}
+		  .hinge_axis, .hinge_cover {fill: url(#handle-gradient);}
+		  .hinge_cover {-webkit-filter: drop-shadow( 0px 1px 1px rgba(0, 0, 0, .6)); filter: drop-shadow( 0px 1px 1px rgba(0, 0, 0, .6));}
+		  /* door hinge end */
+	<!-- end of Блок для петель -->
+		  
+	<!-- Блок для новой ручки -->
+		  /* handle type 2 */
+		  .handle_cover, .handle_grip {stroke: #aeaeae; stroke-miterlimit: 10; stroke-width: 0.25px;}
+		  .handle_cover, .handle_grip {fill: url(#handle-gradient);}
+		  .handle_shadow, .door_lock_shadow { mix-blend-mode: multiply;}
+		  .handle_shadow {opacity: 0.35;}
+		  .keyhole {fill: #424242;}
+		  .grip_shadow {-webkit-filter: drop-shadow( 0px 3px 2px rgba(0, 0, 0, .6)); filter: drop-shadow( 0px 3px 2px rgba(0, 0, 0, .6));}
+		  /* handle type 2 end */	  
+		</style>
+
+		<!-- Тень рамы -->
+		<filter id="inner-shadow">
+			<feFlood flood-color="rgba(0,0,0,0.6)"/>
+			<feComposite operator="out" in2="SourceGraphic" />
+			<feMorphology operator="dilate" radius="1"/>
+			<feGaussianBlur stdDeviation="1" />
+			<feComposite operator="atop" in2="SourceGraphic"/>
+		</filter>
+		<!-- Тень рамы -->
+
+		<!-- Тень дверного замка -->
+		<filter id="strong-inner">
+			<feFlood flood-color="#999999"/>
+			<feComposite operator="out" in2="SourceGraphic" />
+			<feMorphology operator="dilate" radius="10"/>
+			<feGaussianBlur stdDeviation="2" />
+			<feComposite operator="atop" in2="SourceGraphic"/>
+		</filter>
+		<!-- end of Тень дверного замка -->
+
+	<!-- end of Блок для новой ручки -->
+	
+<!-- end of Блок для петель и новой ручки -->
+	
+    <linearGradient id="BG-gradient" x1="0" y1="0" x2="0" y2="100%">
+      <stop offset="0.25" stop-color="#f9fafa"/>
+      <stop offset="0.67" stop-color="#e9e8e8"/>
+      <stop offset="0.79" stop-color="#e2e1e2"/>
+    </linearGradient>
+    <linearGradient id="handle-gradient" x1="0" y1="0" x2="100%" y2="0">
+      <stop offset="0.01" stop-color="#babbbc"/>
+      <stop offset="0.29" stop-color="#97999d"/>
+      <stop offset="0.65" stop-color="#bdbdc1"/>
+      <stop offset="0.87" stop-color="#9d9fa2"/>
+      <stop offset="1" stop-color="#a6a7aa"/>
+      <stop offset="1" stop-color="#c2c5c9"/>
+    </linearGradient>
+    <linearGradient id="glass-gradient" x1="0" y1="100%" x2="0" y2="0">
+      <stop offset="0" stop-color="#f4f4f5"/>
+      <stop offset="0.5" stop-color="#dde7e6"/>
+      <stop offset="1" stop-color="#d1cece"/>
+    </linearGradient>
+
+	<linearGradient id="Molding-L" data-name="Molding" x1="0" y1="0" x2="100%" y2="0">
+      <stop offset="0" stop-color="#000" stop-opacity="0.4"/>
+      <stop offset="0.34" stop-color="#fff" stop-opacity="0.4"/>
+      <stop offset="0.61" stop-color="#000" stop-opacity="0.4"/>
+      <stop offset="0.7" stop-color="#fff" stop-opacity="0.1"/>
+      <stop offset="0.77" stop-color="#000" stop-opacity="0.4"/>
+      <stop offset="0.86" stop-color="#fff" stop-opacity="0.4"/>
+      <stop offset="1" stop-color="#000" stop-opacity="0.5"/>
+    </linearGradient>
+    <linearGradient id="Molding-T" data-name="Molding" x1="0" y1="0" x2="0" y2="100%">
+      <stop offset="0" stop-color="#000" stop-opacity="0.4"/>
+      <stop offset="0.34" stop-color="#fff" stop-opacity="0.4"/>
+      <stop offset="0.61" stop-color="#000" stop-opacity="0.4"/>
+      <stop offset="0.7" stop-color="#fff" stop-opacity="0.1"/>
+      <stop offset="0.77" stop-color="#000" stop-opacity="0.4"/>
+      <stop offset="0.86" stop-color="#fff" stop-opacity="0.4"/>
+      <stop offset="1" stop-color="#000" stop-opacity="0.5"/>
+    </linearGradient>
+    <linearGradient id="Molding-R" data-name="Molding" x1="100%" y1="0" x2="0" y2="0">
+      <stop offset="0" stop-color="#000" stop-opacity="0.4"/>
+      <stop offset="0.34" stop-color="#fff" stop-opacity="0.4"/>
+      <stop offset="0.61" stop-color="#000" stop-opacity="0.4"/>
+      <stop offset="0.7" stop-color="#fff" stop-opacity="0.1"/>
+      <stop offset="0.77" stop-color="#000" stop-opacity="0.4"/>
+      <stop offset="0.86" stop-color="#fff" stop-opacity="0.4"/>
+      <stop offset="1" stop-color="#000" stop-opacity="0.5"/>
+    </linearGradient>
+    <linearGradient id="Molding-B" data-name="Molding" x1="0" y1="100%" x2="0" y2="0">
+      <stop offset="0" stop-color="#000" stop-opacity="0.4"/>
+      <stop offset="0.34" stop-color="#fff" stop-opacity="0.4"/>
+      <stop offset="0.61" stop-color="#000" stop-opacity="0.4"/>
+      <stop offset="0.7" stop-color="#fff" stop-opacity="0.1"/>
+      <stop offset="0.77" stop-color="#000" stop-opacity="0.4"/>
+      <stop offset="0.86" stop-color="#fff" stop-opacity="0.4"/>
+      <stop offset="1" stop-color="#000" stop-opacity="0.5"/>
+    </linearGradient>
+	
+  </defs>
+  <title>с06</title>
+  <g id="С6">
+    <rect id="BG" class="doorBG" x="0" y="0" width="140" height="294"/>
+    <polyline id="doorstroke" class="doorstroke shadow" points="136 5 4 5 4 290 136 290 136 5"/>
+    <polyline id="doorstroke2" class="doorstroke2 inner-shadow" points="116.71 21.31 20.7 21.31 20.7 274.46 116.71 274.46 116.71 21.31" filter="url(#inner-shadow)"/>
+    <!-- polyline id="handle" class="handle" points="9.95 231.62 15.54 231.62 15.54 64.14 9.95 64.14 9.95 231.62"/ --> <!-- Старая ручка выключается -->
+    <rect id="glass" class="glass" x="38.64" y="55.09" width="18.66" height="101.4"/>
+    <rect id="glass-2" data-name="glass" class="glass" x="80.66" y="55.09" width="18.66" height="101.4"/>
+    <g id="Moldings">
+      <g id="Molding-1L">
+        <polygon class="Solid" points="57.29 55.09 38.64 55.09 33.81 50.71 62.29 50.71 57.29 55.09"/>
+        <polygon class="Solid" points="38.81 156.49 57.47 156.49 62.29 160.88 33.81 160.88 38.81 156.49"/>
+        <polygon class="Solid" points="38.64 55.09 38.81 156.49 33.81 160.88 33.81 50.71 38.64 55.09"/>
+        <polygon class="Solid" points="57.47 156.49 57.29 55.09 62.29 50.71 62.29 160.88 57.47 156.49"/>
+        <polygon class="Molding-T" points="57.29 55.09 38.64 55.09 33.81 50.71 62.29 50.71 57.29 55.09"/>
+        <polygon class="Molding-B" points="38.81 156.49 57.47 156.49 62.29 160.88 33.81 160.88 38.81 156.49"/>
+        <polygon class="Molding-L" points="38.64 55.09 38.81 156.49 33.81 160.88 33.81 50.71 38.64 55.09"/>
+        <polygon class="Molding-R" points="57.47 156.49 57.29 55.09 62.29 50.71 62.29 160.88 57.47 156.49"/>
+      </g>
+      <g id="Molding-1R" data-name="Molding">
+        <polygon class="Solid" points="99.22 55.09 80.57 55.09 75.74 50.71 104.22 50.71 99.22 55.09"/>
+        <polygon class="Solid" points="80.74 156.49 99.4 156.49 104.22 160.88 75.74 160.88 80.74 156.49"/>
+        <polygon class="Solid" points="80.57 55.09 80.74 156.49 75.74 160.88 75.74 50.71 80.57 55.09"/>
+        <polygon class="Solid" points="99.4 156.49 99.22 55.09 104.22 50.71 104.22 160.88 99.4 156.49"/>
+        <polygon class="Molding-T" points="99.22 55.09 80.57 55.09 75.74 50.71 104.22 50.71 99.22 55.09"/>
+        <polygon class="Molding-B" points="80.74 156.49 99.4 156.49 104.22 160.88 75.74 160.88 80.74 156.49"/>
+        <polygon class="Molding-L" points="80.57 55.09 80.74 156.49 75.74 160.88 75.74 50.71 80.57 55.09"/>
+        <polygon class="Molding-R" points="99.4 156.49 99.22 55.09 104.22 50.71 104.22 160.88 99.4 156.49"/>
+      </g>
+      <g id="Molding-2" data-name="Molding">
+        <polygon class="Solid" points="99.28 180.34 38.64 180.34 33.81 175.96 104.22 175.96 99.28 180.34"/>
+        <polygon class="Solid" points="38.64 199.61 99.4 199.61 104.22 204 33.81 204 38.64 199.61"/>
+        <polygon class="Solid" points="38.64 180.34 38.64 199.61 33.81 204 33.81 175.96 38.64 180.34"/>
+        <polygon class="Solid" points="99.34 199.61 99.22 180.34 104.22 175.96 104.22 204 99.34 199.61"/>
+        <polygon class="Molding-T" points="99.28 180.34 38.64 180.34 33.81 175.96 104.22 175.96 99.28 180.34"/>
+        <polygon class="Molding-B" points="38.64 199.61 99.4 199.61 104.22 204 33.81 204 38.64 199.61"/>
+        <polygon class="Molding-L" points="38.64 180.34 38.64 199.61 33.81 204 33.81 175.96 38.64 180.34"/>
+        <polygon class="Molding-R" points="99.34 199.61 99.22 180.34 104.22 175.96 104.22 204 99.34 199.61"/>
+      </g>
+      <g id="Molding-3" data-name="Molding">
+        <polygon class="Solid" points="99.28 222.18 38.64 222.18 33.81 217.79 104.22 217.79 99.28 222.18"/>
+        <polygon class="Solid" points="38.64 241.45 99.4 241.45 104.22 245.83 33.81 245.83 38.64 241.45"/>
+        <polygon class="Solid" points="38.64 222.18 38.64 241.45 33.81 245.83 33.81 217.79 38.64 222.18"/>
+        <polygon class="Solid" points="99.34 241.45 99.22 222.18 104.22 217.79 104.22 245.83 99.34 241.45"/>
+        <polygon class="Molding-T" points="99.28 222.18 38.64 222.18 33.81 217.79 104.22 217.79 99.28 222.18"/>
+        <polygon class="Molding-B" points="38.64 241.45 99.4 241.45 104.22 245.83 33.81 245.83 38.64 241.45"/>
+        <polygon class="Molding-L" points="38.64 222.18 38.64 241.45 33.81 245.83 33.81 217.79 38.64 222.18"/>
+        <polygon class="Molding-R" points="99.34 241.45 99.22 222.18 104.22 217.79 104.22 245.83 99.34 241.45"/>
+      </g>
+    </g>
+
+<!-- Петли накладные -->
+	
+	<g id="hinge">
+<!-- Правая верхняя-->
+		<rect class="hinge_cover" x="121" y="33.72" width="13.43" height="10.5"/> <!-- если осевая петля, "hinge_cover" отключается -->
+		<rect class="hinge_axis" x="134.6" y="33.72" width="2.54" height="21"/>
+		<line class="hinge_stroke" x1="137.2" y1="44.22" x2="134.6" y2="44.22"/>
+		
+<!-- Левая верхняя 
+		<rect class="hinge_cover" x="5.2" y="33.72" width="13.43" height="10.5"/>
+        <rect class="hinge_axis" x="2.6" y="33.72" width="2.54" height="21"/>
+        <line class="hinge_stroke" x1="2.6" y1="44.22" x2="5.2" y2="44.22"/> -->
+	</g>
+	<g id="hinge-2" data-name="hinge">
+<!-- Правая средняя -->
+		<rect class="hinge_cover" x="121" y="137.96" width="13.43" height="10.5"/> <!-- если осевая петля, "hinge_cover" отключается -->
+		<rect class="hinge_axis" x="134.6" y="137.96" width="2.54" height="21"/>
+		<line class="hinge_stroke" x1="137.2" y1="148.46" x2="134.6" y2="148.46"/>
+
+<!-- Левая средняя 
+		<rect class="hinge_cover" x="5.2" y="137.96" width="13.43" height="10.5"/> 
+        <rect class="hinge_axis" x="2.6" y="137.96" width="2.54" height="21"/>
+        <line class="hinge_stroke" x1="2.6" y1="148.46" x2="5.2" y2="148.46"/> -->
+	</g>
+	<g id="hinge-3" data-name="hinge">
+<!-- Правая нижняя -->
+		<rect class="hinge_cover" x="121" y="243.15" width="13.43" height="10.5"/> <!-- если осевая петля, "hinge_cover" отключается -->
+		<rect class="hinge_axis" x="134.6" y="243.15" width="2.54" height="21"/>
+		<line class="hinge_stroke" x1="137.2" y1="253.65" x2="134.6" y2="253.65"/>
+		
+<!-- Левая нижняя 
+        <rect class="hinge_cover" x="5.2" y="243.15" width="13.43" height="10.5"/> 
+        <rect class="hinge_axis" x="2.6" y="243.15" width="2.54" height="21"/>
+        <line class="hinge_stroke" x1="2.6" y1="253.65" x2="5.2" y2="253.65"/> -->
+	</g>
+
+<!-- end of Петли накладные -->
+
+<!-- Ручка нажимная -->
+
+<!-- Правая дверь -->	  
+	<g id="handle_type_2">
+		<polyline class="handle_cover" points="15.66 144.96 15.66 134.11 10.07 134.11 10.07 168.41 15.66 168.41 15.66 148.46"/>
+		<rect class="handle_grip grip_shadow" x="11.48" y="144.96" width="18.18" height="3.5"/>
+	    <path d="M14.12,157.08a1.39,1.39,0,1,0-2.06,1.21v1.61h0a0.68,0.68,0,0,0,1.36,0v-1.62A1.38,1.38,0,0,0,14.12,157.08Z" fill="rgb(0, 0, 0)" filter="url(#strong-inner)"/>
+		<rect class="keyhole" x="12" y="156.9" width="1.5" height="0.4" rx="0.18" ry="0.18" />
+	</g>
+
+<!-- Левая дверь 
+	<g id="handle_type_2_left">
+		<polyline class="handle_cover" points="124.59 144.96 124.59 134.11 130.18 134.11 130.18 168.41 124.59 168.41 124.59 148.46"/>
+		<rect class="handle_grip grip_shadow" x="110.59" y="144.96" width="18.18" height="3.5" />
+	    <path d="M126,157.2a1.39,1.39,0,1,1,2.06,1.21v1.61h0a0.68,0.68,0,0,1-1.36,0v-1.62A1.38,1.38,0,0,1,126,157.2Z" fill="rgb(0, 0, 0)" filter="url(#strong-inner)"/>
+		<rect class="keyhole" x="126.6" y="157" width="1.54" height="0.36" rx="0.18" ry="0.18"/>
+	</g>
+-->
+  </g>
+</svg>

@@ -1,0 +1,86 @@
+{
+  "HeaderAction": {
+    "search": "Пошук",
+    "login": "Увійти",
+    "offers": "Акційні",
+    "popular": "Популярні",
+    "leaders": "Лідери продаж"
+  },
+  "DialogFilters": {
+    "filters": "Фільтри",
+    "model": "Модель",
+    "models": {
+      "all": "Всі",
+      "base": "Базова",
+      "vertical": "Вертикальні",
+      "horizontal": "Горизонтальні",
+      "classic": "Класика",
+      "square": "Квадрат"
+    },
+    "glass": "Скло",
+    "glasses": {
+      "all": "Всі",
+      "transparent": "Прозоре",
+      "matte": "Сатин",
+      "glossy": "Бронза",
+      "frosted": "Вітраж"
+    },
+    "apply": "Застосувати",
+    "reset": "Скинути"
+  },
+  "DoorCard": {
+    "select": "Вибрати",
+    "door_alt": "Двері {label}"
+  },
+  "MainPage": {
+    "loading": "Завантаження..."
+  },
+  "NavBar": {
+    "all": "Усі",
+    "offers": "Акційні",
+    "popular": "Популярні",
+    "leaders": "Лідери продаж"
+  },
+  "ModalView": {
+    "model": "Модель",
+    "change": "Змінити",
+    "cost": "Вартість конфігурації",
+    "save": "Зберегти конфігурацію",
+    "order": "Замовити",
+    "bottom_bar": {
+      "outside_view": "Вигляд ззовні",
+      "inside_view": "Вигляд зсередини",
+      "show_sizes": "Показати розміри",
+      "full_screen": "Повноекранний режим"
+    }
+  },
+  "Sidebar": {
+    "opening_direction": "НАПРЯМОК ВІДКРИВАННЯ",
+    "left_inside": "Ліва всередину",
+    "right_inside": "Права всередину",
+    "left_outside": "Ліва назовні",
+    "right_outside": "Права назовні",
+    "door_form": "ФОРМА ДВЕРЕЙ",
+    "door_size": "РОЗМІР ДВЕРИ",
+    "width": "Ширина",
+    "height": "Довжина",
+    "how_to_measure": "Як виміряти?",
+    "equipment": "КОМПЛЕКТАЦІЯ",
+    "what_is_difference": "У чому різниця?",
+    "equipment_econom": "ЕКОНОМ",
+    "equipment_standart": "СТАНДАРТ",
+    "equipment_super": "СУПЕР",
+    "color": "КОЛІР",
+    "expanded_spraying": "Розширене напилення",
+    "satin": "Зсередини",
+    "decor": "ДЕКОР",
+    "lock": "ЗАМОК",
+    "furniture": "ФУРНІТУРА",
+    "profiles": "ПРОФІЛІ",
+    "glass": "СКЛО"
+  },
+  "DoorPreview": {
+    "adjustment_indicator": "Регулювання позиції",
+    "adjustment_tooltip": "Використовуйте ↑↓ для регулювання, R для скидання"
+  }
+} 
