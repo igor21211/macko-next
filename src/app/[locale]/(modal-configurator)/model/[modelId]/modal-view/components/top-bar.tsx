@@ -7,6 +7,7 @@ import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { useMedia } from "react-use";
 import { useRouter } from "next/navigation";
+import { useFullScreen } from "@/hooks/modal/use-full-screen";
 
 export const TopBar = () => {
   const t = useTranslations('ModalView');
@@ -14,11 +15,14 @@ export const TopBar = () => {
   const { onOpen } = useCostConfiguration();
   const isMobile = useMedia('(max-width: 1024px)', false);
   const isTablet = useMedia('(max-width: 1680px)', false);
+  const {open} = useFullScreen();
 
   const handleOrder = () => {
     router.push('/order');
   }
 
+
+  if(open) return null;
 
   if (isMobile) {
     return (
