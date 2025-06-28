@@ -35,7 +35,7 @@ export default function DoorEquipment() {
             </div>
             <div className="grid grid-cols-3 gap-x-2 min-h-[50px]">
                 {equipment.map((item) => (
-                    <Button variant="sidebar" key={item.id} className={cn(`h-full w-full ${selected === item.id && 'border border-accent'}`)} onClick={() => handleSelect(item.id)}>
+                    <Button variant="sidebar" key={item.id} className={cn(`h-full w-full ${selected === item.id && 'border-2 border-accent'}`)} onClick={() => handleSelect(item.id)}>
                         {item.name}
                     </Button>
                 ))}

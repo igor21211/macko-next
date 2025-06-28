@@ -47,7 +47,7 @@ export default function DoorProfiles() {
             <div
               className={`relative aspect-square overflow-hidden border-2 transition-all ${
                 selectedProfile === profile.id
-                  ? "border-3 border-accent"
+                  ? "border-2 border-accent"
                   : "border-transparent hover:border-[#EDF2F7]"
               }`}
             >

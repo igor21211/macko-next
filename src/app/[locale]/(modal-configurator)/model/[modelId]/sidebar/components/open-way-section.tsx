@@ -61,9 +61,10 @@ export default function OpenWaySection() {
         className={cn(
           "flex gap-2 w-full",
           isMobile
-            ? "overflow-x-auto max-w-[600px] h-[60px] px-2"
+            ? "overflow-x-auto max-w-[600px] h-[60px] px-2 scrollbar-hide"
             : "justify-center px-6 max-w-[537px] mx-auto"
         )}
+        style={isMobile ? { scrollbarWidth: 'none', msOverflowStyle: 'none' } : {}}
       >
               {directions.map((item, idx) => (
           <Button
@@ -71,7 +72,7 @@ export default function OpenWaySection() {
             className={cn(
               "flex flex-col items-center h-[60px] bg-white rounded-none shadow-none justify-center hover:bg-accent/10 cursor-pointer border flex-shrink-0",
               isMobile ? "w-[128px]" : "w-[128px]",
-              id === item.id ? "border-accent" : "border-transparent"
+              id === item.id ? "border-2 border-accent" : "border-transparent"
             )}
             onClick={() => handleClick(item.id)}
           >

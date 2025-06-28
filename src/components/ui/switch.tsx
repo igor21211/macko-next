@@ -24,7 +24,7 @@ function Switch({
         className={cn(
           "block size-[27px] rounded-full ring-0 transition-transform",
           "data-[state=checked]:bg-accent data-[state=unchecked]:bg-textLight",
-          "data-[state=checked]:translate-x-[33px] data-[state=unchecked]:translate-x-0"
+          "data-[state=checked]:translate-x-[33px] data-[state=unchecked]:translate-x-[6px]"
         )}
       />
     </SwitchPrimitive.Root>

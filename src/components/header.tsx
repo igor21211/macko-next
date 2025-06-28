@@ -28,13 +28,13 @@ export default function Header() {
           {isMobile ? (
             <>
              <div className="flex items-center">
-          <Separator orientation="vertical" className="border-[#EDF2F7] border-r-2 h-[80px]" />
+          <Separator orientation="vertical" className="border-[#EDF2F7] border-r-2 h-[80px] hidden md:block lg:block" />
           </div>
           <div className="flex items-center">
             <SearchInput />
           </div>
           <div className="flex items-center justify-center mr-3">
-            <Separator orientation="vertical" className="border-[#EDF2F7] border-r-2 h-[80px]" />
+            <Separator orientation="vertical" className="border-[#EDF2F7] border-r-2 h-[80px] hidden md:block lg:block" />
             </div>
             <MobileHeaderAction />
             </>

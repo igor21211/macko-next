@@ -8,7 +8,7 @@ import { BottomBar } from './bottom-bar';
 import { useMedia } from 'react-use';
 import { useFullScreen } from '@/hooks/modal/use-full-screen';
 
-export const DoorPreview = () => {
+export const DoorPreview = ({isDoorReduced}: {isDoorReduced: boolean}) => {
   const { containerRef } = useSvg({ url: '/figma-images/modal/modal.svg' });
   const isMobile = useMedia('(max-width: 1024px)', false);
    const {open} = useFullScreen();
@@ -66,16 +66,18 @@ export const DoorPreview = () => {
 
   // Стили для позиционирования
   const doorStyle: CSSProperties = useMemo(() => ({
-    width: `${(doorTotalWidth / 10)}vw`,
-    height: `${(doorTotalHeight / 10)}vw`,
+    width: ` ${isMobile && isDoorReduced ? (doorTotalWidth / 10) * 2 : isMobile ? (doorTotalWidth / 10) * 1.6 : (doorTotalWidth / 10)}vw`,
+    height: ` ${isMobile  && isDoorReduced ? (doorTotalHeight / 10) * 2 : isMobile ? (doorTotalHeight / 10) * 1.6 : (doorTotalHeight / 10)}vw`,
 
-  }), [doorTotalWidth, doorTotalHeight]);
+  }), [doorTotalWidth, doorTotalHeight, isMobile, isDoorReduced]);
 
   return (
     <div
       className={cn(
         "flex flex-col flex-1 pb-10 relative",
         // Фон для всех разрешений (мобилки)
+        isDoorReduced && isMobile && !open && "max-h-[500px] w-full mx-auto",
+        isDoorReduced && isMobile && open && "h-full w-full mx-auto",
         "bg-[url('/figma-images/modal-view/door_notree_and_windows.jpg')] bg-no-repeat bg-[length:100%_auto] bg-[position:50%_100%] lg:bg-[position:50%_100%] bg-[#e5e6e0]"
       )}
     >
@@ -89,7 +91,7 @@ export const DoorPreview = () => {
             open && isMobile
               ? "bottom-0 -translate-y-[10%]"
               : isMobile
-                ? "bottom-0 md:-translate-y-[19%] sm:-translate-y-[14%] -translate-y-[10%]"
+                ? "bottom-0 md:-translate-y-[10%] sm:-translate-y-[10%] -translate-y-[2%]"
                 : "top-0",
             // На десктопе прижимаем к низу
             open && !isMobile

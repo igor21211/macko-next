@@ -184,7 +184,7 @@ export default function DoorFurniture() {
             </div>
              <div className="grid grid-cols-2 gap-x-2 min-h-[50px] mb-5">
                 {side.map((item) => (
-                    <Button variant="sidebar" key={item.id} className={cn(`h-full w-full ${selectedSide === item.id && 'border border-accent'}`)} onClick={() => handleSelectSide(item.id)}>
+                    <Button variant="sidebar" key={item.id} className={cn(`h-full w-full ${selectedSide === item.id && 'border-2 border-accent'}`)} onClick={() => handleSelectSide(item.id)}>
                         {item.name}
                     </Button>
                 ))}
@@ -196,7 +196,7 @@ export default function DoorFurniture() {
                       className="flex flex-col items-center h-full w-full cursor-pointer"
                       onClick={() => handleSelectFurniture(item.id)}
                     >
-                      <div className={cn("relative w-full h-full aspect-square", selectedFurniture === item.id && "border-3 border-accent")}>
+                      <div className={cn("relative w-full h-full aspect-square", selectedFurniture === item.id && "border-2 border-accent")}>
                         <Image
                           src={item.image}
                           alt={item.id.toString()}

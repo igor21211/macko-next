@@ -100,7 +100,7 @@ const outsideColors = [
             </div>
             <div className="grid grid-cols-2 gap-x-2 min-h-[50px] mb-4">
                 {colors.map((color) => (
-                    <Button variant="sidebar" key={color.id} className={cn('h-full w-full', selected === color.id && 'border border-accent')} onClick={() => handleSelect(color.id)}>
+                    <Button variant="sidebar" key={color.id} className={cn('h-full w-full', selected === color.id && 'border-2 border-accent')} onClick={() => handleSelect(color.id)}>
                         {color.name}
                     </Button>
                 ))}
@@ -110,7 +110,7 @@ const outsideColors = [
             </h3>
             <div className="flex flex-wrap gap-x-2 gap-y-2 mb-4">
                 {insideColors.map((color) => (
-                    <div key={color.id} className={cn('w-[60px] h-[60px] relative cursor-pointer', selectedInside === color.id && 'border-3 border-accent')} onClick={() => handleSelectInside(color.id)}>
+                    <div key={color.id} className={cn('w-[60px] h-[60px] relative cursor-pointer', selectedInside === color.id && 'border-2 border-accent')} onClick={() => handleSelectInside(color.id)}>
                         <Image key={color.id} src={color.image} alt={color.id.toString()} fill className="object-cover" />
                     </div>
                 ))}
@@ -120,7 +120,7 @@ const outsideColors = [
             </h3>
             <div className="flex flex-wrap gap-x-2 gap-y-2 mb-4">
                 {outsideColors.map((color) => (
-                    <div key={color.id} className={cn('w-[60px] h-[60px] relative cursor-pointer', selectedOutside === color.id && 'border-3 border-accent')} onClick={() => handleSelectOutside(color.id)}>
+                    <div key={color.id} className={cn('w-[60px] h-[60px] relative cursor-pointer', selectedOutside === color.id && 'border-2 border-accent')} onClick={() => handleSelectOutside(color.id)}>
                         <Image key={color.id} src={color.image} alt={color.id.toString()} fill className="object-cover" />
                     </div>
                 ))}

@@ -1,18 +1,21 @@
-<svg width="20" height="36" viewBox="0 0 20 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path fill-rule="evenodd" clip-rule="evenodd" d="M1.00025 34.5L1.00024 0.5L2.10423 1.604L2.10425 34.5H1.00025Z" fill="url(#paint0_linear_112_294)" stroke="#373435" stroke-width="0.287469" stroke-miterlimit="22.9256"/>
-<path fill-rule="evenodd" clip-rule="evenodd" d="M1.00016 0.5H19.0071L17.9031 1.604H2.10416L1.00016 0.5Z" fill="url(#paint1_linear_112_294)" stroke="#373435" stroke-width="0.287469" stroke-miterlimit="22.9256"/>
-<path fill-rule="evenodd" clip-rule="evenodd" d="M19.0449 34.5V0.5L17.9409 1.604V34.5H19.0449Z" fill="url(#paint2_linear_112_294)" stroke="#373435" stroke-width="0.287469" stroke-miterlimit="22.9256"/>
-<path d="M3.14539 35.3428L17.6776 34.2471V1.81445L3.14539 0.162109V35.3428Z" fill="#DAE0E8" stroke="#373435" stroke-width="0.29"/>
-<path d="M18.0448 34.5L4.0448 17.58L18.0448 1.5" stroke="black" stroke-width="0.5" stroke-linejoin="round" stroke-dasharray="2 2"/>
-<rect x="-0.183236" y="0.183236" width="0.366472" height="26.386" transform="matrix(-1 0 0 1 5.67833 4.53125)" stroke="#373435" stroke-width="0.366472"/>
+<svg width="20" height="37" viewBox="0 0 20 37" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M1.00043 35.5L1.00042 1.5L2.10441 2.60399L2.10443 35.5H1.00043Z" fill="url(#paint0_linear_442_26)" stroke="#373435" stroke-width="0.287469" stroke-miterlimit="22.9256"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M1.00027 1.5H19.0072L17.9032 2.60399H2.10426L1.00027 1.5Z" fill="url(#paint1_linear_442_26)" stroke="#373435" stroke-width="0.287469" stroke-miterlimit="22.9256"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M19.045 35.5V1.49999L17.941 2.60398V35.5H19.045Z" fill="url(#paint2_linear_442_26)" stroke="#373435" stroke-width="0.287469" stroke-miterlimit="22.9256"/>
+<path d="M4.14453 36.8369L17.6777 35.252V2.80371L4.14453 0.175781V36.8369Z" fill="#DAE0E8" stroke="#373435" stroke-width="0.29"/>
+<path d="M18.0449 35.5L4.5 18.5L18.0449 2.5" stroke="black" stroke-width="0.5" stroke-linejoin="round" stroke-dasharray="2 2"/>
+<mask id="path-6-inside-1_442_26" fill="white">
+<path d="M6.04492 4.78294L5.31198 4.64087V32.8853L6.04492 32.7685V4.78294Z"/>
+</mask>
+<path d="M6.04492 4.78294L6.23522 3.80121L7.04492 3.95817V4.78294H6.04492ZM5.31198 4.64087H4.31198V3.42841L5.50228 3.65914L5.31198 4.64087ZM5.31198 32.8853L5.46937 33.8729L4.31198 34.0573V32.8853H5.31198ZM6.04492 32.7685H7.04492V33.6218L6.20232 33.7561L6.04492 32.7685ZM6.04492 4.78294L5.85462 5.76467L5.12168 5.62259L5.31198 4.64087L5.50228 3.65914L6.23522 3.80121L6.04492 4.78294ZM5.31198 4.64087H6.31198V32.8853H5.31198H4.31198V4.64087H5.31198ZM5.31198 32.8853L5.15458 31.8978L5.88753 31.781L6.04492 32.7685L6.20232 33.7561L5.46937 33.8729L5.31198 32.8853ZM6.04492 32.7685H5.04492V4.78294H6.04492H7.04492V32.7685H6.04492Z" fill="#373435" mask="url(#path-6-inside-1_442_26)"/>
 <defs>
-<linearGradient id="paint0_linear_112_294" x1="1.93672" y1="23.6563" x2="0.85518" y2="23.6563" gradientUnits="userSpaceOnUse">
+<linearGradient id="paint0_linear_442_26" x1="1.9369" y1="24.6563" x2="0.855361" y2="24.6563" gradientUnits="userSpaceOnUse">
 <stop stop-color="#DBE1E9"/>
 <stop offset="0.85098" stop-color="#DBE1E9"/>
 <stop offset="0.941176" stop-color="#849AAC"/>
 <stop offset="1" stop-color="#232729"/>
 </linearGradient>
-<linearGradient id="paint1_linear_112_294" x1="-15.9084" y1="0.499451" x2="-15.9084" y2="1.604" gradientUnits="userSpaceOnUse">
+<linearGradient id="paint1_linear_442_26" x1="-15.9083" y1="1.49945" x2="-15.9083" y2="2.60399" gradientUnits="userSpaceOnUse">
 <stop stop-color="#475A65"/>
 <stop offset="0.0509804" stop-color="#9EAFC1"/>
 <stop offset="0.0705882" stop-color="#B1C0D0"/>
@@ -23,7 +26,7 @@
 <stop offset="0.941176" stop-color="#849AAC"/>
 <stop offset="1" stop-color="#42555F"/>
 </linearGradient>
-<linearGradient id="paint2_linear_112_294" x1="23.1265" y1="1.604" x2="24.2084" y2="1.604" gradientUnits="userSpaceOnUse">
+<linearGradient id="paint2_linear_442_26" x1="23.1266" y1="2.60398" x2="24.2085" y2="2.60398" gradientUnits="userSpaceOnUse">
 <stop stop-color="#DBE1E9"/>
 <stop offset="0.85098" stop-color="#DBE1E9"/>
 <stop offset="0.960784" stop-color="#AABACA"/>

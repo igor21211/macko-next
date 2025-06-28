@@ -11,7 +11,7 @@ export default function ModalProgress() {
       <div className="flex items-center">
         <ChevronLeft />
         <span className="flex items-center text-[16px] font-medium text-[#1A202C]">1 / 10</span>
-        <ChevronRight className="text-[#23E5DC]" />
+        <ChevronRight className="text-accent" />
       </div>
       {!isMobile && (
       <div>
@@ -21,7 +21,7 @@ export default function ModalProgress() {
         <Progress
           value={value}
           max={max}
-          className="h-[3px] w-[400px] bg-[#DEE1E3] [&_[data-slot=progress-indicator]]:bg-[#23E5DC]"
+          className="h-[3px] w-[400px] bg-[#DEE1E3] [&_[data-slot=progress-indicator]]:bg-accent"
         />
       </div>
       )}

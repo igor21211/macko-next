@@ -59,7 +59,7 @@ export default function DoorSize() {
                             value={width}
                             onChange={e => setWidth(e.target.value)}
                             onBlur={() => setTouched(t => ({ ...t, width: true }))}
-                            className="min-h-[36px] text-base rounded-none bg-background text-primary"
+                            className="min-h-[36px] text-base rounded-none bg-background  !border-[#E6EAEF] text-primary"
                             aria-invalid={!!widthError}
                         />
                         {widthError && (
@@ -86,7 +86,7 @@ export default function DoorSize() {
                             value={height}
                             onChange={e => setHeight(e.target.value)}
                             onBlur={() => setTouched(t => ({ ...t, height: true }))}
-                            className="min-h-[36px] text-base rounded-none bg-background text-primary"
+                            className="min-h-[36px] text-base rounded-none bg-background  !border-[#E6EAEF] text-primary"
                             aria-invalid={!!heightError}
                         />
                         {heightError && (

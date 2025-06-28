@@ -43,14 +43,14 @@ export default function DoorDecor() {
             </div>
             <div className="grid grid-cols-2 gap-x-2 min-h-[50px] mb-5">
                 {side.map((item) => (
-                    <Button variant="sidebar" key={item.id} className={cn(`h-full w-full ${selected === item.id && 'border border-accent'}`)} onClick={() => handleSelect(item.id)}>
+                    <Button variant="sidebar" key={item.id} className={cn(`h-full w-full ${selected === item.id && 'border-2 border-accent'}`)} onClick={() => handleSelect(item.id)}>
                         {item.name}
                     </Button>
                 ))}
             </div>
             <div className="grid grid-cols-4 gap-x-2 min-h-[128px]">
                 {decor.map((item) => (
-                    <div key={item.id} className={cn(`h-full w-full relative cursor-pointer ${selectedDecor === item.id && 'border-3 border-accent'}`)} onClick={() => handleSelectDecor(item.id)}>
+                    <div key={item.id} className={cn(`h-full w-full relative cursor-pointer ${selectedDecor === item.id && 'border-2 border-accent'}`)} onClick={() => handleSelectDecor(item.id)}>
                         <Image src={item.image} alt={item.id.toString()} fill className="object-cover" />
                     </div>
                 ))}

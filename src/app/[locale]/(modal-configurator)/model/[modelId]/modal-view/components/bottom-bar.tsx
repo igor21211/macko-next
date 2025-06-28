@@ -39,7 +39,7 @@ export const BottomBar = () => {
   return (
     <div className="w-full absolute bottom-0 left-0  p-[45px] lg:p-[30px] flex justify-between">
       {/* Кнопки навигации */}
-      <div className="flex lg:flex-row flex-col gap-2">
+      <div className="flex lg:flex-row flex-col gap-2 z-50">
         <button className={cn("bg-primary/80 rounded-full flex items-center justify-center cursor-pointer", isActiveSide && 'bg-accent text-primary', isMobile ? 'w-[50px] h-[50px]' : 'w-[69px] h-[69px]')} onClick={handleActiveSide}>
           <Image src="/figma-images/modal-view/outside-view.svg" alt={t('outside_view')} width={isMobile ? 20 : 28} height={isMobile ? 20 : 36} />
         </button>
@@ -49,7 +49,7 @@ export const BottomBar = () => {
       </div>
 
       {/* Инструменты */}
-      <div className="flex lg:flex-row flex-col gap-2">
+      <div className="flex lg:flex-row flex-col gap-2 z-50">
         <button className={cn("bg-primary/80  rounded-full flex items-center justify-center hover:bg-accent/80 transition-all duration-300 cursor-pointer", isActiveSizes && 'bg-accent', isMobile ? 'w-[50px] h-[50px]' : 'w-[69px] h-[69px]')} onClick={handleActiveSizes}>
           <Image src="/figma-images/modal-view/show-sizes.svg" alt={t('show_sizes')} width= {isMobile ? 20 : 25} height={isMobile ? 20 :  26} />
         </button>

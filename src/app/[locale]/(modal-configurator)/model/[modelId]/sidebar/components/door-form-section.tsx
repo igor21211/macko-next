@@ -27,8 +27,9 @@ export default function DoorFormSection() {
       <div
         className={cn(
           "flex gap-x-2 w-full",
-          isMobile ? "overflow-x-auto flex-nowrap h-[60px]" : "flex-row"
+          isMobile ? "overflow-x-auto flex-nowrap h-[60px] px-2 scrollbar-hide" : "flex-row"
         )}
+        style={isMobile ? { scrollbarWidth: 'none', msOverflowStyle: 'none' } : {}}
       >
         {forms.map((item) => (
           <Button
