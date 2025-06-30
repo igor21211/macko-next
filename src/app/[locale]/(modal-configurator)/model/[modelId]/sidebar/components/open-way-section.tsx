@@ -12,7 +12,7 @@ const directions = [
     img: '/figma-images/left-in.svg',
     label: (
       <>
-        Ліва<br />всередену
+        Ліва<br />всередину
       </>
     ),
   },
@@ -21,7 +21,7 @@ const directions = [
     img: '/figma-images/right-in.svg',
     label: (
       <>
-        Права<br />всередену
+        Права<br />всередину
       </>
     ),
   },

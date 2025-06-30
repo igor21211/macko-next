@@ -8,8 +8,4 @@
   "editor.formatOnType": true,
   "files.autoSave": "afterDelay",
   "files.autoSaveDelay": 3000,
-  "editor.autoSave": "afterDelay",
-  "editor.autoSaveDelay": 3000,
-  "files.autoSaveOnFocusChange": true,
-  "files.autoSaveOnWindowChange": true
 }

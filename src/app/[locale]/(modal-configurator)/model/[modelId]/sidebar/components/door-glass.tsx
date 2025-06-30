@@ -32,7 +32,7 @@ export default function DoorGlass() {
                 </div>
                 <div className="flex flex-row items-center gap-x-2">
                     <Label htmlFor="safe-glass" className="font-sans text-[14px] font-medium text-primary">
-                       Беспечне скло
+                       Безпечне скло
                     </Label>
                     <Switch id="safe-glass" />
                 </div>

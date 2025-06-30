@@ -21,14 +21,14 @@ export default function DoorSize() {
             : '';
     const heightError =
         touched.height && (!height || isNaN(heightNum) || heightNum <= 0 || heightNum > 2300)
-            ? 'Высота должна быть числом от 1 до 2300'
+            ? 'Висота повинна бути числом від 1 до 2300'
             : '';
 
     return (
         <section className="w-full px-6 pt-6 pb-10">
             <div className="flex flex-row justify-between items-center mb-4">
                 <h3 className="font-sans text-heading-sidebar font-medium text-[#1A202C] uppercase tracking-[0.06em]">
-                    Розмір двери
+                    Розміри
                 </h3>
                 <Button
                     type="button"
@@ -44,7 +44,7 @@ export default function DoorSize() {
             )}>
                 <div className="flex flex-row items-center w-full gap-x-2">
                     <div className="relative min-w-[20px] min-h-[20px]">
-                        <Image src="/figma-images/width-form.svg" alt="width" fill className="object-contain" />
+                        <Image src="/figma-images/height-form.svg" alt="width" fill className="object-contain" />
                     </div>
                     <label htmlFor="door-width" className="text-primary font-sans text-body mr-2 whitespace-nowrap">Ширина:</label>
                     <div className={cn(
@@ -55,7 +55,7 @@ export default function DoorSize() {
                             id="door-width"
                             type="number"
                             min={0}
-                            placeholder="900"
+                            placeholder="1500"
                             value={width}
                             onChange={e => setWidth(e.target.value)}
                             onBlur={() => setTouched(t => ({ ...t, width: true }))}
@@ -71,9 +71,9 @@ export default function DoorSize() {
                 </div>
                 <div className="flex flex-row items-center w-full gap-x-2">
                     <div className="relative min-w-[20px] min-h-[20px]">
-                        <Image src="/figma-images/height-form.svg" alt="height" fill className="object-contain" />
+                        <Image src="/figma-images/width-form.svg" alt="height" fill className="object-contain" />
                     </div>
-                    <label htmlFor="door-height" className="text-primary font-sans text-body mr-2 whitespace-nowrap">Довжина:</label>
+                    <label htmlFor="door-height" className="text-primary font-sans text-body mr-2 whitespace-nowrap">Висота:</label>
                     <div className={cn(
                         "relative flex flex-col",
                         isMobile ? "w-[250px] ml-auto" : "w-full"
@@ -82,7 +82,7 @@ export default function DoorSize() {
                             id="door-height"
                             type="number"
                             min={0}
-                            placeholder="2000"
+                            placeholder="e.g. 2100"
                             value={height}
                             onChange={e => setHeight(e.target.value)}
                             onBlur={() => setTouched(t => ({ ...t, height: true }))}

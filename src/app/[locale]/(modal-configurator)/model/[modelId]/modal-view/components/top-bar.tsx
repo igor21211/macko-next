@@ -27,14 +27,17 @@ export const TopBar = () => {
   if (isMobile) {
     return (
       <div className="fixed bottom-0 left-0 w-full z-50 bg-primary h-[74px] flex">
-        <div className="flex lg:flex-row flex-col justify-start items-start p-2 lg:p-0  w-1/2 h-full pl-2 lg:pl-4" onClick={onOpen}>
-          <span className="lg:text-body md:text-body text-[13px] font-sans text-accent">{t('cost')}:</span>
-          <span className="lg:text-body md:text-body text-[13px] font-sans text-white lg:ml-2">€2 499</span>
+        <div className="flex lg:flex-row flex-col justify-center items-center p-2 lg:p-0  w-1/2 h-full pl-2 lg:pl-4" onClick={onOpen}>
+          <div className="flex flex-col items-start gap-y-2">
+            <span className="lg:text-body md:text-body text-[13px] font-sans text-accent">{t('cost')}:</span>
+            <span className="lg:text-body md:text-body text-[13px] font-sans text-white">€2 499</span>
+          </div>
+         
         </div>
         <div className="flex items-center justify-end w-1/2 h-full pr-0">
           <button className="bg-[#C7540F] w-full h-full flex items-center justify-center gap-x-2 lg:gap-x-4 cursor-pointer hover:bg-[#C7540F]/80 transition-all duration-300" onClick={handleOrder}>
             <Image src="/figma-images/modal-view/basket.svg" alt={t('order')} width={30} height={26} />
-            <span className="text-body font-sans text-primary uppercase">{t('order')}</span>
+            <span className="text-body font-sans text-white uppercase">{t('order')}</span>
           </button>
         </div>
       </div>
