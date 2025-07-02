@@ -1,11 +1,10 @@
 {
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "editor.formatOnSave": true,
-  "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": "explicit"
-  },
-  "editor.formatOnPaste": true,
-  "editor.formatOnType": true,
   "files.autoSave": "afterDelay",
   "files.autoSaveDelay": 3000,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnPaste": false, // required 
+  "editor.formatOnType": false, // required
+  "editor.formatOnSave": true, // optional 
+  "editor.formatOnSaveMode": "file", // required to format on save// optional but recommended
+  "vs-code-prettier-eslint.prettierLast": "false" // set as "true" to run 'prettier' last not first
 }

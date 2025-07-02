@@ -12,16 +12,35 @@ RadioGroup.displayName = "RadioGroup";
 export const RadioGroupItem = React.forwardRef<
   React.ElementRef<typeof RadioGroupPrimitive.Item>,
   React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Item>
->(({ className = "", ...props }, ref) => (
+>(({ className = "", disabled, ...props }, ref) => (
   <RadioGroupPrimitive.Item
     ref={ref}
     className={
-      "w-5 h-5 rounded-full border border-gray-300 bg-white data-[state=checked]:bg-[#00ACA4] data-[state=checked]:border-[#00ACA4] flex items-center justify-center transition-colors " +
-      className
+      [
+        "w-6 h-6 flex items-center justify-center rounded-full border transition-colors duration-150 group",
+        disabled
+          ? "border-gray-200 bg-gray-100 cursor-not-allowed opacity-60"
+          : "border-[#E2E7ED] bg-transparent cursor-pointer focus-visible:ring-2 focus-visible:ring-[#00ACA4] focus-visible:ring-offset-2",
+        className,
+      ].join(" ")
     }
+    disabled={disabled}
+    tabIndex={0}
+    aria-checked={props['aria-checked']}
+    aria-label={props['aria-label']}
     {...props}
   >
-    <span className="block w-2.5 h-2.5 rounded-full bg-white data-[state=checked]:bg-white" />
+    <span
+      className={
+        [
+          "block rounded-full transition-all duration-150",
+          "w-2.5 h-2.5", // 10px
+          "bg-[#00ACA4]",
+          "group-data-[state=checked]:scale-100 group-data-[state=checked]:opacity-100",
+          "group-data-[state=unchecked]:scale-0 group-data-[state=unchecked]:opacity-0"
+        ].join(" ")
+      }
+    />
   </RadioGroupPrimitive.Item>
 ));
 RadioGroupItem.displayName = "RadioGroupItem"; 

@@ -1,9 +1,9 @@
-import OrderForm from "./components/order-form";
+import OrderForm from './components/order-form/order-form';
 
 export default function OrderPage() {
-    return (
-        <div className="flex flex-col max-w-screen-lg mx-auto">
-            <OrderForm />
-        </div>
-    );
+  return (
+    <div className="mx-auto flex w-[90%] flex-col pt-20 md:w-[90%] lg:w-[50%]">
+      <OrderForm />
+    </div>
+  );
 }
