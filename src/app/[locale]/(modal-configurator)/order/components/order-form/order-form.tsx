@@ -55,7 +55,7 @@ const defaultValues: OrderFormValues = {
   comment: '',
   files: [],
   promo: '',
-  needCall: false,
+  needCall: true,
 };
 
 const OrderForm = () => {
@@ -210,8 +210,8 @@ const OrderForm = () => {
                 render={({ field }) => (
                   <Checkbox
                     id="needCall"
-                    checked={field.value}
-                    onCheckedChange={field.onChange}
+                    checked={!field.value}
+                    onCheckedChange={(checked) => field.onChange(!checked)}
                     className="data-[state=checked]:text-accent h-4 w-4 rounded-none border-none bg-white data-[state=checked]:bg-white data-[state=unchecked]:bg-white"
                   />
                 )}

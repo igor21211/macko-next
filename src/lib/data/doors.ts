@@ -1,5 +1,3 @@
-
-
 export interface DoorCard {
   id: number;
   img: string;
@@ -7,6 +5,8 @@ export interface DoorCard {
   glass: string[];
   model: string;
   type: string[];
+  price: number;
+  salePrice?: number;
 }
 
 export function getCardsData(): DoorCard[] {
@@ -33,6 +33,8 @@ export function getCardsData(): DoorCard[] {
       glass: ['transparent', 'matte'],
       model: 'base',
       type: ['offers', 'leaders'],
+      price: 3200,
+      salePrice: 2499,
     },
     {
       id: 2,
@@ -41,6 +43,7 @@ export function getCardsData(): DoorCard[] {
       glass: ['transparent', 'glossy'],
       model: 'vertical',
       type: ['popular'],
+      price: 3100,
     },
     {
       id: 3,
@@ -49,6 +52,8 @@ export function getCardsData(): DoorCard[] {
       glass: ['matte', 'frosted', 'glossy'],
       model: 'classic',
       type: ['offers', 'popular'],
+      price: 3500,
+      salePrice: 2999,
     },
     {
       id: 4,
@@ -57,6 +62,7 @@ export function getCardsData(): DoorCard[] {
       glass: ['transparent'],
       model: 'base',
       type: ['leaders'],
+      price: 2800,
     },
     {
       id: 5,
@@ -64,7 +70,9 @@ export function getCardsData(): DoorCard[] {
       label: 'ААЕ 1133',
       glass: ['matte', 'frosted'],
       model: 'vertical',
-      type: ['popular', 'leaders'],
+      type: ['popular', 'leaders', 'offers'],
+      price: 3300,
+      salePrice: 2799,
     },
     {
       id: 6,
@@ -72,7 +80,8 @@ export function getCardsData(): DoorCard[] {
       label: 'ААЕ 1612',
       glass: ['glossy'],
       model: 'base',
-      type: ['offers'],
+      type: ['popular'],
+      price: 2950,
     },
     {
       id: 7,
@@ -80,7 +89,9 @@ export function getCardsData(): DoorCard[] {
       label: 'ААЕ 1093',
       glass: ['matte', 'glossy'],
       model: 'horizontal',
-      type: ['popular'],
+      type: ['popular', 'offers'],
+      price: 3400,
+      salePrice: 2899,
     },
     {
       id: 8,
@@ -89,30 +100,35 @@ export function getCardsData(): DoorCard[] {
       glass: ['transparent', 'frosted'],
       model: 'base',
       type: ['leaders'],
+      price: 3100,
     },
     {
       id: 9,
       img: images[8],
-      label: 'ААЕ 1131',
+      label: 'ААЕ 1138',
       glass: ['frosted'],
       model: 'vertical',
-      type: ['offers'],
+      type: ['leaders'],
+      price: 3000,
     },
     {
       id: 10,
       img: images[9],
-      label: 'ААЕ 1132',
+      label: 'ААЕ 1139',
       glass: ['matte', 'glossy'],
       model: 'base',
-      type: ['popular'],
+      type: ['popular', 'offers'],
+      price: 2850,
+      salePrice: 2399,
     },
     {
       id: 11,
       img: images[10],
-      label: 'ААЕ 1133',
+      label: 'ААЕ 11423',
       glass: ['transparent', 'frosted', 'glossy'],
       model: 'vertical',
-      type: ['offers', 'leaders'],
+      type: ['leaders'],
+      price: 3250,
     },
     {
       id: 12,
@@ -121,6 +137,7 @@ export function getCardsData(): DoorCard[] {
       glass: ['matte', 'frosted'],
       model: 'horizontal',
       type: ['leaders'],
+      price: 3150,
     },
   ];
 }

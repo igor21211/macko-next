@@ -13,7 +13,6 @@ import SearchInput from '@/components/search-input';
 import { Separator } from '@/components/ui/separator';
 import FiltersButton from '@/components/filters-button';
 
-
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
@@ -21,13 +20,13 @@ export default function Navbar() {
   const tab = searchParams.get('tab') || 'all';
   const isMobile = useMedia('(max-width: 1024px)', false);
 
-  const  t  = useTranslations('HeaderAction');
+  const t = useTranslations('HeaderAction');
 
-const routes = [
-  { label: t('offers'), value: 'offers', isActive: true },
-  { label: t('popular'), value: 'popular', isActive: false },
-  { label: t('leaders'), value: 'leaders', isActive: false },
-];
+  const routes = [
+    { label: t('offers'), value: 'offers', isActive: true },
+    { label: t('popular'), value: 'popular', isActive: false },
+    { label: t('leaders'), value: 'leaders', isActive: false },
+  ];
 
   const handleChange = (value: string) => {
     const params = new URLSearchParams(Array.from(searchParams.entries()));
@@ -41,50 +40,50 @@ const routes = [
 
   if (isMobile) {
     return (
-      <div className="flex flex-row gap-x-6 items-center">
-        <div className="flex items-center ">
-        <Separator orientation="vertical" className="border-[#EDF2F7] border-r-2 h-[80px]" />
+      <div className="flex flex-row items-center gap-x-6">
+        <div className="flex items-center">
+          <Separator orientation="vertical" className="h-[80px] border-r-2 border-[#EDF2F7]" />
         </div>
         <div>
           <FiltersButton />
         </div>
-        <div className="flex items-center ">
-        <Separator orientation="vertical" className="border-[#EDF2F7] border-r-2 h-[80px]" />
+        <div className="flex items-center">
+          <Separator orientation="vertical" className="h-[80px] border-r-2 border-[#EDF2F7]" />
         </div>
-      <div>
-        <SearchInput />
+        <div>
+          <SearchInput />
         </div>
-        <div className="flex items-center ">
-        <Separator orientation="vertical" className="border-[#EDF2F7] border-r-2 h-[80px]" />
+        <div className="flex items-center">
+          <Separator orientation="vertical" className="h-[80px] border-r-2 border-[#EDF2F7]" />
         </div>
-      <Sheet open={isOpen} onOpenChange={setIsOpen}>
-        <SheetTrigger asChild>
-          <Button variant="ghost" size="icon" className="w-16 h-16">
-            <Menu className="size-12 text-dark" />
-          </Button>
-        </SheetTrigger>
-        <SheetContent side="right" className="w-full md:max-w-[500px]">
-          <SheetHeader>
-            <SheetTitle>Меню</SheetTitle>
-          </SheetHeader>
-          <div className="flex flex-col gap-y-6">
-            {routes.map((route) => (
-              <Button
-                key={route.label}
-                onClick={() => handleChange(route.value)}
-                variant="nav"
-                className={cn(
-                  'w-full justify-start rounded-none border-none font-sans text-[16px] uppercase transition-all duration-300 hover:text-[#23E5DC]/60 lg:w-auto',
-                  tab === route.value && 'font-bold text-[#23E5DC]'
-                )}
-              >
-                {route.label}
-              </Button>
-            ))}
-            <NavAction />
-          </div>
-        </SheetContent>
-      </Sheet>
+        <Sheet open={isOpen} onOpenChange={setIsOpen}>
+          <SheetTrigger asChild>
+            <Button variant="ghost" size="icon" className="h-16 w-16">
+              <Menu className="text-dark size-8 sm:size-12" />
+            </Button>
+          </SheetTrigger>
+          <SheetContent side="right" className="w-full md:max-w-[500px]">
+            <SheetHeader>
+              <SheetTitle>Меню</SheetTitle>
+            </SheetHeader>
+            <div className="flex flex-col gap-y-6">
+              {routes.map((route) => (
+                <Button
+                  key={route.label}
+                  onClick={() => handleChange(route.value)}
+                  variant="nav"
+                  className={cn(
+                    'w-full justify-start rounded-none border-none font-sans text-[16px] uppercase transition-all duration-300 hover:text-[#23E5DC]/60 lg:w-auto',
+                    tab === route.value && 'font-bold text-[#23E5DC]'
+                  )}
+                >
+                  {route.label}
+                </Button>
+              ))}
+              <NavAction />
+            </div>
+          </SheetContent>
+        </Sheet>
       </div>
     );
   }

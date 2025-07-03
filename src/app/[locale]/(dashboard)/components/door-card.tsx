@@ -7,14 +7,17 @@ type Props = {
   label: string;
   id: number;
   priority?: boolean;
+  price: number;
+  salePrice?: number;
 };
 
-export default function DoorCard({ img, label, id, priority = false }: Props) {
+export default function DoorCard({ img, label, id, priority = false, price, salePrice }: Props) {
   const t = useTranslations('DoorCard');
+  const showSale = salePrice !== undefined && salePrice !== null;
   return (
     <Link href={`/model/${id}`}>
-      <div className="group flex w-56 cursor-pointer flex-col items-center justify-center">
-        <div className="relative h-[400px] w-[200px] overflow-hidden rounded-md bg-white transition-all duration-200 group-hover:border-6 group-hover:border-accent">
+      <div className="group flex cursor-pointer flex-col items-center justify-center">
+        <div className="group-hover:border-accent relative h-[200px] w-[100px] overflow-hidden rounded-md bg-white transition-all duration-200 group-hover:border-6 lg:h-[400px] lg:w-[200px]">
           <Image
             src={img}
             alt={t('door_alt', { label })}
@@ -28,6 +31,18 @@ export default function DoorCard({ img, label, id, priority = false }: Props) {
           </div>
         </div>
         <div className="mt-2 text-center text-lg font-bold text-gray-800">{label}</div>
+        <div className="mt-1 flex items-center justify-center gap-2 text-center">
+          {showSale ? (
+            <>
+              <span className="text-danger text-xl font-bold">€{salePrice?.toLocaleString()}</span>
+              <span className="text-textDark text-base font-semibold line-through">
+                €{price.toLocaleString()}
+              </span>
+            </>
+          ) : (
+            <span className="text-xl font-bold text-gray-900">€{price.toLocaleString()}</span>
+          )}
+        </div>
       </div>
     </Link>
   );

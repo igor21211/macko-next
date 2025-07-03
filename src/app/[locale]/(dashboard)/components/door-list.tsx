@@ -17,8 +17,16 @@ export default function DoorList({ cards }: Props) {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.3 }}
+            className="w-full gap-x-2 lg:w-auto"
           >
-            <DoorCard img={card.img} label={card.label} id={card.id} priority={card.id <= 4} />
+            <DoorCard
+              img={card.img}
+              label={card.label}
+              id={card.id}
+              priority={card.id <= 4}
+              price={card.price}
+              salePrice={card.salePrice}
+            />
           </motion.div>
         ))}
       </AnimatePresence>

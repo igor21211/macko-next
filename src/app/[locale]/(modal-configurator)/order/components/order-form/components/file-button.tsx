@@ -21,10 +21,17 @@ export default function FileButton({ form }: FileButtonProps) {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files ? Array.from(e.target.files) : [];
     setSelectedFiles(files);
+    form.setValue('files', files);
+    form.trigger('files');
   };
 
   const handleRemoveFile = (name: string) => {
-    setSelectedFiles((files) => files.filter((file) => file.name !== name));
+    setSelectedFiles((files) => {
+      const updated = files.filter((file) => file.name !== name);
+      form.setValue('files', updated);
+      form.trigger('files');
+      return updated;
+    });
   };
 
   return (
