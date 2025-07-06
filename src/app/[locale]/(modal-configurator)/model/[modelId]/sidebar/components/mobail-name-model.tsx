@@ -1,22 +1,17 @@
-import Link from "next/link";
-import { useTranslations } from "next-intl";
-import { useMedia } from "react-use";
+import Link from 'next/link';
+import { useTranslations } from 'next-intl';
 
 export default function MobileNameModel() {
-    const t = useTranslations('ModalView');
-    const isMobile = useMedia('(max-width: 1024px)');
-    if(isMobile) {
-    return (
-              <section className="flex flex-row items-center justify-start align-center px-6 py-4">
-         <span className="text-heading-sidebar font-sans  font-medium text-dark uppercase">Модель:</span>
-          <span className="text-body font-[Inter] font-bold text-dark ml-2">Line 200</span>
-          <button className="text-[14px] font-sans text-accent ml-6 cursor-pointer">
-            <Link href="/">
-              {t('change')}
-            </Link>
-          </button>
-        </section>
-    )
-    }
-    return null;
+  const t = useTranslations('ModalView');
+  return (
+    <section className="align-center flex h-[60px] w-full flex-row items-center justify-start border-b border-b-gray-200 px-6 shadow-sm">
+      <span className="text-heading-sidebar text-dark font-sans font-medium uppercase">
+        Модель:
+      </span>
+      <span className="text-textDark text-body ml-2 font-bold">Line 200</span>
+      <button className="text-accent ml-6 cursor-pointer font-sans text-[14px]">
+        <Link href="/">{t('change')}</Link>
+      </button>
+    </section>
+  );
 }

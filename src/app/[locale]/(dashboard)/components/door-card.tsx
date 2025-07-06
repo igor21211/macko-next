@@ -7,13 +7,15 @@ type Props = {
   label: string;
   id: number;
   priority?: boolean;
-  price: number;
-  salePrice?: number;
+  price: string;
+  salePrice?: string;
 };
 
 export default function DoorCard({ img, label, id, priority = false, price, salePrice }: Props) {
   const t = useTranslations('DoorCard');
   const showSale = salePrice !== undefined && salePrice !== null;
+
+
   return (
     <Link href={`/model/${id}`}>
       <div className="group flex cursor-pointer flex-col items-center justify-center">

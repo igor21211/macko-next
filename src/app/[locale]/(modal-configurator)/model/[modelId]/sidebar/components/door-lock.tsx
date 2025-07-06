@@ -41,7 +41,7 @@ export default function DoorLock() {
   const [selectedLock, setSelectedLock] = useState<string>("lock-1");
 
   return (
-    <section className="w-full px-6 pt-6 pb-4">
+    <section className="w-full px-6 pt-6 pb-4 border-b border-b-gray-200 shadow-sm">
       <div className="flex flex-row justify-between items-center mb-4">
         <h3 className="font-sans text-heading-sidebar font-medium text-[#1A202C] uppercase tracking-[0.06em]">
           Замок

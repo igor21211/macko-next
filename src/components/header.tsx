@@ -12,31 +12,35 @@ export default function Header() {
   const { open } = useFullScreen();
   const isMobile = useMedia('(max-width: 1024px)', false);
   if (open) return null;
-  
 
   return (
-    <header className="h-[74px] w-full bg-white shadow-sm">
+    <header className="h-[74px] w-full bg-white">
       <div className="flex h-full items-center justify-between px-3">
         <div className="flex flex-none items-center">
           <HeaderLogo />
         </div>
         <div className="flex items-center">
           <ModalProgress />
-        </div> 
+        </div>
         <div className="flex flex-row items-center">
-         
           {isMobile ? (
             <>
-             <div className="flex items-center">
-          <Separator orientation="vertical" className="border-[#EDF2F7] border-r-2 h-[80px] hidden md:block lg:block" />
-          </div>
-          <div className="flex items-center">
-            <SearchInput />
-          </div>
-          <div className="flex items-center justify-center mr-3">
-            <Separator orientation="vertical" className="border-[#EDF2F7] border-r-2 h-[80px] hidden md:block lg:block" />
-            </div>
-            <MobileHeaderAction />
+              <div className="flex items-center">
+                <Separator
+                  orientation="vertical"
+                  className="hidden h-[80px] border-r-2 border-[#EDF2F7] md:block lg:block"
+                />
+              </div>
+              <div className="flex items-center">
+                <SearchInput />
+              </div>
+              <div className="mr-3 flex items-center justify-center">
+                <Separator
+                  orientation="vertical"
+                  className="hidden h-[80px] border-r-2 border-[#EDF2F7] md:block lg:block"
+                />
+              </div>
+              <MobileHeaderAction />
             </>
           ) : (
             <HeaderAction />

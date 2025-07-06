@@ -1,4 +1,4 @@
-"use client"
+'use client';
 import { useState } from 'react';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
@@ -20,14 +20,14 @@ export default function DoorFormSection() {
   const [selected, setSelected] = useState(1);
   const isMobile = useMedia('(max-width: 580px)');
   return (
-    <section className="w-full px-6 pt-6 pb-4">
-      <h3 className="font-sans text-heading-sidebar font-medium text-[#1A202C] uppercase mb-4 tracking-[0.06em]">
+    <section className="w-full border-b border-b-gray-200 px-6 pt-6 pb-4 shadow-sm">
+      <h3 className="text-heading-sidebar mb-4 font-sans font-medium tracking-[0.06em] text-[#1A202C] uppercase">
         Форма дверей
       </h3>
       <div
         className={cn(
-          "flex gap-x-2 w-full",
-          isMobile ? "overflow-x-auto flex-nowrap h-[60px] px-2 scrollbar-hide" : "flex-row"
+          'flex w-full gap-x-2',
+          isMobile ? 'scrollbar-hide h-[60px] flex-nowrap overflow-x-auto px-2' : 'flex-row'
         )}
         style={isMobile ? { scrollbarWidth: 'none', msOverflowStyle: 'none' } : {}}
       >
@@ -36,9 +36,9 @@ export default function DoorFormSection() {
             key={item.id}
             type="button"
             onClick={() => setSelected(item.id)}
-            className={`w-[60px] h-[60px] flex-1 min-w-[60px] p-1 lg:p-2 bg-white rounded-none flex items-center justify-center border-2 transition-colors hover:bg-accent/10 duration-100 shadow-none relative cursor-pointer ${selected === item.id ? 'border-accent' : 'border-transparent'}`}
+            className={`hover:bg-accent/10 relative flex h-[60px] w-[60px] min-w-[60px] flex-1 cursor-pointer items-center justify-center rounded-none border-2 bg-white p-1 shadow-none transition-colors duration-100 lg:p-2 ${selected === item.id ? 'border-accent' : 'border-transparent'}`}
           >
-            <div className="relative w-full h-full">
+            <div className="relative h-full w-full">
               <Image src={item.img} alt={item.alt} fill className="object-contain" />
             </div>
           </Button>

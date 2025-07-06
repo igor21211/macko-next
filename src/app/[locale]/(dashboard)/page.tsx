@@ -1,10 +1,13 @@
 import { Suspense } from 'react';
 import MainPageContent from './MainPageContent';
+import { Providers } from '@/providers/providers';
 
 export default function MainPage() {
   return (
     <Suspense>
-      <MainPageContent />
+      <Providers>
+        <MainPageContent />
+      </Providers>
     </Suspense>
   );
 }

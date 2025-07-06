@@ -1,13 +1,19 @@
-import { QueryProvider } from './query-provider';
+'use client';
+
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ModalProviders } from './modal-providers';
 import { SheetProviders } from './sheet-providers';
+import { ReactNode, useState } from 'react';
+import { Toaster } from 'sonner';
 
-export function Providers({ children }: { children: React.ReactNode }) {
+export function Providers({ children }: { children: ReactNode }) {
+  const [queryClient] = useState(() => new QueryClient());
   return (
-    <QueryProvider>
+    <QueryClientProvider client={queryClient}>
       <ModalProviders />
       <SheetProviders />
+      <Toaster />
       {children}
-    </QueryProvider>
+    </QueryClientProvider>
   );
 }
