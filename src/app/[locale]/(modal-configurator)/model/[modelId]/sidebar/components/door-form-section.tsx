@@ -36,9 +36,9 @@ export default function DoorFormSection() {
             key={item.id}
             type="button"
             onClick={() => setSelected(item.id)}
-            className={`hover:bg-accent/10 relative flex h-[70px] w-[60px] min-w-[60px] flex-1 cursor-pointer items-center justify-center rounded-none border-2 bg-white p-1 shadow-none transition-colors duration-100 lg:p-2 ${selected === item.id ? 'border-accent' : 'border-transparent'}`}
+            className={`hover:bg-accent/10 relative flex h-[60px] w-[50px] min-w-[60px] flex-1 cursor-pointer items-center justify-center rounded-none border-2 bg-white p-1 shadow-none transition-colors duration-100 lg:h-[70px] lg:w-[60px] lg:p-2 ${selected === item.id ? 'border-accent' : 'border-transparent'}`}
           >
-            <div className="relative h-[60px] w-full">
+            <div className="relative h-[50px] w-full lg:h-[60px]">
               <Image src={item.img} alt={item.alt} fill className="object-contain" />
             </div>
           </Button>
