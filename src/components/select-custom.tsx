@@ -5,29 +5,34 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { cn } from '@/lib/utils';
 import Image from 'next/image';
 
-interface SelectTypeBuildingProps {
+interface SelectCustomProps {
   value: string;
   onChange: (value: string) => void;
+  content: {
+    value: string;
+    label: string;
+  }[];
+  placeholder: string;
+  className?: string;
+  classNameContent?: string;
+  classNameValue?: string;
 }
 
-const typeBuildingOptions = [
-  {
-    value: '1',
-    label: 'Квартира',
-  },
-  {
-    value: '2',
-    label: 'Будинок',
-  },
-];
-
-export default function SelectTypeBuilding({ value, onChange }: SelectTypeBuildingProps) {
+export default function SelectCustom({
+  value,
+  onChange,
+  content,
+  placeholder,
+  className,
+  classNameContent,
+}: SelectCustomProps) {
   return (
     <Select value={value} onValueChange={onChange}>
-      <SelectTrigger className="w-[218px] rounded-none border border-gray-200 bg-[#EDF2F7] p-6 text-[16px] font-[400] hover:bg-[#EDF2F7]/80">
-        <SelectValue placeholder="Тип приміщення" />
+      <SelectTrigger className={cn('focus:outline-none', className)}>
+        <SelectValue placeholder={placeholder}/>
         <Image
           src="/figma-images/order/tringle.svg"
           alt="triangle"
@@ -36,8 +41,8 @@ export default function SelectTypeBuilding({ value, onChange }: SelectTypeBuildi
           className="text-accent size-2"
         />
       </SelectTrigger>
-      <SelectContent className="w-[218px] rounded-none border border-gray-200 bg-white p-0">
-        {typeBuildingOptions.map((option) => (
+      <SelectContent className={classNameContent}>
+        {content.map((option) => (
           <SelectItem key={option.value} value={option.value}>
             {option.label}
           </SelectItem>

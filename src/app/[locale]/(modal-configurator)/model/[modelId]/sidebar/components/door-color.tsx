@@ -5,6 +5,7 @@ import { Switch } from '@/components/ui/switch';
 import { cn } from '@/lib/utils';
 import { useState } from 'react';
 import Image from 'next/image';
+import SelectCustom from '@/components/select-custom';
 //import { useTranslations } from "next-intl";
 
 const colors = [
@@ -58,10 +59,34 @@ const outsideColors = [
   { id: 20, image: '/figma-images/side-bar-colors/color-20.png' },
 ];
 
+const typeColors = [
+  {
+    value: 'grey',
+    label: 'Сірий',
+  },
+  {
+    value: 'white',
+    label: 'Білий',
+  },
+  {
+    value: 'black',
+    label: 'Чорний',
+  },
+  {
+    value: 'brown',
+    label: 'Коричневий',
+  },
+  {
+    value: 'red',
+    label: 'Червоний',
+  },
+];
+
 export default function DoorColor() {
   const [selected, setSelected] = useState(1);
   const [selectedInside, setSelectedInside] = useState(1);
   const [selectedOutside, setSelectedOutside] = useState(1);
+  const [selectedTypeColor, setSelectedTypeColor] = useState('');
   //const t = useTranslations('Sidebar');
 
   const handleSelect = (id: number) => {
@@ -110,9 +135,20 @@ export default function DoorColor() {
           </Button>
         ))}
       </div>
-      <h3 className="text-heading-sidebar text-textDark mb-4 font-sans font-medium tracking-[0.06em] uppercase">
-        Внутрішній колір
-      </h3>
+      <div className="mb-4 flex w-full flex-row items-center justify-between">
+        <h3 className="text-textDark font-inter text-[14px] font-medium tracking-[0.06em] uppercase">
+          Зсередини
+        </h3>
+        <SelectCustom
+          value={selectedTypeColor}
+          onChange={setSelectedTypeColor}
+          content={typeColors}
+          placeholder="Назва кольору"
+          className="max-h-[31px] w-[170px] rounded-none border border-[#E2E7ED] text-[14px] font-normal focus:outline-none lg:w-[270px]"
+          classNameContent="text-[14px] font-normal font-inter text-textDark lg:w-[270px] w-[170px] rounded-none border border-[#E2E7ED] bg-white p-0"
+        />
+      </div>
+
       <div className="mb-4 flex flex-wrap gap-x-2 gap-y-2">
         {insideColors.map((color) => (
           <div
@@ -133,9 +169,19 @@ export default function DoorColor() {
           </div>
         ))}
       </div>
-      <h3 className="text-heading-sidebar text-textDark mb-4 font-sans font-medium tracking-[0.06em] uppercase">
-        Зовнішній колір
-      </h3>
+      <div className="mb-4 flex w-full flex-row items-center justify-between">
+        <h3 className="text-textDark font-inter text-[14px] font-medium tracking-[0.06em] uppercase">
+          Ззовні
+        </h3>
+        <SelectCustom
+          value={selectedTypeColor}
+          onChange={setSelectedTypeColor}
+          content={typeColors}
+          placeholder="Назва кольору"
+          className="max-h-[31px] w-[170px] rounded-none border border-[#E2E7ED] text-[14px] font-normal focus:outline-none lg:w-[270px]"
+          classNameContent="text-[14px] font-normal font-inter text-textDark lg:w-[270px] w-[170px] rounded-none border border-[#E2E7ED] bg-white p-0"
+        />
+      </div>
       <div className="mb-4 flex flex-wrap gap-x-2 gap-y-2">
         {outsideColors.map((color) => (
           <div

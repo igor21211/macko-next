@@ -191,3 +191,35 @@ body {
   color: var(--text-dark);
   font-family: var(--font-main);
 }
+
+button[data-slot='select-trigger'] > span[data-slot='select-value'] {
+  font-family: 'Inter', sans-serif !important;
+  font-weight: 400 !important;
+  font-style: normal !important;
+  font-size: 14px !important;
+  line-height: 140% !important;
+  letter-spacing: 0 !important;
+  color: #718096 !important;
+}
+
+/* Только placeholder */
+button[data-slot='select-trigger'][data-placeholder] > span[data-slot='select-value'] {
+  font-family: 'Inter', sans-serif !important;
+  font-weight: 400 !important;
+  font-style: normal !important;
+  font-size: 14px !important;
+  line-height: 140% !important;
+  letter-spacing: 0 !important;
+  color: #718096 !important; /* text-textLight */
+}
+
+/* Только выбранное значение */
+button[data-slot='select-trigger']:not([data-placeholder]) > span[data-slot='select-value'] {
+  font-family: 'Inter', sans-serif !important;
+  font-weight: 400 !important;
+  font-style: normal !important;
+  font-size: 14px !important;
+  line-height: 140% !important;
+  letter-spacing: 0 !important;
+  color: #1a202c !important; /* text-dark */
+}

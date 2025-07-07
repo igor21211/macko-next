@@ -2,7 +2,7 @@ import { FormControl, FormField, FormItem, FormMessage } from '@/components/ui/f
 import { UseFormReturn } from 'react-hook-form';
 import { OrderFormValues } from '../order-form';
 import AutocompleteCityName from './autocomplete-city-name.tsx';
-import SelectTypeBuilding from './select-type-building';
+import SelectCustom from '../../../../../../../components/select-custom';
 import CustomFormField from './custom-form-field';
 
 interface AddressFormProps {
@@ -12,6 +12,16 @@ const nameFields = [
   { value: 'street', label: 'Вулиця' },
   { value: 'apartment', label: 'Квартира' },
   { value: 'house', label: 'Будинок' },
+];
+const typeBuildingOptions = [
+  {
+    value: '1',
+    label: 'Квартира',
+  },
+  {
+    value: '2',
+    label: 'Будинок',
+  },
 ];
 
 export default function AddressForm({ form }: AddressFormProps) {
@@ -36,7 +46,14 @@ export default function AddressForm({ form }: AddressFormProps) {
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <SelectTypeBuilding value={field.value} onChange={field.onChange} />
+                <SelectCustom
+                  value={field.value}
+                  onChange={field.onChange}
+                  content={typeBuildingOptions}
+                  placeholder="Тип приміщення"
+                  className="w-[218px] rounded-none border border-gray-200 bg-[#EDF2F7] p-6 text-[16px] font-[400] focus:outline-none"
+                  classNameContent="w-[218px] rounded-none border border-gray-200 bg-white p-0"
+                />
               </FormControl>
               <FormMessage className="text-danger" />
             </FormItem>
