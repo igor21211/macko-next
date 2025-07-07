@@ -1,7 +1,5 @@
 'use client';
 import { Button } from '@/components/ui/button';
-import { Label } from '@/components/ui/label';
-import { Switch } from '@/components/ui/switch';
 import { cn } from '@/lib/utils';
 import { useState } from 'react';
 import Image from 'next/image';
@@ -117,10 +115,14 @@ export default function DoorColor() {
           </Button>
         </div>
         <div className="flex flex-row items-center gap-x-2">
-          <Label htmlFor="black-edition" className="text-primary font-sans text-[14px] font-medium">
-            Black Edition
-          </Label>
-          <Switch id="black-edition" />
+          <Button
+            type="button"
+            variant="ghost"
+            className="text-accent hover:text-none h-auto cursor-pointer px-0 py-0 font-sans shadow-none hover:bg-transparent"
+            onClick={() => {}}
+          >
+            У чому різниця?
+          </Button>
         </div>
       </div>
       <div className="mb-4 grid min-h-[50px] grid-cols-2 gap-x-2">
