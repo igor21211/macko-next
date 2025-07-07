@@ -5,6 +5,7 @@ import { Switch } from '@/components/ui/switch';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
 import { useState } from 'react';
+import { Button } from '@/components/ui/button';
 
 export const glassImages = [
   { id: 1, image: '/figma-images/glass-sidebar/glass-1.png' },
@@ -15,8 +16,18 @@ export const glassImages = [
   { id: 6, image: '/figma-images/glass-sidebar/glass-6.png' },
 ];
 
+const types = [
+  { id: 1, name: 'Звичайне' },
+  { id: 2, name: 'з малюнком' },
+];
+
 export default function DoorGlass() {
   const [selectedGlass, setSelectedGlass] = useState(1);
+  const [selectedType, setSelectedType] = useState(1);
+
+  const handleSelectType = (id: number) => {
+    setSelectedType(id);
+  };
 
   const handleSelectGlass = (id: number) => {
     setSelectedGlass(id);
@@ -36,6 +47,18 @@ export default function DoorGlass() {
           </Label>
           <Switch id="safe-glass" />
         </div>
+      </div>
+      <div className="mb-5 grid min-h-[50px] grid-cols-2 gap-x-2">
+        {types.map((item) => (
+          <Button
+            variant="sidebar"
+            key={item.id}
+            className={cn(`h-full w-full ${selectedType === item.id && 'border-accent border-2'}`)}
+            onClick={() => handleSelectType(item.id)}
+          >
+            {item.name}
+          </Button>
+        ))}
       </div>
       <div className="mb-4 grid min-h-[128px] [grid-auto-rows:128px] grid-cols-4 gap-x-2 gap-y-2 pb-4">
         {glassImages.map((image) => (
