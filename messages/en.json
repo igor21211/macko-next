@@ -46,6 +46,7 @@
         "change": "Change",
         "cost": "Configuration cost",
         "save": "Save configuration",
+        "share": "Share",
         "order": "Order",
         "bottom_bar": {
             "outside_view": "Outside view",
