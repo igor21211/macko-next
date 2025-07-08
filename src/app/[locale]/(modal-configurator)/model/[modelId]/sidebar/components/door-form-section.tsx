@@ -1,9 +1,9 @@
 'use client';
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
-import { useMedia } from 'react-use';
 import { cn } from '@/lib/utils';
+import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react';
 
 const forms = [
   { id: 1, img: '/figma-images/form-1.svg', alt: 'Форма 1' },
@@ -18,31 +18,90 @@ const forms = [
 
 export default function DoorFormSection() {
   const [selected, setSelected] = useState(1);
-  const isMobile = useMedia('(max-width: 580px)');
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(false);
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  const updateScrollButtons = () => {
+    const el = scrollRef.current;
+    if (!el) return;
+    setCanScrollLeft(el.scrollLeft > 0);
+    setCanScrollRight(el.scrollLeft + el.offsetWidth < el.scrollWidth - 1);
+  };
+
+  useEffect(() => {
+    updateScrollButtons();
+    const el = scrollRef.current;
+    if (!el) return;
+    el.addEventListener('scroll', updateScrollButtons);
+    window.addEventListener('resize', updateScrollButtons);
+    return () => {
+      el.removeEventListener('scroll', updateScrollButtons);
+      window.removeEventListener('resize', updateScrollButtons);
+    };
+  }, []);
+
+  const handleScroll = (dir: 'left' | 'right') => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const scrollAmount = el.offsetWidth / 2;
+    el.scrollBy({ left: dir === 'left' ? -scrollAmount : scrollAmount, behavior: 'smooth' });
+  };
+
   return (
-    <section className="w-full border-b border-b-gray-200 px-6 pt-6 pb-4 shadow-sm">
-      <h3 className="text-heading-sidebar mb-4 font-sans font-medium tracking-[0.06em] text-[#1A202C] uppercase">
-        Форма дверей
-      </h3>
-      <div
-        className={cn(
-          'flex w-full gap-x-2',
-          isMobile ? 'scrollbar-hide h-[60px] flex-nowrap overflow-x-auto px-2' : 'flex-row'
-        )}
-        style={isMobile ? { scrollbarWidth: 'none', msOverflowStyle: 'none' } : {}}
-      >
-        {forms.map((item) => (
-          <Button
-            key={item.id}
+    <section className="h-[180px] w-full border-b border-b-gray-200 px-6 pt-6 pb-4 shadow-sm">
+      <div className="mb-4 flex items-center justify-between gap-x-2">
+        <h3 className="text-heading-sidebar mb-4 font-sans font-medium tracking-[0.06em] text-[#1A202C] uppercase">
+          Форма дверей
+        </h3>
+        <div className="flex items-center justify-center gap-x-2">
+          <button
             type="button"
-            onClick={() => setSelected(item.id)}
-            className={`hover:bg-accent/10 relative flex h-[60px] w-[50px] min-w-[60px] flex-1 cursor-pointer items-center justify-center rounded-none border-2 bg-white p-1 shadow-none transition-colors duration-100 lg:h-[70px] lg:w-[60px] lg:p-2 ${selected === item.id ? 'border-accent' : 'border-transparent'}`}
+            aria-label="Прокрутить влево"
+            tabIndex={0}
+            onClick={() => handleScroll('left')}
+            disabled={!canScrollLeft}
+            className={`focus-visible:ring-accent/60 hover:bg-accent/10 h-[25px] w-[25px] cursor-pointer rounded-none border border-gray-200 bg-white p-1 shadow-none transition-opacity duration-150 focus-visible:ring-2 disabled:cursor-default disabled:opacity-40`}
           >
-            <div className="relative h-[50px] w-full lg:h-[60px]">
-              <Image src={item.img} alt={item.alt} fill className="object-contain" />
-            </div>
-          </Button>
-        ))}
+            <ChevronLeftIcon className="size-4" />
+          </button>
+          {/* Правая стрелка */}
+          <button
+            type="button"
+            aria-label="Прокрутить вправо"
+            tabIndex={0}
+            onClick={() => handleScroll('right')}
+            disabled={!canScrollRight}
+            className={`focus-visible:ring-accent/60 h-[25px] w-[25px] cursor-pointer rounded-none border border-gray-200 bg-white p-1 shadow-none transition-opacity duration-150 focus-visible:ring-2 disabled:cursor-default disabled:opacity-40`}
+          >
+            <ChevronRightIcon className="size-4" />
+          </button>
+        </div>
+      </div>
+      <div className="h-[240px] w-full">
+        <div
+          ref={scrollRef}
+          className={cn('scrollbar-hide flex w-full gap-x-2 overflow-x-auto')}
+          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+        >
+          {forms.map((item) => (
+            <Button
+              key={item.id}
+              type="button"
+              aria-label={item.alt}
+              tabIndex={0}
+              onClick={() => setSelected(item.id)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') setSelected(item.id);
+              }}
+              className={`group relative flex aspect-[5/7] h-[200px] min-w-[90px] flex-1 cursor-pointer items-center justify-center rounded-none border-2 bg-white p-0 py-3 shadow-none transition-colors duration-100 hover:bg-white focus-visible:ring-2 focus-visible:outline-none lg:h-[70px] lg:w-[60px] ${selected === item.id ? 'border-accent' : 'border-transparent'} hover:border-accent/80 focus-visible:border-accent/80`}
+            >
+              <div className="relative h-[70px] w-full">
+                <Image src={item.img} alt={item.alt} fill className="object-contain" />
+              </div>
+            </Button>
+          ))}
+        </div>
       </div>
     </section>
   );
