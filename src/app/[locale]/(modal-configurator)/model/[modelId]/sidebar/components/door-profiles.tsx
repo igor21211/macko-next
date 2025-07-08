@@ -1,7 +1,11 @@
-"use client";
+'use client';
 
-import Image from "next/image";
-import { useState } from "react";
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Separator } from '@/components/ui/separator';
+import { cn } from '@/lib/utils';
+import Image from 'next/image';
+import { useState } from 'react';
 
 interface Profile {
   id: string;
@@ -9,59 +13,111 @@ interface Profile {
   image: string;
 }
 
+const colorsProfline = [
+  {
+    id: 1,
+    name: 'в колір дверей',
+  },
+  {
+    id: 2,
+    name: 'Білий',
+  },
+];
+
+const sides = [
+  {
+    id: 1,
+    name: 'Зліва',
+  },
+  {
+    id: 2,
+    name: 'Зверху',
+  },
+  {
+    id: 3,
+    name: 'Справа',
+  },
+];
 const profiles: Profile[] = [
   {
-    id: "profile-1",
-    size: "26 мм",
-    image: "/figma-images/profiles-sidebar/profile-1.png",
+    id: 'profile-1',
+    size: '40 мм',
+    image: '/figma-images/profiles-sidebar/profile-1.png',
   },
   {
-    id: "profile-2",
-    size: "44 мм",
-    image: "/figma-images/profiles-sidebar/profile-2.png",
-  },
-  {
-    id: "profile-3",
-    size: "100 мм",
-    image: "/figma-images/profiles-sidebar/profile-3.png",
+    id: 'profile-2',
+    size: '100 мм',
+    image: '/figma-images/profiles-sidebar/profile-2.png',
   },
 ];
 
 export default function DoorProfiles() {
-  const [selectedProfile, setSelectedProfile] = useState<string>("profile-1");
+  const [selectedProfile, setSelectedProfile] = useState<string>('profile-1');
+  const [selectedColor, setSelectedColor] = useState<number>(1);
+
+  const handleSelect = (id: number) => {
+    setSelectedColor(id);
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>, sideId: number) => {
+    console.log(e.target.value, sideId);
+  };
 
   return (
     <section className="w-full px-6 pt-6 pb-4">
-      <div className="flex flex-row justify-between items-center mb-4">
-        <h3 className="font-sans text-heading-sidebar font-medium text-[#1A202C] uppercase tracking-[0.06em]">
+      <div className="mb-4 flex flex-row items-center justify-between">
+        <h3 className="text-body font-inter font-medium tracking-[0.06em] text-[#1A202C] uppercase">
           Додаткові профілі
         </h3>
       </div>
-      <div className="grid grid-cols-4 gap-2">
+      <div className="mb-5 grid min-h-[50px] grid-cols-2 gap-x-2">
+        {colorsProfline.map((item) => (
+          <Button
+            variant="sidebar"
+            key={item.id}
+            className={cn(
+              `text-textDark h-full w-full text-[14px] font-medium uppercase ${selectedColor === item.id && 'border-accent border-2'}`
+            )}
+            onClick={() => handleSelect(item.id)}
+          >
+            {item.name}
+          </Button>
+        ))}
+      </div>
+      <div className="flex flex-col gap-y-4">
         {profiles.map((profile) => (
           <div
             key={profile.id}
             onClick={() => setSelectedProfile(profile.id)}
-            className="cursor-pointer"
+            className={`flex cursor-pointer items-center rounded-none border-none bg-white px-4 py-2 transition ${selectedProfile === profile.id ? 'border-accent' : 'border-transparent'}`}
           >
-            <div
-              className={`relative aspect-square overflow-hidden border-2 transition-all ${
-                selectedProfile === profile.id
-                  ? "border-2 border-accent"
-                  : "border-transparent hover:border-[#EDF2F7]"
-              }`}
-            >
-              <Image
-                src={profile.image}
-                alt={profile.size}
-                fill
-                className="object-cover"
-              />
-            </div>
-            <div className="mt-3 text-center">
-              <p className="font-medium text-[14px] leading-[17px] text-[#718096]">
-                {profile.size}
-              </p>
+            <Image
+              src={profile.image}
+              alt={profile.size}
+              width={40}
+              height={40}
+              className={`h-10 w-10 rounded border-2 object-contain ${selectedProfile === profile.id ? 'border-accent' : 'border-gray-200'}`}
+            />
+            <span className="text-textLight ml-3 text-[14px] font-medium">{profile.size}</span>
+            <div className="flex flex-1 justify-end gap-x-6">
+              {sides.map((side) => (
+                <div key={side.id} className="flex min-w-[70px] flex-row items-center gap-x-1">
+                  <Separator orientation="vertical" className="border-[#E6EAEF]" />
+                  <span className="text-textDark font-inter text-[14px] font-medium">
+                    {side.name}:
+                  </span>
+                  <Input
+                    type="string"
+                    className={cn(
+                      'h-[37px] w-[39px] rounded-none border-[#E6EAEF] bg-[#F7FAFC]',
+                      selectedProfile === profile.id ? 'text-textDark' : 'text-textLight'
+                    )}
+                    defaultValue={selectedProfile === profile.id ? 1 : 0}
+                    onChange={(e) => handleChange(e, side.id)}
+                  />
+                  <span className="text-textDark text-xs font-medium"> шт</span>
+                </div>
+              ))}
             </div>
           </div>
         ))}
