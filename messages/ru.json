@@ -1,87 +1,91 @@
 {
-    "HeaderAction": {
-        "search": "Поиск",
-        "login": "Войти",
-        "offers": "Акционные",
-        "popular": "Популярные",
-        "leaders": "Лидеры продаж"
+  "HeaderAction": {
+    "search": "Поиск",
+    "login": "Войти",
+    "offers": "Акционные",
+    "popular": "Популярные",
+    "leaders": "Лидеры продаж"
+  },
+  "DialogFilters": {
+    "filters": "Фильтры",
+    "model": "Модель",
+    "models": {
+      "all": "Все",
+      "base": "Базовая",
+      "vertical": "Вертикальные",
+      "horizontal": "Горизонтальные",
+      "classic": "Классика",
+      "square": "Квадрат"
     },
-    "DialogFilters": {
-        "filters": "Фильтры",
-        "model": "Модель",
-        "models": {
-            "all": "Все",
-            "base": "Базовая",
-            "vertical": "Вертикальные",
-            "horizontal": "Горизонтальные",
-            "classic": "Классика",
-            "square": "Квадрат"
-        },
-        "glass": "Стекло",
-        "glasses": {
-            "all": "Все",
-            "transparent": "Прозрачное",
-            "matte": "Сатин",
-            "glossy": "Бронза",
-            "frosted": "Витраж"
-        },
-        "apply": "Применить",
-        "reset": "Сбросить"
+    "glass": "Стекло",
+    "glasses": {
+      "all": "Все",
+      "transparent": "Прозрачное",
+      "matte": "Сатин",
+      "glossy": "Бронза",
+      "frosted": "Витраж"
     },
-    "DoorCard": {
-        "select": "Выбрать",
-        "door_alt": "Дверь {label}"
-    },
-    "MainPage": {
-        "loading": "Загрузка..."
-    },
-    "NavBar": {
-        "all": "Все",
-        "offers": "Акционные",
-        "popular": "Популярные",
-        "leaders": "Лидеры продаж"
-    },
-    "ModalView": {
-        "model": "Модель",
-        "change": "Изменить",
-        "cost": "Стоимость конфигурации",
-        "save": "Сохранить конфигурацию",
-        "share": "Поделиться",
-        "order": "Заказать",
-        "bottom_bar": {
-            "outside_view": "Внешний вид",
-            "inside_view": "Внутренний вид",
-            "show_sizes": "Показать размеры",
-            "full_screen": "Полноэкранный режим"
-        }
-    },
-    "Sidebar": {
-        "opening_direction": "НАПРАВЛЕНИЕ ОТКРЫТИЯ",
-        "left_inside": "Левая внутрь",
-        "right_inside": "Правая внутрь",
-        "left_outside": "Левая наружу",
-        "right_outside": "Правая наружу",
-        "door_form": "ФОРМА ДВЕРИ",
-        "door_size": "РАЗМЕР ДВЕРИ",
-        "width": "Ширина",
-        "height": "Длина",
-        "how_to_measure": "Как измерить?",
-        "equipment": "КОМПЛЕКТАЦИЯ",
-        "what_is_difference": "В чем разница?",
-        "equipment_econom": "ЭКОНОМ",
-        "equipment_standart": "СТАНДАРТ",
-        "equipment_super": "СУПЕР",
-        "color": "ЦВЕТ",
-        "expanded_spraying": "Расширенное напыление",
-        "satin": "Изнутри",
-        "decor": "ДЕКОР",
-        "lock": "ЗАМОК",
-        "furniture": "ФУРНИТУРА",
-        "profiles": "ПРОФИЛИ",
-        "glass": "СТЕКЛО"
-    },
-    "DoorPreview": {
-        "adjustment_indicator": "Регулировка позиции",
-        "adjustment_tooltip": "Используйте ↑↓ для регулировки, R для сброса"
+    "apply": "Применить",
+    "reset": "Сбросить"
+  },
+  "DoorCard": {
+    "select": "Выбрать",
+    "door_alt": "Дверь {label}"
+  },
+  "MainPage": {
+    "loading": "Загрузка..."
+  },
+  "NavBar": {
+    "all": "Все",
+    "offers": "Акционные",
+    "popular": "Популярные",
+    "leaders": "Лидеры продаж"
+  },
+  "ModalView": {
+    "model": "Модель",
+    "change": "Изменить",
+    "cost": "Стоимость конфигурации",
+    "save": "Сохранить конфигурацию",
+    "share": "Поделиться",
+    "order": "Заказать",
+    "bottom_bar": {
+      "outside_view": "Внешний вид",
+      "inside_view": "Внутренний вид",
+      "show_sizes": "Показать размеры",
+      "full_screen": "Полноэкранный режим"
     }
+  },
+  "Sidebar": {
+    "opening_direction": "НАПРАВЛЕНИЕ ОТКРЫТИЯ",
+    "left_inside": "Левая внутрь",
+    "right_inside": "Правая внутрь",
+    "left_outside": "Левая наружу",
+    "right_outside": "Правая наружу",
+    "door_form": "ФОРМА ДВЕРИ",
+    "door_size": "РАЗМЕР ДВЕРИ",
+    "width": "Ширина",
+    "height": "Длина",
+    "how_to_measure": "Как измерить?",
+    "equipment": "КОМПЛЕКТАЦИЯ",
+    "what_is_difference": "В чем разница?",
+    "equipment_econom": "ЭКОНОМ",
+    "equipment_standart": "СТАНДАРТ",
+    "equipment_super": "СУПЕР",
+    "color": "ЦВЕТ",
+    "expanded_spraying": "Расширенное напыление",
+    "satin": "Изнутри",
+    "decor": "ДЕКОР",
+    "lock": "ЗАМОК",
+    "furniture": "ФУРНИТУРА",
+    "profiles": "ПРОФИЛИ",
+    "glass": "СТЕКЛО",
+    "door_size": {
+      "widthError": "Ширина должна быть числом от 1 до 1200",
+      "heightError": "Длина должна быть числом от 1 до 2300"
+    }
+  },
+  "DoorPreview": {
+    "adjustment_indicator": "Регулировка позиции",
+    "adjustment_tooltip": "Используйте ↑↓ для регулировки, R для сброса"
+  }
 }

@@ -5,23 +5,25 @@ import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { useMedia } from 'react-use';
 import { cn } from '@/lib/utils';
+import { useTranslations } from 'next-intl';
 
 export default function DoorSize() {
   const [width, setWidth] = useState('');
   const [height, setHeight] = useState('');
   const [touched, setTouched] = useState({ width: false, height: false });
   const isMobile = useMedia('(max-width: 580px)');
+  const t = useTranslations('Sidebar');
 
   // Мок-валидация
   const widthNum = Number(width);
   const heightNum = Number(height);
   const widthError =
     touched.width && (!width || isNaN(widthNum) || widthNum <= 0 || widthNum > 1200)
-      ? 'Ширина должна быть числом от 1 до 1200'
+      ? t('door_size.widthError')
       : '';
   const heightError =
     touched.height && (!height || isNaN(heightNum) || heightNum <= 0 || heightNum > 2300)
-      ? 'Висота повинна бути числом від 1 до 2300'
+      ? t('door_size.heightError')
       : '';
 
   return (
@@ -70,7 +72,7 @@ export default function DoorSize() {
                 id="door-width"
                 type="number"
                 min={0}
-                placeholder="e.g. 1500"
+                placeholder="1500"
                 value={width}
                 onChange={(e) => setWidth(e.target.value)}
                 onBlur={() => setTouched((t) => ({ ...t, width: true }))}
@@ -113,7 +115,7 @@ export default function DoorSize() {
                 id="door-height"
                 type="number"
                 min={0}
-                placeholder="e.g. 2100"
+                placeholder="2100"
                 value={height}
                 onChange={(e) => setHeight(e.target.value)}
                 onBlur={() => setTouched((t) => ({ ...t, height: true }))}

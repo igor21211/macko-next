@@ -78,7 +78,11 @@
         "lock": "LOCK",
         "furniture": "FURNITURE",
         "profiles": "PROFILES",
-        "glass": "GLASS"
+        "glass": "GLASS",
+        "door_size": {
+            "widthError": "Width must be a number between 1 and 1200",
+            "heightError": "Height must be a number between 1 and 2300"
+        }
     },
     "DoorPreview": {
         "adjustment_indicator": "Position adjustment",

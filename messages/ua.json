@@ -78,7 +78,11 @@
     "lock": "ЗАМОК",
     "furniture": "ФУРНІТУРА",
     "profiles": "ПРОФІЛІ",
-    "glass": "СКЛО"
+    "glass": "СКЛО",
+    "door_size": {
+      "widthError": "Ширина повинна бути числом від 1 до 1200",
+      "heightError": "Довжина повинна бути числом від 1 до 2300"
+    }
   },
   "DoorPreview": {
     "adjustment_indicator": "Регулювання позиції",
