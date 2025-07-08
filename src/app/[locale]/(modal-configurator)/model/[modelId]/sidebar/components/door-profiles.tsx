@@ -64,7 +64,7 @@ export default function DoorProfiles() {
   };
 
   return (
-    <section className="w-full px-6 pt-6 pb-4">
+    <section className="w-full px-6 pt-6 pb-20 md:pb-4">
       <div className="mb-4 flex flex-row items-center justify-between">
         <h3 className="text-body font-inter font-medium tracking-[0.06em] text-[#1A202C] uppercase">
           Додаткові профілі
