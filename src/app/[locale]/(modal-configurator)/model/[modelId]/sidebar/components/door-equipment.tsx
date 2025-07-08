@@ -31,7 +31,7 @@ const equipmentOptions = [
 ];
 
 export default function DoorEquipment() {
-  const [selected, setSelected] = useState(1);
+  const [selected, setSelected] = useState<number[]>([]);
   const { onOpen } = useInfoEquipmentDoor();
 
   return (
@@ -64,8 +64,14 @@ export default function DoorEquipment() {
                 {item.price}
               </span>
               <Switch
-                checked={selected === item.id}
-                onCheckedChange={() => setSelected(item.id)}
+                checked={selected.includes(item.id)}
+                onCheckedChange={() => {
+                  setSelected((prev) =>
+                    prev.includes(item.id)
+                      ? prev.filter((id) => id !== item.id)
+                      : [...prev, item.id]
+                  );
+                }}
                 aria-label={`Выбрать комплектацию: ${item.name}`}
               />
             </div>

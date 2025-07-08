@@ -1,6 +1,5 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
 import { cn } from '@/lib/utils';
@@ -52,15 +51,23 @@ const profiles: Profile[] = [
 ];
 
 export default function DoorProfiles() {
-  const [selectedProfile, setSelectedProfile] = useState<string>('profile-1');
-  const [selectedColor, setSelectedColor] = useState<number>(1);
+  const [selectedProfiles, setSelectedProfiles] = useState<string[]>(['profile-1']);
+  const [selectedColors, setSelectedColors] = useState<number[]>([1]);
 
   const handleSelect = (id: number) => {
-    setSelectedColor(id);
+    setSelectedColors((prev) =>
+      prev.includes(id) ? prev.filter((colorId) => colorId !== id) : [...prev, id]
+    );
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>, sideId: number) => {
     console.log(e.target.value, sideId);
+  };
+
+  const handleProfileSelect = (id: string) => {
+    setSelectedProfiles((prev) =>
+      prev.includes(id) ? prev.filter((profileId) => profileId !== id) : [...prev, id]
+    );
   };
 
   return (
@@ -72,31 +79,30 @@ export default function DoorProfiles() {
       </div>
       <div className="mb-5 grid min-h-[50px] grid-cols-2 gap-x-2">
         {colorsProfline.map((item) => (
-          <Button
-            variant="sidebar"
+          <div
             key={item.id}
             className={cn(
-              `text-textDark h-full w-full text-[14px] font-medium uppercase ${selectedColor === item.id && 'border-accent border-2'}`
+              `text-textDark flex h-full w-full cursor-pointer items-center justify-center rounded border text-[14px] font-medium uppercase transition ${selectedColors.includes(item.id) ? 'border-accent bg-accent/5 border-2' : 'border-gray-200 bg-white'}`
             )}
             onClick={() => handleSelect(item.id)}
           >
             {item.name}
-          </Button>
+          </div>
         ))}
       </div>
       <div className="flex flex-col gap-y-4">
         {profiles.map((profile) => (
           <div
             key={profile.id}
-            onClick={() => setSelectedProfile(profile.id)}
-            className={`flex cursor-pointer items-center rounded-none border-none bg-white px-4 py-2 transition ${selectedProfile === profile.id ? 'border-accent' : 'border-transparent'}`}
+            onClick={() => handleProfileSelect(profile.id)}
+            className={`flex cursor-pointer items-center rounded-none border-none bg-white px-4 py-2 transition ${selectedProfiles.includes(profile.id) ? 'border-accent' : 'border-transparent'}`}
           >
             <Image
               src={profile.image}
               alt={profile.size}
               width={40}
               height={40}
-              className={`h-10 w-10 rounded border-2 object-contain ${selectedProfile === profile.id ? 'border-accent' : 'border-gray-200'}`}
+              className={`h-10 w-10 rounded border-2 object-contain ${selectedProfiles.includes(profile.id) ? 'border-accent' : 'border-gray-200'}`}
             />
             <span className="text-textLight ml-3 text-[14px] font-medium">{profile.size}</span>
             <div className="flex flex-1 justify-end gap-x-6">
@@ -110,9 +116,9 @@ export default function DoorProfiles() {
                     type="string"
                     className={cn(
                       'h-[37px] w-[39px] rounded-none border-[#E6EAEF] bg-[#F7FAFC]',
-                      selectedProfile === profile.id ? 'text-textDark' : 'text-textLight'
+                      selectedProfiles.includes(profile.id) ? 'text-textDark' : 'text-textLight'
                     )}
-                    defaultValue={selectedProfile === profile.id ? 1 : 0}
+                    defaultValue={selectedProfiles.includes(profile.id) ? 1 : 0}
                     onChange={(e) => handleChange(e, side.id)}
                   />
                   <span className="text-textDark text-xs font-medium"> шт</span>
