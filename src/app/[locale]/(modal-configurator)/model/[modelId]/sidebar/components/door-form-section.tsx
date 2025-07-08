@@ -72,7 +72,7 @@ export default function DoorFormSection() {
             tabIndex={0}
             onClick={() => handleScroll('right')}
             disabled={!canScrollRight}
-            className={`focus-visible:ring-accent/60 h-[25px] w-[25px] cursor-pointer rounded-none border border-gray-200 bg-white p-1 shadow-none transition-opacity duration-150 focus-visible:ring-2 disabled:cursor-default disabled:opacity-40`}
+            className={`focus-visible:ring-accent/60 hover:bg-accent/10 h-[25px] w-[25px] cursor-pointer rounded-none border border-gray-200 bg-white p-1 shadow-none transition-opacity duration-150 focus-visible:ring-2 disabled:cursor-default disabled:opacity-40`}
           >
             <ChevronRightIcon className="size-4" />
           </button>
