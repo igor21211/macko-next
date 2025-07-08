@@ -49,7 +49,7 @@ export default function DoorFormSection() {
   };
 
   return (
-    <section className="h-[180px] w-full border-b border-b-gray-200 px-6 pt-6 pb-4 shadow-sm">
+    <section className="h-[200px] w-full border-b border-b-gray-200 px-6 pt-6 pb-4 shadow-sm">
       <div className="mb-4 flex items-center justify-between gap-x-2">
         <h3 className="text-heading-sidebar mb-4 font-sans font-medium tracking-[0.06em] text-[#1A202C] uppercase">
           Форма дверей
@@ -78,10 +78,10 @@ export default function DoorFormSection() {
           </button>
         </div>
       </div>
-      <div className="h-[240px] w-full">
+      <div className="h-[70%] w-full">
         <div
           ref={scrollRef}
-          className={cn('scrollbar-hide flex w-full gap-x-2 overflow-x-auto')}
+          className={cn('scrollbar-hide flex h-full w-full gap-x-2 overflow-x-auto')}
           style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
         >
           {forms.map((item) => (
@@ -94,9 +94,9 @@ export default function DoorFormSection() {
               onKeyDown={(e) => {
                 if (e.key === 'Enter' || e.key === ' ') setSelected(item.id);
               }}
-              className={`group relative flex aspect-[5/7] h-[200px] min-w-[90px] flex-1 cursor-pointer items-center justify-center rounded-none border-2 bg-white p-0 py-3 shadow-none transition-colors duration-100 hover:bg-white focus-visible:ring-2 focus-visible:outline-none lg:h-[70px] lg:w-[60px] ${selected === item.id ? 'border-accent' : 'border-transparent'} hover:border-accent/80 focus-visible:border-accent/80`}
+              className={`group relative flex aspect-[5/7] h-full min-w-[90px] flex-1 cursor-pointer items-center justify-center rounded-none border-2 bg-white p-0 py-3 shadow-none transition-colors duration-100 hover:bg-white focus-visible:ring-2 focus-visible:outline-none lg:h-[70px] lg:w-[60px] ${selected === item.id ? 'border-accent' : 'border-transparent'} hover:border-accent/80 focus-visible:border-accent/80`}
             >
-              <div className="relative h-[70px] w-full">
+              <div className="relative h-[90px] w-full lg:h-[70px]">
                 <Image src={item.img} alt={item.alt} fill className="object-contain" />
               </div>
             </Button>
