@@ -3,167 +3,105 @@ import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { cn } from '@/lib/utils';
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useMemo } from 'react';
 import Image from 'next/image';
 import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react';
+import { useScrollByArrow } from '@/lib/utils/useScrollByArrow';
+import { useGetFurniture } from '@/hooks/modal/api-hooks/furniture/useGetFurniture';
+import DoorFurnitureSectionLoading from './loading-components/door-furniture-section-loading';
+import { getImageSrc } from '@/lib/utils/useImageSrc';
 
 const side = [
-  { id: 1, name: 'Ззовні' },
-  { id: 2, name: 'Зсередини' },
+  { id: '1', name: 'Ззовні' },
+  { id: '2', name: 'Зсередини' },
 ];
 
 const furnitureColors = [
-  { id: 1, image: '/figma-images/side-bar-colors/color-1.png' },
-  { id: 2, image: '/figma-images/side-bar-colors/color-2.png' },
-  { id: 3, image: '/figma-images/side-bar-colors/color-3.png' },
-  { id: 4, image: '/figma-images/side-bar-colors/color-4.png' },
-  { id: 5, image: '/figma-images/side-bar-colors/color-5.png' },
-  { id: 6, image: '/figma-images/side-bar-colors/color-6.png' },
-  { id: 7, image: '/figma-images/side-bar-colors/color-7.png' },
-  { id: 8, image: '/figma-images/side-bar-colors/color-8.png' },
-  { id: 9, image: '/figma-images/side-bar-colors/color-9.png' },
-  { id: 10, image: '/figma-images/side-bar-colors/color-10.png' },
-  { id: 11, image: '/figma-images/side-bar-colors/color-11.png' },
-  { id: 12, image: '/figma-images/side-bar-colors/color-12.png' },
-  { id: 13, image: '/figma-images/side-bar-colors/color-13.png' },
-  { id: 14, image: '/figma-images/side-bar-colors/color-14.png' },
-  { id: 15, image: '/figma-images/side-bar-colors/color-15.png' },
-  { id: 16, image: '/figma-images/side-bar-colors/color-16.png' },
-  { id: 17, image: '/figma-images/side-bar-colors/color-17.png' },
-  { id: 18, image: '/figma-images/side-bar-colors/color-18.png' },
-  { id: 19, image: '/figma-images/side-bar-colors/color-19.png' },
-  { id: 20, image: '/figma-images/side-bar-colors/color-20.png' },
-];
-
-export const furnitureImages = [
-  { id: 1, image: '/figma-images/furniture-sidebar/furniture-1.png', name: 'Серія 1' },
-  { id: 2, image: '/figma-images/furniture-sidebar/furniture-2.png', name: 'Серія 2' },
-  { id: 3, image: '/figma-images/furniture-sidebar/furniture-3.png', name: 'Серія 3' },
-  { id: 4, image: '/figma-images/furniture-sidebar/furniture-4.png', name: 'Серія 4' },
-  { id: 5, image: '/figma-images/furniture-sidebar/furniture-5.png', name: 'Серія 5' },
-  { id: 6, image: '/figma-images/furniture-sidebar/furniture-6.png', name: 'Серія 6' },
-  { id: 7, image: '/figma-images/furniture-sidebar/furniture-7.png', name: 'Серія 7' },
-  { id: 8, image: '/figma-images/furniture-sidebar/furniture-8.png', name: 'Серія 8' },
-];
-
-const sizeImages = [
-  {
-    id: 1,
-    value: '750 мм',
-  },
-  {
-    id: 2,
-    value: '950 мм',
-  },
-  {
-    id: 3,
-    value: '1100 мм',
-  },
-  {
-    id: 4,
-    value: '1400 мм',
-  },
-  {
-    id: 5,
-    value: '1500 мм',
-  },
-  {
-    id: 6,
-    value: '1600 мм',
-  },
-  {
-    id: 7,
-    value: '1700 мм',
-  },
-  {
-    id: 8,
-    value: '1800 мм',
-  },
+  { id: '1', image: '/figma-images/side-bar-colors/color-1.png' },
+  { id: '2', image: '/figma-images/side-bar-colors/color-2.png' },
+  { id: '3', image: '/figma-images/side-bar-colors/color-3.png' },
+  { id: '4', image: '/figma-images/side-bar-colors/color-4.png' },
+  { id: '5', image: '/figma-images/side-bar-colors/color-5.png' },
+  { id: '6', image: '/figma-images/side-bar-colors/color-6.png' },
+  { id: '7', image: '/figma-images/side-bar-colors/color-7.png' },
+  { id: '8', image: '/figma-images/side-bar-colors/color-8.png' },
+  { id: '9', image: '/figma-images/side-bar-colors/color-9.png' },
+  { id: '10', image: '/figma-images/side-bar-colors/color-10.png' },
+  { id: '11', image: '/figma-images/side-bar-colors/color-11.png' },
+  { id: '12', image: '/figma-images/side-bar-colors/color-12.png' },
+  { id: '13', image: '/figma-images/side-bar-colors/color-13.png' },
+  { id: '14', image: '/figma-images/side-bar-colors/color-14.png' },
+  { id: '15', image: '/figma-images/side-bar-colors/color-15.png' },
+  { id: '16', image: '/figma-images/side-bar-colors/color-16.png' },
+  { id: '17', image: '/figma-images/side-bar-colors/color-17.png' },
+  { id: '18', image: '/figma-images/side-bar-colors/color-18.png' },
+  { id: '19', image: '/figma-images/side-bar-colors/color-19.png' },
+  { id: '20', image: '/figma-images/side-bar-colors/color-20.png' },
 ];
 
 export default function DoorFurniture() {
-  const [selectedSide, setSelectedSide] = useState(1);
-  const [selectedFurniture, setSelectedFurniture] = useState(1);
-  const [selectedSize, setSelectedSize] = useState(1);
-  const [selectedColor, setSelectedColor] = useState(1);
+  const { data: furniture, isLoading } = useGetFurniture();
+  const [selectedSide, setSelectedSide] = useState<string>('1');
+  const [selectedFurniture, setSelectedFurniture] = useState<string>('1');
+  const [selectedSize, setSelectedSize] = useState<string>('1');
+  const [selectedColor, setSelectedColor] = useState<string>('1');
   const sizeScrollRef = useRef<HTMLDivElement>(null);
   const colorScrollRef = useRef<HTMLDivElement>(null);
-  const [canScrollRightSize, setCanScrollRightSize] = useState(true);
-  const [canScrollRightColor, setCanScrollRightColor] = useState(true);
+  const {
+    canScrollLeft: canScrollLeftSize,
+    canScrollRight: canScrollRightSize,
+    handleScrollLeft: handleSizeScrollLeft,
+    handleScrollRight: handleSizeScrollRight,
+  } = useScrollByArrow<HTMLDivElement>(sizeScrollRef);
 
-  useEffect(() => {
-    const checkScroll = (
-      element: HTMLDivElement | null,
-      setCanScroll: React.Dispatch<React.SetStateAction<boolean>>
-    ) => {
-      if (element) {
-        const { scrollLeft, scrollWidth, clientWidth } = element;
-        setCanScroll(scrollLeft + clientWidth < scrollWidth - 1);
-      }
-    };
+  const {
+    canScrollLeft: canScrollLeftColor,
+    canScrollRight: canScrollRightColor,
+    handleScrollLeft: handleColorScrollLeft,
+    handleScrollRight: handleColorScrollRight,
+  } = useScrollByArrow<HTMLDivElement>(colorScrollRef);
 
-    const sizeElement = sizeScrollRef.current;
-    const colorElement = colorScrollRef.current;
-
-    const handleSizeScroll = () => checkScroll(sizeElement, setCanScrollRightSize);
-    const handleColorScroll = () => checkScroll(colorElement, setCanScrollRightColor);
-
-    if (sizeElement) {
-      sizeElement.addEventListener('scroll', handleSizeScroll);
-      handleSizeScroll(); // Initial check
-    }
-
-    if (colorElement) {
-      colorElement.addEventListener('scroll', handleColorScroll);
-      handleColorScroll(); // Initial check
-    }
-
-    return () => {
-      if (sizeElement) {
-        sizeElement.removeEventListener('scroll', handleSizeScroll);
-      }
-      if (colorElement) {
-        colorElement.removeEventListener('scroll', handleColorScroll);
-      }
-    };
-  }, []);
-
-  const handleSelectSide = (id: number) => {
+  const handleSelectSide = (id: string) => {
     setSelectedSide(id);
   };
 
-  const handleSelectFurniture = (id: number) => {
+  const handleSelectFurniture = (id: string) => {
     setSelectedFurniture(id);
   };
 
-  const handleSelectSize = (id: number) => {
+  const handleSelectSize = (id: string) => {
     setSelectedSize(id);
   };
 
-  const handleSizeScrollLeft = () => {
-    if (sizeScrollRef.current) {
-      sizeScrollRef.current.scrollBy({ left: -130, behavior: 'smooth' });
-    }
-  };
-  const handleSizeScrollRight = () => {
-    if (sizeScrollRef.current) {
-      sizeScrollRef.current.scrollBy({ left: 130, behavior: 'smooth' });
-    }
-  };
-  const handleColorScrollLeft = () => {
-    if (colorScrollRef.current) {
-      colorScrollRef.current.scrollBy({ left: -130, behavior: 'smooth' });
-    }
-  };
-  const handleColorScrollRight = () => {
-    if (colorScrollRef.current) {
-      colorScrollRef.current.scrollBy({ left: 130, behavior: 'smooth' });
-    }
-  };
-
-  const handleSelectColor = (id: number) => {
+  const handleSelectColor = (id: string) => {
     setSelectedColor(id);
   };
+
+  const furnitureImages = useMemo(() => {
+    return furniture?.flatMap((item) =>
+      item.items.map((furn) => ({ id: String(furn.id), image: furn.image_png, name: furn.title }))
+    );
+  }, [furniture]);
+
+  const allFurnitureSizes: { id: string; title: string }[] = useMemo(() => {
+    return (
+      furniture?.flatMap((item) =>
+        item.items.flatMap((furn) =>
+          furn.subitems
+            .filter((sub) => String(sub.title) !== 'Push')
+            .map((sub) => {
+              let title = String(sub.title);
+              if (title.includes('mm')) {
+                title = title.slice(0, title.indexOf('mm') + 2).trim();
+              }
+              return { id: String(sub.id), title };
+            })
+        )
+      ) ?? []
+    );
+  }, [furniture]);
+
+  if (isLoading) return <DoorFurnitureSectionLoading />;
 
   return (
     <section className="w-full border-b border-b-gray-200 px-6 pt-6 pb-4 shadow-sm">
@@ -201,19 +139,24 @@ export default function DoorFurniture() {
         ))}
       </div>
       <div className="mb-4 grid min-h-[100px] [grid-auto-rows:130px] grid-cols-5 gap-x-2 gap-y-2">
-        {furnitureImages.map((item) => (
+        {furnitureImages?.map((item) => (
           <div
             key={item.id}
             className="flex h-full w-full cursor-pointer flex-col items-center"
-            onClick={() => handleSelectFurniture(item.id)}
+            onClick={() => handleSelectFurniture(String(item.id))}
           >
             <div
               className={cn(
                 'relative aspect-square h-full w-full',
-                selectedFurniture === item.id && 'border-accent border-2'
+                selectedFurniture === String(item.id) && 'border-accent border-2'
               )}
             >
-              <Image src={item.image} alt={item.id.toString()} fill className="object-cover" />
+              <Image
+                src={getImageSrc(item.image)}
+                alt={item.id.toString()}
+                fill
+                className="object-cover"
+              />
             </div>
             <Label className="text-textLight mt-2 w-full justify-center text-center font-sans">
               {item.name}
@@ -228,6 +171,12 @@ export default function DoorFurniture() {
             size={25}
             className="text-primary cursor-pointer"
             onClick={handleSizeScrollLeft}
+            style={{ color: canScrollLeftSize ? 'var(--accent)' : '#D1D5DB' }}
+            aria-label="Скролл влево"
+            tabIndex={0}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') handleSizeScrollLeft();
+            }}
           />
           <ChevronRightIcon
             size={25}
@@ -253,20 +202,23 @@ export default function DoorFurniture() {
           }
         `}</style>
         <div className="mb-4 grid auto-cols-[100px] grid-flow-col gap-x-3">
-          {sizeImages.map((item) => (
-            <div
-              key={item.id}
-              className={cn(
-                'flex h-full w-full min-w-[100px] flex-col items-center',
-                selectedSize === item.id && 'border-accent border-3'
-              )}
-              onClick={() => handleSelectSize(item.id)}
-            >
-              <Label className="text-primary w-full cursor-pointer justify-center border-none bg-white pt-2 pb-2 text-center font-sans text-[14px] font-medium">
-                {item.value}
-              </Label>
-            </div>
-          ))}
+          {allFurnitureSizes.map((item) => {
+            const idStr = String(item.id);
+            return (
+              <div
+                key={idStr}
+                className={cn(
+                  'flex h-full w-full min-w-[100px] flex-col items-center',
+                  selectedSize === idStr && 'border-accent border-3'
+                )}
+                onClick={() => handleSelectSize(idStr)}
+              >
+                <Label className="text-primary w-full cursor-pointer justify-center border-none bg-white pt-2 pb-2 text-center font-sans text-[14px] font-medium">
+                  {item.title}
+                </Label>
+              </div>
+            );
+          })}
           <div className="min-w-[4px]" aria-hidden="true" />
         </div>
       </div>
@@ -277,6 +229,12 @@ export default function DoorFurniture() {
             size={25}
             className="text-primary cursor-pointer"
             onClick={handleColorScrollLeft}
+            style={{ color: canScrollLeftColor ? 'var(--accent)' : '#D1D5DB' }}
+            aria-label="Скролл влево"
+            tabIndex={0}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') handleColorScrollLeft();
+            }}
           />
           <ChevronRightIcon
             size={25}

@@ -4,57 +4,14 @@ import { cn } from '@/lib/utils';
 import { useState } from 'react';
 import Image from 'next/image';
 import SelectCustom from '@/components/select-custom';
+import { useGetColor } from '@/hooks/modal/api-hooks/color/useGetColor';
+import DoorColorLoading from './loading-components/door-color-loading';
+import { getImageSrc } from '@/lib/utils/useImageSrc';
 //import { useTranslations } from "next-intl";
 
 const colors = [
   { id: 1, name: 'ALUMINIUM', price: 1000 },
   { id: 2, name: 'HPL', price: 2000 },
-];
-
-const insideColors = [
-  { id: 1, image: '/figma-images/side-bar-colors/color-1.png' },
-  { id: 2, image: '/figma-images/side-bar-colors/color-2.png' },
-  { id: 3, image: '/figma-images/side-bar-colors/color-3.png' },
-  { id: 4, image: '/figma-images/side-bar-colors/color-4.png' },
-  { id: 5, image: '/figma-images/side-bar-colors/color-5.png' },
-  { id: 6, image: '/figma-images/side-bar-colors/color-6.png' },
-  { id: 7, image: '/figma-images/side-bar-colors/color-7.png' },
-  { id: 8, image: '/figma-images/side-bar-colors/color-8.png' },
-  { id: 9, image: '/figma-images/side-bar-colors/color-9.png' },
-  { id: 10, image: '/figma-images/side-bar-colors/color-10.png' },
-  { id: 11, image: '/figma-images/side-bar-colors/color-11.png' },
-  { id: 12, image: '/figma-images/side-bar-colors/color-12.png' },
-  { id: 13, image: '/figma-images/side-bar-colors/color-13.png' },
-  { id: 14, image: '/figma-images/side-bar-colors/color-14.png' },
-  { id: 15, image: '/figma-images/side-bar-colors/color-15.png' },
-  { id: 16, image: '/figma-images/side-bar-colors/color-16.png' },
-  { id: 17, image: '/figma-images/side-bar-colors/color-17.png' },
-  { id: 18, image: '/figma-images/side-bar-colors/color-18.png' },
-  { id: 19, image: '/figma-images/side-bar-colors/color-19.png' },
-  { id: 20, image: '/figma-images/side-bar-colors/color-20.png' },
-];
-
-const outsideColors = [
-  { id: 1, image: '/figma-images/side-bar-colors/color-1.png' },
-  { id: 2, image: '/figma-images/side-bar-colors/color-2.png' },
-  { id: 3, image: '/figma-images/side-bar-colors/color-3.png' },
-  { id: 4, image: '/figma-images/side-bar-colors/color-4.png' },
-  { id: 5, image: '/figma-images/side-bar-colors/color-5.png' },
-  { id: 6, image: '/figma-images/side-bar-colors/color-6.png' },
-  { id: 7, image: '/figma-images/side-bar-colors/color-7.png' },
-  { id: 8, image: '/figma-images/side-bar-colors/color-8.png' },
-  { id: 9, image: '/figma-images/side-bar-colors/color-9.png' },
-  { id: 10, image: '/figma-images/side-bar-colors/color-10.png' },
-  { id: 11, image: '/figma-images/side-bar-colors/color-11.png' },
-  { id: 12, image: '/figma-images/side-bar-colors/color-12.png' },
-  { id: 13, image: '/figma-images/side-bar-colors/color-13.png' },
-  { id: 14, image: '/figma-images/side-bar-colors/color-14.png' },
-  { id: 15, image: '/figma-images/side-bar-colors/color-15.png' },
-  { id: 16, image: '/figma-images/side-bar-colors/color-16.png' },
-  { id: 17, image: '/figma-images/side-bar-colors/color-17.png' },
-  { id: 18, image: '/figma-images/side-bar-colors/color-18.png' },
-  { id: 19, image: '/figma-images/side-bar-colors/color-19.png' },
-  { id: 20, image: '/figma-images/side-bar-colors/color-20.png' },
 ];
 
 const typeColors = [
@@ -85,7 +42,7 @@ export default function DoorColor() {
   const [selectedInside, setSelectedInside] = useState(1);
   const [selectedOutside, setSelectedOutside] = useState(1);
   const [selectedTypeColor, setSelectedTypeColor] = useState('');
-  //const t = useTranslations('Sidebar');
+  const { data: furnitureColors, isLoading } = useGetColor();
 
   const handleSelect = (id: number) => {
     setSelected(id);
@@ -98,6 +55,8 @@ export default function DoorColor() {
   const handleSelectOutside = (id: number) => {
     setSelectedOutside(id);
   };
+
+  if (isLoading) return <DoorColorLoading />;
 
   return (
     <section className="w-full border-b border-b-gray-200 px-6 pt-6 pb-4 shadow-sm">
@@ -130,8 +89,11 @@ export default function DoorColor() {
           <Button
             variant="sidebar"
             key={color.id}
-            className={cn('h-full w-full', selected === color.id && 'border-accent border-2')}
-            onClick={() => handleSelect(color.id)}
+            className={cn(
+              'h-full w-full',
+              selected === Number(color.id) && 'border-accent border-2'
+            )}
+            onClick={() => handleSelect(Number(color.id))}
           >
             {color.name}
           </Button>
@@ -152,18 +114,18 @@ export default function DoorColor() {
       </div>
 
       <div className="mb-4 flex flex-wrap gap-x-2 gap-y-2">
-        {insideColors.map((color) => (
+        {furnitureColors?.map((color) => (
           <div
             key={color.id}
             className={cn(
               'relative h-[60px] w-[60px] cursor-pointer',
-              selectedInside === color.id && 'border-accent border-2'
+              selectedInside === Number(color.id) && 'border-accent border-2'
             )}
-            onClick={() => handleSelectInside(color.id)}
+            onClick={() => handleSelectInside(Number(color.id))}
           >
             <Image
               key={color.id}
-              src={color.image}
+              src={getImageSrc(color.pattern_image)}
               alt={color.id.toString()}
               fill
               className="object-cover"
@@ -185,18 +147,18 @@ export default function DoorColor() {
         />
       </div>
       <div className="mb-4 flex flex-wrap gap-x-2 gap-y-2">
-        {outsideColors.map((color) => (
+        {furnitureColors?.map((color) => (
           <div
             key={color.id}
             className={cn(
               'relative h-[60px] w-[60px] cursor-pointer',
-              selectedOutside === color.id && 'border-accent border-2'
+              selectedOutside === Number(color.id) && 'border-accent border-2'
             )}
-            onClick={() => handleSelectOutside(color.id)}
+            onClick={() => handleSelectOutside(Number(color.id))}
           >
             <Image
               key={color.id}
-              src={color.image}
+              src={getImageSrc(color.pattern_image)}
               alt={color.id.toString()}
               fill
               className="object-cover"

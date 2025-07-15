@@ -2,6 +2,7 @@ import DoorCard from '@/app/[locale]/(dashboard)/components/door-card';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Modal } from '@/hooks/dashboard/api-hooks/useGetModals';
 import DoorCardSkeleton from './door-card-skeleton';
+import { getImageSrc } from '@/lib/utils/useImageSrc';
 
 type Props = {
   cards: Modal[];
@@ -38,7 +39,7 @@ export default function DoorList({ cards, isLoading }: Props) {
                 className="w-full gap-x-2 lg:w-auto"
               >
                 <DoorCard
-                  img={card.image}
+                  img={getImageSrc(card.image)}
                   label={card.title}
                   id={card.id}
                   priority={card.id <= 4}

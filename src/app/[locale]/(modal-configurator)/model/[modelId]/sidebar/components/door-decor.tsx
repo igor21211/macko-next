@@ -3,21 +3,22 @@ import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { useState } from 'react';
 import Image from 'next/image';
+import { useGetInox } from '@/hooks/modal/api-hooks/decor/useGetInox';
+import { useGetMolding } from '@/hooks/modal/api-hooks/decor/useGetMolding';
+import DoorDecorLoading from './loading-components/door-decor-loading';
+import { getImageSrc } from '@/lib/utils/useImageSrc';
 
 const side = [
   { id: 1, name: 'Ззовні' },
   { id: 2, name: 'Зсередини' },
 ];
-const decor = [
-  { id: 1, image: '/figma-images/decor-sidebar/decor-inox.png' },
-  { id: 2, image: '/figma-images/decor-sidebar/decor-molding.png' },
-  { id: 3, image: '/figma-images/decor-sidebar/decor-paz.png' },
-  { id: 4, image: '/figma-images/decor-sidebar/decor-none.png' },
-];
 
 export default function DoorDecor() {
   const [selected, setSelected] = useState(1);
   const [selectedDecor, setSelectedDecor] = useState(1);
+  const { data: inox, isLoading: isLoadingInox } = useGetInox();
+  const { data: molding, isLoading: isLoadingMolding } = useGetMolding();
+  const decor = [...(inox || []), ...(molding || [])];
 
   const handleSelect = (id: number) => {
     setSelected(id);
@@ -26,6 +27,8 @@ export default function DoorDecor() {
   const handleSelectDecor = (id: number) => {
     setSelectedDecor(id);
   };
+
+  if (isLoadingInox || isLoadingMolding) return <DoorDecorLoading />;
 
   return (
     <section className="w-full border-b border-b-gray-200 px-6 pt-6 pb-4 shadow-sm">
@@ -53,16 +56,25 @@ export default function DoorDecor() {
           </Button>
         ))}
       </div>
-      <div className="grid min-h-[128px] grid-cols-4 gap-x-2">
+      <div className="grid min-h-[200px] [grid-auto-rows:140px] grid-cols-3 gap-x-2 gap-y-4 lg:grid-cols-4">
         {decor.map((item) => (
-          <div
-            key={item.id}
-            className={cn(
-              `relative h-full w-full cursor-pointer ${selectedDecor === item.id && 'border-accent border-2'}`
-            )}
-            onClick={() => handleSelectDecor(item.id)}
-          >
-            <Image src={item.image} alt={item.id.toString()} fill className="object-cover" />
+          <div key={item.id} className="flex flex-col">
+            <div
+              className={cn(
+                `relative h-full w-full cursor-pointer ${selectedDecor === Number(item.id) && 'border-accent border-2'}`
+              )}
+              onClick={() => handleSelectDecor(Number(item.id))}
+            >
+              <Image
+                src={getImageSrc(item.image)}
+                alt={item.id.toString()}
+                fill
+                className="object-cover"
+              />
+            </div>
+            <h4 className="mb-1 text-[14px] leading-[17px] font-bold text-[#1A202C]">
+              {item.title}
+            </h4>
           </div>
         ))}
       </div>

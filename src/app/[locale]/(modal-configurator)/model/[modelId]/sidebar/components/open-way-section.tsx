@@ -4,60 +4,20 @@ import Image from 'next/image';
 import { useState } from 'react';
 import { useMedia } from 'react-use';
 import { cn } from '@/lib/utils';
-
-const directions = [
-  {
-    id: 1,
-    img: '/figma-images/left-in.svg',
-    label: (
-      <>
-        Ліва
-        <br />
-        всередину
-      </>
-    ),
-  },
-  {
-    id: 2,
-    img: '/figma-images/right-in.svg',
-    label: (
-      <>
-        Права
-        <br />
-        всередину
-      </>
-    ),
-  },
-  {
-    id: 3,
-    img: '/figma-images/left-out.svg',
-    label: (
-      <>
-        Ліва
-        <br />
-        назовні
-      </>
-    ),
-  },
-  {
-    id: 4,
-    img: '/figma-images/right-out.svg',
-    label: (
-      <>
-        Права
-        <br />
-        назовні
-      </>
-    ),
-  },
-];
+import { useGetView } from '@/hooks/modal/api-hooks/view/useGetView';
+import OpenWaySectionSkeleton from './loading-components/open-way-section-loading';
+import { getImageSrc } from '@/lib/utils/useImageSrc';
 
 export default function OpenWaySection() {
+  const { data: view, isLoading } = useGetView();
   const [id, setId] = useState(1);
   const isMobile = useMedia('(max-width: 580px)');
   const handleClick = (id: number) => {
     setId(id);
   };
+
+  if (isLoading) return <OpenWaySectionSkeleton />;
+
   return (
     <section className="w-full border-b border-b-gray-200 px-6 py-4 shadow-sm">
       <h3 className="text-heading-sidebar text-textDark mb-4 font-sans font-medium tracking-wider uppercase">
@@ -72,7 +32,7 @@ export default function OpenWaySection() {
         )}
         style={isMobile ? { scrollbarWidth: 'none', msOverflowStyle: 'none' } : {}}
       >
-        {directions.map((item, idx) => (
+        {view?.map((item, idx) => (
           <Button
             key={idx}
             className={cn(
@@ -84,10 +44,15 @@ export default function OpenWaySection() {
           >
             <div className="flex h-full w-full flex-row items-center gap-2">
               <div className="relative flex h-[40px] w-[40px] items-center justify-center">
-                <Image src={item.img} alt="direction" fill className="object-contain" />
+                <Image
+                  src={getImageSrc(item.image)}
+                  alt="direction"
+                  fill
+                  className="object-contain"
+                />
               </div>
               <div className="text-textLight flex flex-1 items-center text-left font-sans text-[0.75rem] leading-[1.21em] font-medium">
-                {item.label}
+                {item.title}
               </div>
             </div>
           </Button>
