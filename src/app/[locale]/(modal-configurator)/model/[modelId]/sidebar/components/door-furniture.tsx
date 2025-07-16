@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { cn } from '@/lib/utils';
-import { useState, useRef, useMemo } from 'react';
+import { useState, useRef, useMemo, useEffect } from 'react';
 import Image from 'next/image';
 import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react';
 import { useScrollByArrow } from '@/lib/utils/useScrollByArrow';
@@ -77,29 +77,39 @@ export default function DoorFurniture() {
     setSelectedColor(id);
   };
 
-  const furnitureImages = useMemo(() => {
+  const furnitureItems = useMemo(() => {
     return furniture?.flatMap((item) =>
       item.items.map((furn) => ({ id: String(furn.id), image: furn.image_png, name: furn.title }))
     );
   }, [furniture]);
 
+  // Найти выбранную ручку
+  const selectedFurnitureObj = useMemo(() => {
+    return furniture
+      ?.flatMap((item) => item.items)
+      .find((furn) => String(furn.id) === selectedFurniture);
+  }, [furniture, selectedFurniture]);
+
+  // Получить размеры только для выбранной ручки
   const allFurnitureSizes: { id: string; title: string }[] = useMemo(() => {
-    return (
-      furniture?.flatMap((item) =>
-        item.items.flatMap((furn) =>
-          furn.subitems
-            .filter((sub) => String(sub.title) !== 'Push')
-            .map((sub) => {
-              let title = String(sub.title);
-              if (title.includes('mm')) {
-                title = title.slice(0, title.indexOf('mm') + 2).trim();
-              }
-              return { id: String(sub.id), title };
-            })
-        )
-      ) ?? []
-    );
-  }, [furniture]);
+    if (!selectedFurnitureObj) return [];
+    return selectedFurnitureObj.subitems
+      .filter((sub) => String(sub.title) !== 'Push')
+      .map((sub) => {
+        let title = String(sub.title);
+        if (title.includes('mm')) {
+          title = title.slice(0, title.indexOf('mm') + 2).trim();
+        }
+        return { id: String(sub.id), title };
+      });
+  }, [selectedFurnitureObj]);
+
+  // При смене ручки автоматически выбирать первый размер
+  useEffect(() => {
+    if (allFurnitureSizes.length > 0) {
+      setSelectedSize(allFurnitureSizes[0].id);
+    }
+  }, [selectedFurniture]);
 
   if (isLoading) return <DoorFurnitureSectionLoading />;
 
@@ -139,7 +149,7 @@ export default function DoorFurniture() {
         ))}
       </div>
       <div className="mb-4 grid min-h-[100px] [grid-auto-rows:130px] grid-cols-5 gap-x-2 gap-y-2">
-        {furnitureImages?.map((item) => (
+        {furnitureItems?.map((item) => (
           <div
             key={item.id}
             className="flex h-full w-full cursor-pointer flex-col items-center"
@@ -164,64 +174,69 @@ export default function DoorFurniture() {
           </div>
         ))}
       </div>
-      <div className="mb-4 flex flex-row items-center justify-between">
-        <h3 className="text-primary font-sans text-[14px] font-medium">Розмір</h3>
-        <div className="flex flex-row items-center gap-x-2">
-          <ChevronLeftIcon
-            size={25}
-            className="text-primary cursor-pointer"
-            onClick={handleSizeScrollLeft}
-            style={{ color: canScrollLeftSize ? 'var(--accent)' : '#D1D5DB' }}
-            aria-label="Скролл влево"
-            tabIndex={0}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' || e.key === ' ') handleSizeScrollLeft();
-            }}
-          />
-          <ChevronRightIcon
-            size={25}
-            className="cursor-pointer"
-            style={{ color: canScrollRightSize ? 'var(--accent)' : '#D1D5DB' }}
-            onClick={handleSizeScrollRight}
-            aria-label="Скролл вправо"
-            tabIndex={0}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' || e.key === ' ') handleSizeScrollRight();
-            }}
-          />
-        </div>
-      </div>
-      <div
-        ref={sizeScrollRef}
-        className="scrollbar-hide min-w-[600px] overflow-x-auto overflow-y-hidden"
-        style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-      >
-        <style jsx>{`
-          div::-webkit-scrollbar {
-            display: none;
-          }
-        `}</style>
-        <div className="mb-4 grid auto-cols-[100px] grid-flow-col gap-x-3">
-          {allFurnitureSizes.map((item) => {
-            const idStr = String(item.id);
-            return (
-              <div
-                key={idStr}
-                className={cn(
-                  'flex h-full w-full min-w-[100px] flex-col items-center',
-                  selectedSize === idStr && 'border-accent border-3'
-                )}
-                onClick={() => handleSelectSize(idStr)}
-              >
-                <Label className="text-primary w-full cursor-pointer justify-center border-none bg-white pt-2 pb-2 text-center font-sans text-[14px] font-medium">
-                  {item.title}
-                </Label>
-              </div>
-            );
-          })}
-          <div className="min-w-[4px]" aria-hidden="true" />
-        </div>
-      </div>
+      {/* Размеры */}
+      {allFurnitureSizes.length > 0 && (
+        <>
+          <div className="mb-4 flex flex-row items-center justify-between">
+            <h3 className="text-primary font-sans text-[14px] font-medium">Розмір</h3>
+            <div className="flex flex-row items-center gap-x-2">
+              <ChevronLeftIcon
+                size={25}
+                className="text-primary cursor-pointer"
+                onClick={handleSizeScrollLeft}
+                style={{ color: canScrollLeftSize ? 'var(--accent)' : '#D1D5DB' }}
+                aria-label="Скролл влево"
+                tabIndex={0}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') handleSizeScrollLeft();
+                }}
+              />
+              <ChevronRightIcon
+                size={25}
+                className="cursor-pointer"
+                style={{ color: canScrollRightSize ? 'var(--accent)' : '#D1D5DB' }}
+                onClick={handleSizeScrollRight}
+                aria-label="Скролл вправо"
+                tabIndex={0}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') handleSizeScrollRight();
+                }}
+              />
+            </div>
+          </div>
+          <div
+            ref={sizeScrollRef}
+            className="scrollbar-hide min-w-[600px] overflow-x-auto overflow-y-hidden"
+            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+          >
+            <style jsx>{`
+              div::-webkit-scrollbar {
+                display: none;
+              }
+            `}</style>
+            <div className="mb-4 grid auto-cols-[100px] grid-flow-col gap-x-3">
+              {allFurnitureSizes.map((item) => {
+                const idStr = String(item.id);
+                return (
+                  <div
+                    key={idStr}
+                    className={cn(
+                      'flex h-full w-full min-w-[100px] flex-col items-center',
+                      selectedSize === idStr && 'border-accent border-3'
+                    )}
+                    onClick={() => handleSelectSize(idStr)}
+                  >
+                    <Label className="text-primary w-full cursor-pointer justify-center border-none bg-white pt-2 pb-2 text-center font-sans text-[14px] font-medium">
+                      {item.title}
+                    </Label>
+                  </div>
+                );
+              })}
+              <div className="min-w-[4px]" aria-hidden="true" />
+            </div>
+          </div>
+        </>
+      )}
       <div className="mb-4 flex flex-row items-center justify-between">
         <h3 className="text-primary font-sans text-[14px] font-medium">Колір</h3>
         <div className="flex flex-row items-center gap-x-2">
