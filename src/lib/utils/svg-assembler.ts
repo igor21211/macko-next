@@ -86,37 +86,9 @@ export const createDoorAssemblerConfig = (
     }
   }
 
-  // Добавляем стекло если есть (пока закомментировано - нужно проверить структуру Glass)
-  // if (decodedData?.glass?.[side]?.items?.length > 0) {
-  //   decodedData.glass[side].items.forEach((glassItem: any, index: number) => {
-  //     if (glassItem.image_svg) {
-  //       components.push({
-  //         id: `glass-${index}`,
-  //         type: 'glass',
-  //         svgUrl: `/api/proxy-svg?url=${encodeURIComponent(glassItem.image_svg)}`,
-  //         targetSelector: glassItem.targetSelector || '#glass',
-  //         position: side,
-  //         priority: 3,
-  //       });
-  //     }
-  //   });
-  // }
+  // TODO: Добавить поддержку стекла когда будет определена структура Glass
 
-  // Добавляем молдинг если есть (пока закомментировано - нужно добавить в DecodeResponse)
-  // if (decodedData?.molding?.[side]?.items?.length > 0) {
-  //   decodedData.molding[side].items.forEach((moldingItem: any, index: number) => {
-  //     if (moldingItem.image_svg) {
-  //       components.push({
-  //         id: `molding-${index}`,
-  //         type: 'molding',
-  //         svgUrl: `/api/proxy-svg?url=${encodeURIComponent(moldingItem.image_svg)}`,
-  //         targetSelector: moldingItem.targetSelector || '#molding',
-  //         position: side,
-  //         priority: 4,
-  //       });
-  //     }
-  //   });
-  // }
+  // TODO: Добавить поддержку молдинга когда будет добавлен в DecodeResponse
 
   // Сортируем по приоритету
   components.sort((a, b) => (a.priority || 999) - (b.priority || 999));

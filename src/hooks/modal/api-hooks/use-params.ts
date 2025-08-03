@@ -5,7 +5,8 @@ export const useParams = () => {
   const { data: decode } = useDecode();
   const params = useNextParams();
 
-  const currentCode = params?.modelId as string;
+  // Безпечная конверсия в строку
+  const currentCode = params?.modelId && typeof params.modelId === 'string' ? params.modelId : '';
 
   return { decode, currentCode };
 };

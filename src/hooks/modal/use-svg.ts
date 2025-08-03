@@ -21,6 +21,8 @@ interface UseSvgProps {
 
 export const useSvg = ({ svgString, svgUrl, additionalSvgs = [] }: UseSvgProps) => {
   const [svgDoc, setSvgDoc] = useState<Svg | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
   // Функция для вставки дополнительных SVG (мемоизируем)
@@ -86,6 +88,9 @@ export const useSvg = ({ svgString, svgUrl, additionalSvgs = [] }: UseSvgProps) 
           }
         } catch (error) {
           console.error('Error inserting additional SVG:', error);
+          setError(
+            `Ошибка вставки дополнительного SVG: ${error instanceof Error ? error.message : String(error)}`
+          );
         }
       }
     },
@@ -106,15 +111,24 @@ export const useSvg = ({ svgString, svgUrl, additionalSvgs = [] }: UseSvgProps) 
 
     const loadAndSetupSvg = async () => {
       try {
+        setIsLoading(true);
+        setError(null);
+
         let finalSvgString = svgString;
 
         // Если передан URL, загружаем SVG
         if (!finalSvgString && svgUrl) {
           const response = await fetch(svgUrl);
+          if (!response.ok) {
+            throw new Error(`Не удалось загрузить SVG: ${response.status} ${response.statusText}`);
+          }
           finalSvgString = await response.text();
         }
 
-        if (!finalSvgString) return;
+        if (!finalSvgString) {
+          setError('Отсутствует SVG контент');
+          return;
+        }
 
         // Создаем временный div для инъекции SVG
         const tempDiv = document.createElement('div');
@@ -134,9 +148,13 @@ export const useSvg = ({ svgString, svgUrl, additionalSvgs = [] }: UseSvgProps) 
 
           // Вставляем дополнительные SVG
           await insertAdditionalSvgs(doc);
+
+          setIsLoading(false);
         }
       } catch (error) {
         console.error('Error loading SVG:', error);
+        setError(`Ошибка загрузки SVG: ${error instanceof Error ? error.message : String(error)}`);
+        setIsLoading(false);
       }
     };
 
@@ -182,10 +200,11 @@ export const useSvg = ({ svgString, svgUrl, additionalSvgs = [] }: UseSvgProps) 
       }
     } catch (error) {
       console.error('Error inserting SVG string:', error);
+      setError(`Ошибка вставки SVG: ${error instanceof Error ? error.message : String(error)}`);
     }
 
     return false;
   };
 
-  return { containerRef, svgDoc, select, insertSvgString };
+  return { containerRef, svgDoc, select, insertSvgString, error, isLoading };
 };

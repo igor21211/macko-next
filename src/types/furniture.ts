@@ -4,16 +4,16 @@ export interface FurnitureSubitem {
   id: string;
   item: string;
   title: string;
-  price: string;
+  price: number;
   code: string;
-  is_standard: string;
-  is_include_in_pricelist: string;
-  is_empty: string;
-  ord: string;
-  is_inside_default: string;
+  is_standard: boolean;
+  is_include_in_pricelist: boolean;
+  is_empty: boolean;
+  ord: number;
+  is_inside_default: boolean;
   image_svg: string;
-  height: string;
-  width: string;
+  height: number;
+  width: number;
   positionX: string;
   positionY: string;
   image_black_svg: string;
@@ -26,10 +26,10 @@ export interface FurnitureItem {
   title: string;
   url: string;
   category: string;
-  active: string;
+  active: boolean;
   image_png: string;
-  ord: string;
-  is_translated: string;
+  ord: number;
+  is_translated: boolean;
   subitems: FurnitureSubitem[];
 }
 
@@ -37,9 +37,9 @@ export interface FurnitureWithOptions {
   id: string;
   title: string;
   url: string;
-  active: string;
-  ord: string;
-  is_translated: string;
+  active: boolean;
+  ord: number;
+  is_translated: boolean;
   items: FurnitureItem[];
 }
 

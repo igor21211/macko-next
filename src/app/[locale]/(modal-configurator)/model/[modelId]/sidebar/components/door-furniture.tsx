@@ -13,11 +13,7 @@ import { getImageSrc } from '@/lib/utils/useImageSrc';
 import { useSideContext } from '@/providers/side-provider';
 import { useDecodeContext } from '@/providers/decode-provider';
 import { usePostFurniture } from '@/hooks/modal/api-hooks/furniture/usePostFurniture';
-
-const side = [
-  { id: 1, name: 'Ззовні', side: 'outside' },
-  { id: 2, name: 'Зсередини', side: 'inside' },
-];
+import { useTranslations } from 'next-intl';
 
 const furnitureColors = [
   { id: '1', image: '/figma-images/side-bar-colors/color-1.png' },
@@ -43,12 +39,18 @@ const furnitureColors = [
 ];
 
 export default function DoorFurniture() {
+  const t = useTranslations('DoorFurniture');
   const { data: furniture, isLoading } = useGetFurniture();
   const { mutate: updateFurniture } = usePostFurniture();
   const { decodedData } = useDecodeContext();
   const { inside, onOpenInside, onOpenOutside } = useSideContext();
   const activeSide = inside ? 2 : 1;
   const activeFurniture = decodedData?.furniture[inside ? 'inside' : 'outside'];
+
+  const side = [
+    { id: 1, name: t('outside'), side: 'outside' },
+    { id: 2, name: t('inside'), side: 'inside' },
+  ];
 
   const [selectedColor, setSelectedColor] = useState<string>('1');
   const sizeScrollRef = useRef<HTMLDivElement>(null);
@@ -217,7 +219,6 @@ export default function DoorFurniture() {
             <div className="mb-4 grid auto-cols-[100px] grid-flow-col gap-x-3">
               {allFurnitureSizes.map((item) => {
                 const idStr = String(item.id);
-                console.log('idStr', idStr);
 
                 return (
                   <div

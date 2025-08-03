@@ -1,17 +1,18 @@
-export interface DecorItem {
+// Базовый интерфейс для декора
+export interface BaseDecor {
   id: string;
   title: string;
   url: string;
-  active: string;
+  active: boolean;
   inox_type: string;
   inox_outside: string;
   inox_inside: string;
   image_png: string;
-  ord: string;
-  is_standard: string;
-  is_include_in_pricelist: string;
+  ord: number;
+  is_standard: boolean;
+  is_include_in_pricelist: boolean;
   code: string;
-  is_translated: string;
+  is_translated: boolean;
   slot_type: string;
   slot_type_margin: string;
   black_design: string;
@@ -20,27 +21,10 @@ export interface DecorItem {
   molding: number;
 }
 
-export interface DecorSide {
-  id: string;
-  title: string;
-  url: string;
-  active: string;
-  inox_type: string;
-  inox_outside: string;
-  inox_inside: string;
-  image_png: string;
-  ord: string;
-  is_standard: string;
-  is_include_in_pricelist: string;
-  code: string;
-  is_translated: string;
-  slot_type: string;
-  slot_type_margin: string;
-  black_design: string;
-  black_design_margin: string;
-  black: string;
-  molding: number;
-}
+// Наследующие интерфейсы
+export interface DecorItem extends BaseDecor {}
+
+export interface DecorSide extends BaseDecor {}
 
 export interface DecorResponse {
   outside: DecorSide;

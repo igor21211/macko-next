@@ -1,7 +1,7 @@
 'use client';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import Image from 'next/image';
 import SelectCustom from '@/components/select-custom';
 import { useGetColor } from '@/hooks/modal/api-hooks/color/useGetColor';
@@ -9,7 +9,7 @@ import { usePostColor } from '@/hooks/modal/api-hooks/color/usePostColor';
 import DoorColorLoading from './loading-components/door-color-loading';
 import { getImageSrc } from '@/lib/utils/useImageSrc';
 import { useDecode } from '@/hooks/modal/api-hooks/use-decode';
-//import { useTranslations } from "next-intl";
+import { useTranslations } from 'next-intl';
 
 const colors = [
   { id: 1, name: 'HPL', price: 2000 },
@@ -40,14 +40,24 @@ const typeColors = [
 ];
 
 export default function DoorColor() {
+  const t = useTranslations();
   const { data: decode } = useDecode();
   const activeColorInside = decode?.colors.inside.id;
   const activeColorOutside = decode?.colors.outside.id;
-  const selectAluminium = decode?.colors.inside.is_alu === '1' ? 2 : 1;
+  const selectAluminium = decode?.colors.inside.is_alu ? 2 : 1;
 
   const [selectedTypeColor, setSelectedTypeColor] = useState('');
   const { data: furnitureColors, isLoading } = useGetColor();
   const { mutate: updateColor, isPending } = usePostColor();
+
+  // Фільтрація кольорів за вибраним типом
+  const filteredColors = useMemo(() => {
+    if (!furnitureColors) return [];
+    if (!selectedTypeColor) return furnitureColors;
+    return furnitureColors.filter((color) =>
+      color.category?.toLowerCase().includes(selectedTypeColor.toLowerCase())
+    );
+  }, [furnitureColors, selectedTypeColor]);
 
   const loading = isPending || isLoading;
   const handleSelectColor = (id: number) => {
@@ -55,6 +65,13 @@ export default function DoorColor() {
     if (selectedColor) {
       updateColor(selectedColor);
     }
+  };
+
+  // Обробка вибору алюмінію
+  const handleAluminumSelect = (aluminumId: number) => {
+    // Логіка оновлення вибору алюмінію
+    console.log('Selected aluminum:', aluminumId);
+    // TODO: реалізувати оновлення стану алюмінію
   };
 
   if (loading) return <DoorColorLoading />;
@@ -94,7 +111,7 @@ export default function DoorColor() {
               'h-full w-full',
               selectAluminium === color.id ? 'border-accent border-2' : 'border-transparent'
             )}
-            onClick={() => {}}
+            onClick={() => handleAluminumSelect(color.id)}
           >
             {color.name}
           </Button>
@@ -115,7 +132,7 @@ export default function DoorColor() {
       </div>
 
       <div className="mb-4 flex flex-wrap gap-x-2 gap-y-2">
-        {furnitureColors?.map((color) => {
+        {filteredColors?.map((color) => {
           const src = getImageSrc(color.pattern_image);
           return (
             <div
@@ -126,7 +143,7 @@ export default function DoorColor() {
               )}
               onClick={() => handleSelectColor(Number(color.id))}
               tabIndex={0}
-              aria-label={`Выбрать цвет изнутри: ${color.id}`}
+              aria-label={t('DoorColor.selectColorInside', { colorId: color.id })}
               role="button"
               onKeyDown={(e) => {
                 if (e.key === 'Enter' || e.key === ' ') handleSelectColor(Number(color.id));
@@ -163,7 +180,7 @@ export default function DoorColor() {
         />
       </div>
       <div className="mb-4 flex flex-wrap gap-x-2 gap-y-2">
-        {furnitureColors?.map((color) => {
+        {filteredColors?.map((color) => {
           const src = getImageSrc(color.pattern_image);
           return (
             <div
@@ -174,7 +191,7 @@ export default function DoorColor() {
               )}
               onClick={() => handleSelectColor(Number(color.id))}
               tabIndex={0}
-              aria-label={`Выбрать цвет снаружи: ${color.id}`}
+              aria-label={t('DoorColor.selectColorOutside', { colorId: color.id })}
               role="button"
               onKeyDown={(e) => {
                 if (e.key === 'Enter' || e.key === ' ') handleSelectColor(Number(color.id));

@@ -1,91 +1,99 @@
 {
-    "HeaderAction": {
-        "search": "Search",
-        "login": "Login",
-        "offers": "Offers",
-        "popular": "Popular",
-        "leaders": "Sales Leaders"
+  "HeaderAction": {
+    "search": "Search",
+    "login": "Login",
+    "offers": "Offers",
+    "popular": "Popular",
+    "leaders": "Sales Leaders"
+  },
+  "DialogFilters": {
+    "filters": "Filters",
+    "model": "Model",
+    "models": {
+      "all": "All",
+      "base": "Base",
+      "vertical": "Vertical",
+      "horizontal": "Horizontal",
+      "classic": "Classic",
+      "square": "Square"
     },
-    "DialogFilters": {
-        "filters": "Filters",
-        "model": "Model",
-        "models": {
-            "all": "All",
-            "base": "Base",
-            "vertical": "Vertical",
-            "horizontal": "Horizontal",
-            "classic": "Classic",
-            "square": "Square"
-        },
-        "glass": "Glass",
-        "glasses": {
-            "all": "All",
-            "transparent": "Transparent",
-            "matte": "Satin",
-            "glossy": "Bronze",
-            "frosted": "Stained glass"
-        },
-        "apply": "Apply",
-        "reset": "Reset"
+    "glass": "Glass",
+    "glasses": {
+      "all": "All",
+      "transparent": "Transparent",
+      "matte": "Satin",
+      "glossy": "Bronze",
+      "frosted": "Stained glass"
     },
-    "DoorCard": {
-        "select": "Select",
-        "door_alt": "Door {label}"
-    },
-    "MainPage": {
-        "loading": "Loading..."
-    },
-    "NavBar": {
-        "all": "All",
-        "offers": "Offers",
-        "popular": "Popular",
-        "leaders": "Sales Leaders"
-    },
-    "ModalView": {
-        "model": "Model",
-        "change": "Change",
-        "cost": "Configuration cost",
-        "save": "Save configuration",
-        "share": "Share",
-        "order": "Order",
-        "bottom_bar": {
-            "outside_view": "Outside view",
-            "inside_view": "Inside view",
-            "show_sizes": "Show sizes",
-            "full_screen": "Full screen"
-        }
-    },
-    "Sidebar": {
-        "opening_direction": "OPENING DIRECTION",
-        "left_inside": "Left inside",
-        "right_inside": "Right inside",
-        "left_outside": "Left outside",
-        "right_outside": "Right outside",
-        "door_form": "DOOR FORM",
-        "door_size": "DOOR SIZE",
-        "width": "Width",
-        "height": "Length",
-        "how_to_measure": "How to measure?",
-        "equipment": "EQUIPMENT",
-        "what_is_difference": "What is the difference?",
-        "equipment_econom": "ECONOMY",
-        "equipment_standart": "STANDARD",
-        "equipment_super": "SUPER",
-        "color": "COLOR",
-        "expanded_spraying": "Expanded spraying",
-        "satin": "From the inside",
-        "decor": "DECOR",
-        "lock": "LOCK",
-        "furniture": "FURNITURE",
-        "profiles": "PROFILES",
-        "glass": "GLASS",
-        "door_size": {
-            "widthError": "Width must be a number between 1 and 1200",
-            "heightError": "Height must be a number between 1 and 2300"
-        }
-    },
-    "DoorPreview": {
-        "adjustment_indicator": "Position adjustment",
-        "adjustment_tooltip": "Use ↑↓ to adjust, R to reset"
+    "apply": "Apply",
+    "reset": "Reset"
+  },
+  "DoorCard": {
+    "select": "Select",
+    "door_alt": "Door {label}"
+  },
+  "MainPage": {
+    "loading": "Loading..."
+  },
+  "NavBar": {
+    "all": "All",
+    "offers": "Offers",
+    "popular": "Popular",
+    "leaders": "Sales Leaders"
+  },
+  "ModalView": {
+    "model": "Model",
+    "change": "Change",
+    "cost": "Configuration cost",
+    "save": "Save configuration",
+    "share": "Share",
+    "order": "Order",
+    "bottom_bar": {
+      "outside_view": "Outside view",
+      "inside_view": "Inside view",
+      "show_sizes": "Show sizes",
+      "full_screen": "Full screen"
     }
+  },
+  "Sidebar": {
+    "opening_direction": "OPENING DIRECTION",
+    "left_inside": "Left inside",
+    "right_inside": "Right inside",
+    "left_outside": "Left outside",
+    "right_outside": "Right outside",
+    "door_form": "DOOR FORM",
+    "door_size": "DOOR SIZE",
+    "width": "Width",
+    "height": "Length",
+    "how_to_measure": "How to measure?",
+    "equipment": "EQUIPMENT",
+    "what_is_difference": "What is the difference?",
+    "equipment_econom": "ECONOMY",
+    "equipment_standart": "STANDARD",
+    "equipment_super": "SUPER",
+    "color": "COLOR",
+    "expanded_spraying": "Expanded spraying",
+    "satin": "From the inside",
+    "decor": "DECOR",
+    "lock": "LOCK",
+    "furniture": "FURNITURE",
+    "profiles": "PROFILES",
+    "glass": "GLASS",
+    "door_size": {
+      "widthError": "Width must be a number between 1 and 1200",
+      "heightError": "Height must be a number between 1 and 2300"
+    }
+  },
+  "DoorPreview": {
+    "adjustment_indicator": "Position adjustment",
+    "adjustment_tooltip": "Use ↑↓ to adjust, R to reset"
+  },
+  "DoorColor": {
+    "selectColorInside": "Select color inside: {colorId}",
+    "selectColorOutside": "Select color outside: {colorId}"
+  },
+  "DoorFurniture": {
+    "outside": "Outside",
+    "inside": "Inside"
+  }
 }

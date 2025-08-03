@@ -3,6 +3,7 @@
 import { useCallback } from 'react';
 import { useDecodeContext } from '@/providers/decode-provider';
 import { createDoorAssemblerConfig, configToUseSvgProps } from '@/lib/utils/svg-assembler';
+import DOMPurify from 'dompurify';
 
 interface ExportOptions {
   format?: 'png' | 'jpeg';
@@ -37,7 +38,10 @@ export const useExportDoor = () => {
 
         // Создаем временный div для парсинга
         const tempDiv = document.createElement('div');
-        tempDiv.innerHTML = mainSvgText;
+        // Санитизируем SVG контент
+        tempDiv.innerHTML = DOMPurify.sanitize(mainSvgText, {
+          USE_PROFILES: { svg: true, svgFilters: true },
+        });
         const svgElement = tempDiv.querySelector('svg');
 
         if (!svgElement) return null;
@@ -62,9 +66,11 @@ export const useExportDoor = () => {
             const targetElement = clonedSvg.querySelector(additionalSvg.targetSelector);
             if (!targetElement) continue;
 
-            // Парсим SVG строку
+            // Парсим и санитизируем SVG строку
             const tempDiv = document.createElement('div');
-            tempDiv.innerHTML = svgContent;
+            tempDiv.innerHTML = DOMPurify.sanitize(svgContent, {
+              USE_PROFILES: { svg: true, svgFilters: true },
+            });
             const additionalSvgElement = tempDiv.querySelector('svg');
 
             if (additionalSvgElement) {
@@ -105,9 +111,12 @@ export const useExportDoor = () => {
                 }
               }
 
-              // Очищаем целевой элемент и вставляем содержимое
+              // Очищаем целевой элемент и вставляем санитизированное содержимое
               targetElement.innerHTML = '';
-              targetElement.innerHTML = additionalSvgElement.innerHTML;
+              const sanitizedContent = DOMPurify.sanitize(additionalSvgElement.innerHTML, {
+                USE_PROFILES: { svg: true, svgFilters: true },
+              });
+              targetElement.innerHTML = sanitizedContent;
             }
           } catch (error) {
             console.error('Error processing additional SVG:', error);
@@ -137,7 +146,6 @@ export const useExportDoor = () => {
 
           // Получаем оригинальный viewBox
           const originalViewBox = clonedSvg.getAttribute('viewBox');
-          console.log('📐 Original viewBox:', originalViewBox);
 
           let svgWidth = width;
           let svgHeight = height;
@@ -155,8 +163,6 @@ export const useExportDoor = () => {
               // Canvas выше чем нужно, уменьшаем высоту
               svgHeight = width / aspectRatio;
             }
-
-            console.log('📐 Calculated dimensions:', { svgWidth, svgHeight, aspectRatio });
           }
 
           // Устанавливаем размеры для экспорта
@@ -175,8 +181,6 @@ export const useExportDoor = () => {
           const svgData = new XMLSerializer().serializeToString(clonedSvg);
 
           // Отладка: выводим SVG содержимое
-          console.log('📋 SVG content length:', svgData.length);
-          console.log('📋 SVG preview:', svgData.substring(0, 500) + '...');
 
           // Создаем data URL напрямую для SVG
           const svgDataUrl =
@@ -199,8 +203,6 @@ export const useExportDoor = () => {
 
           img.onload = () => {
             try {
-              console.log('🖼️ Image loaded successfully, size:', img.width, 'x', img.height);
-
               // НЕ заполняем фон - оставляем прозрачным
               // ctx.fillStyle = '#ffffff';
               // ctx.fillRect(0, 0, svgWidth, svgHeight);
@@ -211,8 +213,6 @@ export const useExportDoor = () => {
               // Конвертируем в base64
               const mimeType = format === 'jpeg' ? 'image/jpeg' : 'image/png';
               const base64Data = canvas.toDataURL(mimeType, quality);
-
-              console.log('✅ Canvas conversion successful, base64 length:', base64Data.length);
 
               resolve(base64Data);
             } catch (error) {

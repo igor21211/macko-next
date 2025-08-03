@@ -11,6 +11,22 @@ import { useSideContext } from '@/providers/side-provider';
 import { useDecodeContext } from '@/providers/decode-provider';
 import { createDoorAssemblerConfig, configToUseSvgProps } from '@/lib/utils/svg-assembler';
 
+// Выносим статические объекты из компонента
+const DOOR_DIMENSIONS = {
+  width: 2200,
+  height: 2000,
+  topHeight: 400,
+  leftWidth: 400,
+  rightWidth: 400,
+};
+
+const DOOR_SHAPE = {
+  glass_left: false,
+  glass_right: false,
+  glass_top: false,
+  double_door: false,
+};
+
 const DoorPreview = memo(
   ({ isDoorReduced, side }: { isDoorReduced: boolean; side: 'inside' | 'outside' }) => {
     const { decodedData } = useDecodeContext();
@@ -38,52 +54,29 @@ const DoorPreview = memo(
     // Воспроизводим логику расчетов из проекта Vue
     const drawingCoefficient = 0.143;
 
-    // Базовые размеры двери (мемоизируем объект)
-    const dimensions = useMemo(
-      () => ({
-        width: 2200,
-        height: 2000,
-        topHeight: 400,
-        leftWidth: 400,
-        rightWidth: 400,
-      }),
-      []
-    );
-
-    // Форма двери (мемоизируем объект)
-    const shape = useMemo(
-      () => ({
-        glass_left: false,
-        glass_right: false,
-        glass_top: false,
-        double_door: false,
-      }),
-      []
-    );
-
     // Вычисление размеров
     const doorWidth = useMemo(
-      () => dimensions.width * drawingCoefficient,
-      [dimensions.width, drawingCoefficient]
+      () => DOOR_DIMENSIONS.width * drawingCoefficient,
+      [drawingCoefficient]
     );
     const doorHeight = useMemo(
-      () => dimensions.height * drawingCoefficient,
-      [dimensions.height, drawingCoefficient]
+      () => DOOR_DIMENSIONS.height * drawingCoefficient,
+      [drawingCoefficient]
     );
 
     const doorLeftWidth = useMemo(
-      () => (shape.glass_left ? dimensions.leftWidth * drawingCoefficient : 0),
-      [shape.glass_left, dimensions.leftWidth, drawingCoefficient]
+      () => (DOOR_SHAPE.glass_left ? DOOR_DIMENSIONS.leftWidth * drawingCoefficient : 0),
+      [drawingCoefficient]
     );
 
     const doorRightWidth = useMemo(
-      () => (shape.glass_right ? dimensions.rightWidth * drawingCoefficient : 0),
-      [shape.glass_right, dimensions.rightWidth, drawingCoefficient]
+      () => (DOOR_SHAPE.glass_right ? DOOR_DIMENSIONS.rightWidth * drawingCoefficient : 0),
+      [drawingCoefficient]
     );
 
     const doorTopHeight = useMemo(
-      () => (shape.glass_top ? dimensions.topHeight * drawingCoefficient : 0),
-      [shape.glass_top, dimensions.topHeight, drawingCoefficient]
+      () => (DOOR_SHAPE.glass_top ? DOOR_DIMENSIONS.topHeight * drawingCoefficient : 0),
+      [drawingCoefficient]
     );
 
     const doorTotalWidth = useMemo(

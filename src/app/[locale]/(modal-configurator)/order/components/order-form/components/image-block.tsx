@@ -12,29 +12,63 @@ interface Card {
 export const ImageBlock = () => {
   const { exportDoors, isReady } = useExportDoor();
   const [cards, setCards] = useState<Card[]>([]);
+  const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
   useEffect(() => {
     if (isReady) {
-      exportDoors({ format: 'png', width: 400, height: 300 }).then((result) => {
-        console.log('result', result);
-        if (result) {
-          console.log(result);
-          setCards([
-            {
-              title: 'Ззовні',
-              bg: '/figma-images/modal-view/sheet/background.jpg',
-              door: result.outside,
-            },
-            {
-              title: 'Зсередини',
-              bg: '/figma-images/modal-view/sheet/background.jpg',
-              door: result.inside,
-            },
-          ]);
-        }
-      });
+      setIsLoading(true);
+      setError(null);
+
+      exportDoors({ format: 'png', width: 400, height: 300 })
+        .then((result) => {
+          if (result) {
+            setCards([
+              {
+                title: 'Ззовні',
+                bg: '/figma-images/modal-view/sheet/background.jpg',
+                door: result.outside,
+              },
+              {
+                title: 'Зсередини',
+                bg: '/figma-images/modal-view/sheet/background.jpg',
+                door: result.inside,
+              },
+            ]);
+          } else {
+            setError('Не вдалося експортувати двері');
+          }
+        })
+        .catch((error) => {
+          console.error('Помилка експорту дверей:', error);
+          setError('Помилка при експорті дверей. Спробуйте пізніше.');
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
     }
   }, [isReady, exportDoors]);
-  console.log('cards', cards);
+  if (error) {
+    return (
+      <div className="mt-2 flex w-full flex-col items-center justify-center gap-4 p-4">
+        <div className="text-center text-red-500">
+          <p className="font-medium">Помилка:</p>
+          <p>{error}</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (isLoading) {
+    return (
+      <div className="mt-2 flex w-full flex-col items-center justify-center gap-4 p-4">
+        <div className="flex items-center space-x-2">
+          <div className="h-6 w-6 animate-spin rounded-full border-2 border-gray-300 border-t-gray-600"></div>
+          <span>Генерація зображень...</span>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="mt-2 flex w-full flex-col items-center justify-center gap-4 p-4">

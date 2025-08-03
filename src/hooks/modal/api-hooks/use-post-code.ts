@@ -19,48 +19,61 @@ export const usePostCode = () => {
       // Применяем функцию обновления к текущим данным
       const updates = updateFn(decode);
 
-      // Формируем тело запроса, объединяя текущие данные с обновлениями
+      // Вспомогательная функция для безопасной конверсии в число
+      const safeNumber = (value: unknown, fallback: number = 0): number => {
+        const num = Number(value);
+        return isNaN(num) ? fallback : num;
+      };
+
+      // Формируем тело запроса с валидацией
       const requestBody = {
-        model: Number(decode.model?.id),
-        shape: Number(decode.shape?.id),
+        model: safeNumber(decode.model?.id),
+        shape: safeNumber(decode.shape?.id),
         colors: {
-          outside: Number(updates.colors?.outside?.id || decode.colors?.outside?.id),
-          inside: Number(updates.colors?.inside?.id || decode.colors?.inside?.id),
+          outside: safeNumber(updates.colors?.outside?.id || decode.colors?.outside?.id),
+          inside: safeNumber(updates.colors?.inside?.id || decode.colors?.inside?.id),
         },
         colors_frame: {
-          outside: Number(updates.colors_frame?.outside?.id || decode.colors_frame?.outside?.id),
-          inside: Number(updates.colors_frame?.inside?.id || decode.colors_frame?.inside?.id),
+          outside: safeNumber(
+            updates.colors_frame?.outside?.id || decode.colors_frame?.outside?.id
+          ),
+          inside: safeNumber(updates.colors_frame?.inside?.id || decode.colors_frame?.inside?.id),
         },
-        glass: Number(updates.glass?.id || decode.glass?.id),
+        glass: safeNumber(updates.glass?.id || decode.glass?.id),
         decor: {
-          outside: Number(updates.decor?.outside?.id || decode.decor?.outside?.id),
-          inside: Number(updates.decor?.inside?.id || decode.decor?.inside?.id),
+          outside: safeNumber(updates.decor?.outside?.id || decode.decor?.outside?.id),
+          inside: safeNumber(updates.decor?.inside?.id || decode.decor?.inside?.id),
         },
         furniture: {
-          outside: Number(updates.furniture?.outside?.id || decode.furniture?.outside?.id),
-          inside: Number(updates.furniture?.inside?.id || decode.furniture?.inside?.id),
+          outside: safeNumber(updates.furniture?.outside?.id || decode.furniture?.outside?.id),
+          inside: safeNumber(updates.furniture?.inside?.id || decode.furniture?.inside?.id),
         },
-        view: Number(updates.view?.id || decode.view?.id),
+        view: safeNumber(updates.view?.id || decode.view?.id),
         handles: {
           outside: {
-            id: Number(updates.handles?.outside?.id || decode.handles?.outside?.id),
-            size: Number(updates.handles?.outside?.size || decode.handles?.outside?.size),
-            color: Number(updates.handles?.outside?.color || decode.handles?.outside?.color),
+            id: safeNumber(updates.handles?.outside?.id || decode.handles?.outside?.id),
+            size: safeNumber(updates.handles?.outside?.size || decode.handles?.outside?.size),
+            color: safeNumber(updates.handles?.outside?.color || decode.handles?.outside?.color),
           },
           inside: {
-            id: Number(updates.handles?.inside?.id || decode.handles?.inside?.id),
-            size: Number(updates.handles?.inside?.size || decode.handles?.inside?.size),
-            color: Number(updates.handles?.inside?.color || decode.handles?.inside?.color),
+            id: safeNumber(updates.handles?.inside?.id || decode.handles?.inside?.id),
+            size: safeNumber(updates.handles?.inside?.size || decode.handles?.inside?.size),
+            color: safeNumber(updates.handles?.inside?.color || decode.handles?.inside?.color),
           },
         },
-        black: Number(updates.black !== undefined ? updates.black : decode.black),
-        mirrored: Number(
+        black: safeNumber(updates.black !== undefined ? updates.black : decode.black),
+        mirrored: safeNumber(
           updates.model?.mirrored !== undefined ? updates.model.mirrored : decode.model?.mirrored
         ),
-        safeglass: Number(
+        safeglass: safeNumber(
           updates.glass?.safeglass !== undefined ? updates.glass.safeglass : decode.glass?.safeglass
         ),
       };
+
+      // Проверяем, что все обязательные поля присутствуют
+      if (!requestBody.model || !requestBody.shape) {
+        throw new Error('Missing required fields: model or shape');
+      }
 
       const response = await api.post('/code', requestBody);
       return response.data.code;
