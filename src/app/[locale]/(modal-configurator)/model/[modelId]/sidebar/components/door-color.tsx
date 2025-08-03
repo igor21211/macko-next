@@ -5,13 +5,15 @@ import { useState } from 'react';
 import Image from 'next/image';
 import SelectCustom from '@/components/select-custom';
 import { useGetColor } from '@/hooks/modal/api-hooks/color/useGetColor';
+import { usePostColor } from '@/hooks/modal/api-hooks/color/usePostColor';
 import DoorColorLoading from './loading-components/door-color-loading';
 import { getImageSrc } from '@/lib/utils/useImageSrc';
+import { useDecode } from '@/hooks/modal/api-hooks/use-decode';
 //import { useTranslations } from "next-intl";
 
 const colors = [
-  { id: 1, name: 'ALUMINIUM', price: 1000 },
-  { id: 2, name: 'HPL', price: 2000 },
+  { id: 1, name: 'HPL', price: 2000 },
+  { id: 2, name: 'ALUMINIUM', price: 1000 },
 ];
 
 const typeColors = [
@@ -38,25 +40,24 @@ const typeColors = [
 ];
 
 export default function DoorColor() {
-  const [selected, setSelected] = useState(1);
-  const [selectedInside, setSelectedInside] = useState(1);
-  const [selectedOutside, setSelectedOutside] = useState(1);
+  const { data: decode } = useDecode();
+  const activeColorInside = decode?.colors.inside.id;
+  const activeColorOutside = decode?.colors.outside.id;
+  const selectAluminium = decode?.colors.inside.is_alu === '1' ? 2 : 1;
+
   const [selectedTypeColor, setSelectedTypeColor] = useState('');
   const { data: furnitureColors, isLoading } = useGetColor();
+  const { mutate: updateColor, isPending } = usePostColor();
 
-  const handleSelect = (id: number) => {
-    setSelected(id);
+  const loading = isPending || isLoading;
+  const handleSelectColor = (id: number) => {
+    const selectedColor = furnitureColors?.find((color) => color.id === id.toString());
+    if (selectedColor) {
+      updateColor(selectedColor);
+    }
   };
 
-  const handleSelectInside = (id: number) => {
-    setSelectedInside(id);
-  };
-
-  const handleSelectOutside = (id: number) => {
-    setSelectedOutside(id);
-  };
-
-  if (isLoading) return <DoorColorLoading />;
+  if (loading) return <DoorColorLoading />;
 
   return (
     <section className="w-full border-b border-b-gray-200 px-6 pt-6 pb-4 shadow-sm">
@@ -91,9 +92,9 @@ export default function DoorColor() {
             key={color.id}
             className={cn(
               'h-full w-full',
-              selected === Number(color.id) && 'border-accent border-2'
+              selectAluminium === color.id ? 'border-accent border-2' : 'border-transparent'
             )}
-            onClick={() => handleSelect(Number(color.id))}
+            onClick={() => {}}
           >
             {color.name}
           </Button>
@@ -114,24 +115,39 @@ export default function DoorColor() {
       </div>
 
       <div className="mb-4 flex flex-wrap gap-x-2 gap-y-2">
-        {furnitureColors?.map((color) => (
-          <div
-            key={color.id}
-            className={cn(
-              'relative h-[60px] w-[60px] cursor-pointer',
-              selectedInside === Number(color.id) && 'border-accent border-2'
-            )}
-            onClick={() => handleSelectInside(Number(color.id))}
-          >
-            <Image
+        {furnitureColors?.map((color) => {
+          const src = getImageSrc(color.pattern_image);
+          return (
+            <div
               key={color.id}
-              src={getImageSrc(color.pattern_image)}
-              alt={color.id.toString()}
-              fill
-              className="object-cover"
-            />
-          </div>
-        ))}
+              className={cn(
+                'relative h-[60px] w-[60px] cursor-pointer',
+                activeColorInside === color.id && 'border-accent border-2'
+              )}
+              onClick={() => handleSelectColor(Number(color.id))}
+              tabIndex={0}
+              aria-label={`Выбрать цвет изнутри: ${color.id}`}
+              role="button"
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') handleSelectColor(Number(color.id));
+              }}
+            >
+              {src ? (
+                <Image
+                  key={color.id}
+                  src={src}
+                  alt={`Цвет изнутри ${color.id}`}
+                  fill
+                  className="object-cover"
+                />
+              ) : (
+                <div className="flex h-full w-full items-center justify-center bg-gray-100 text-xs text-gray-400">
+                  Нет изображения
+                </div>
+              )}
+            </div>
+          );
+        })}
       </div>
       <div className="mb-4 flex w-full flex-row items-center justify-between">
         <h3 className="text-textDark font-inter text-[14px] font-medium tracking-[0.06em] uppercase">
@@ -147,24 +163,39 @@ export default function DoorColor() {
         />
       </div>
       <div className="mb-4 flex flex-wrap gap-x-2 gap-y-2">
-        {furnitureColors?.map((color) => (
-          <div
-            key={color.id}
-            className={cn(
-              'relative h-[60px] w-[60px] cursor-pointer',
-              selectedOutside === Number(color.id) && 'border-accent border-2'
-            )}
-            onClick={() => handleSelectOutside(Number(color.id))}
-          >
-            <Image
+        {furnitureColors?.map((color) => {
+          const src = getImageSrc(color.pattern_image);
+          return (
+            <div
               key={color.id}
-              src={getImageSrc(color.pattern_image)}
-              alt={color.id.toString()}
-              fill
-              className="object-cover"
-            />
-          </div>
-        ))}
+              className={cn(
+                'relative h-[60px] w-[60px] cursor-pointer',
+                activeColorOutside === color.id && 'border-accent border-2'
+              )}
+              onClick={() => handleSelectColor(Number(color.id))}
+              tabIndex={0}
+              aria-label={`Выбрать цвет снаружи: ${color.id}`}
+              role="button"
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') handleSelectColor(Number(color.id));
+              }}
+            >
+              {src ? (
+                <Image
+                  key={color.id}
+                  src={src}
+                  alt={`Цвет снаружи ${color.id}`}
+                  fill
+                  className="object-cover"
+                />
+              ) : (
+                <div className="flex h-full w-full items-center justify-center bg-gray-100 text-xs text-gray-400">
+                  Нет изображения
+                </div>
+              )}
+            </div>
+          );
+        })}
       </div>
     </section>
   );

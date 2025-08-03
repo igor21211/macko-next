@@ -1,12 +1,13 @@
 'use client';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import { useState } from 'react';
 import Image from 'next/image';
 import { useGetInox } from '@/hooks/modal/api-hooks/decor/useGetInox';
 import { useGetMolding } from '@/hooks/modal/api-hooks/decor/useGetMolding';
 import DoorDecorLoading from './loading-components/door-decor-loading';
 import { getImageSrc } from '@/lib/utils/useImageSrc';
+import { useSideContext } from '@/providers/side-provider';
+import { useDecodeContext } from '@/providers/decode-provider';
 
 const side = [
   { id: 1, name: 'Ззовні' },
@@ -14,19 +15,13 @@ const side = [
 ];
 
 export default function DoorDecor() {
-  const [selected, setSelected] = useState(1);
-  const [selectedDecor, setSelectedDecor] = useState(1);
+  const { decodedData } = useDecodeContext();
+  const { inside, onOpenInside, onOpenOutside } = useSideContext();
+  const activeSide = inside ? 2 : 1;
+  const activeDecor = decodedData?.decor[inside ? 'inside' : 'outside'].id;
   const { data: inox, isLoading: isLoadingInox } = useGetInox();
   const { data: molding, isLoading: isLoadingMolding } = useGetMolding();
   const decor = [...(inox || []), ...(molding || [])];
-
-  const handleSelect = (id: number) => {
-    setSelected(id);
-  };
-
-  const handleSelectDecor = (id: number) => {
-    setSelectedDecor(id);
-  };
 
   if (isLoadingInox || isLoadingMolding) return <DoorDecorLoading />;
 
@@ -49,8 +44,14 @@ export default function DoorDecor() {
           <Button
             variant="sidebar"
             key={item.id}
-            className={cn(`h-full w-full ${selected === item.id && 'border-accent border-2'}`)}
-            onClick={() => handleSelect(item.id)}
+            className={cn(`h-full w-full ${activeSide === item.id && 'border-accent border-2'}`)}
+            onClick={() => {
+              if (item.id === 1) {
+                onOpenOutside();
+              } else {
+                onOpenInside();
+              }
+            }}
           >
             {item.name}
           </Button>
@@ -61,9 +62,9 @@ export default function DoorDecor() {
           <div key={item.id} className="flex flex-col">
             <div
               className={cn(
-                `relative h-full w-full cursor-pointer ${selectedDecor === Number(item.id) && 'border-accent border-2'}`
+                `relative h-full w-full cursor-pointer ${activeDecor === item.id && 'border-accent border-2'}`
               )}
-              onClick={() => handleSelectDecor(Number(item.id))}
+              onClick={() => {}}
             >
               <Image
                 src={getImageSrc(item.image)}

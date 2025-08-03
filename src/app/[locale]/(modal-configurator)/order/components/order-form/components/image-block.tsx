@@ -1,19 +1,41 @@
+'use client';
 import Image from 'next/image';
+import { useExportDoor } from '@/hooks/modal/use-export-door';
+import { useEffect, useState } from 'react';
 
-const cards = [
-  {
-    title: 'Ззовні',
-    bg: '/figma-images/modal-view/sheet/background.jpg',
-    door: '/figma-images/modal-view/sheet/door.png',
-  },
-  {
-    title: 'Зсередини',
-    bg: '/figma-images/modal-view/sheet/background.jpg',
-    door: '/figma-images/modal-view/sheet/door.png',
-  },
-];
+interface Card {
+  title: string;
+  bg: string;
+  door: string;
+}
 
 export const ImageBlock = () => {
+  const { exportDoors, isReady } = useExportDoor();
+  const [cards, setCards] = useState<Card[]>([]);
+  useEffect(() => {
+    if (isReady) {
+      exportDoors({ format: 'png', width: 400, height: 300 }).then((result) => {
+        console.log('result', result);
+        if (result) {
+          console.log(result);
+          setCards([
+            {
+              title: 'Ззовні',
+              bg: '/figma-images/modal-view/sheet/background.jpg',
+              door: result.outside,
+            },
+            {
+              title: 'Зсередини',
+              bg: '/figma-images/modal-view/sheet/background.jpg',
+              door: result.inside,
+            },
+          ]);
+        }
+      });
+    }
+  }, [isReady, exportDoors]);
+  console.log('cards', cards);
+
   return (
     <div className="mt-2 flex w-full flex-col items-center justify-center gap-4 p-4">
       <div className="relative mb-4 flex h-full w-full max-w-[400px] flex-col justify-center sm:max-w-[320px] md:max-w-[400px] lg:max-w-[460px]">

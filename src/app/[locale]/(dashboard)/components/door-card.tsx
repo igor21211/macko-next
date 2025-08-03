@@ -5,19 +5,18 @@ import { useTranslations } from 'next-intl';
 type Props = {
   img: string;
   label: string;
-  id: number;
   priority?: boolean;
   price: string;
   salePrice?: string;
+  code: string;
 };
 
-export default function DoorCard({ img, label, id, priority = false, price, salePrice }: Props) {
+export default function DoorCard({ img, label, priority = false, price, salePrice, code }: Props) {
   const t = useTranslations('DoorCard');
   const showSale = salePrice !== undefined && salePrice !== null;
 
-
   return (
-    <Link href={`/model/${id}`}>
+    <Link href={`/model/${code}`}>
       <div className="group flex cursor-pointer flex-col items-center justify-center">
         <div className="group-hover:border-accent relative h-[200px] w-[100px] overflow-hidden rounded-md bg-white transition-all duration-200 group-hover:border-6 lg:h-[400px] lg:w-[200px]">
           <Image

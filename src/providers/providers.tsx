@@ -6,16 +6,22 @@ import { SheetProviders } from './sheet-providers';
 import { ReactNode, useState } from 'react';
 import { Toaster } from 'sonner';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { SideProvider } from './side-provider';
+import { DecodeProvider } from './decode-provider';
 
 export function Providers({ children }: { children: ReactNode }) {
   const [queryClient] = useState(() => new QueryClient());
   return (
     <QueryClientProvider client={queryClient}>
-      <ModalProviders />
-      <SheetProviders />
-      <Toaster />
-      <ReactQueryDevtools initialIsOpen={true} />
-      {children}
+      <SideProvider>
+        <DecodeProvider>
+          <ModalProviders />
+          <SheetProviders />
+          <Toaster />
+          <ReactQueryDevtools initialIsOpen={true} />
+          {children}
+        </DecodeProvider>
+      </SideProvider>
     </QueryClientProvider>
   );
 }

@@ -1,5 +1,5 @@
 'use client';
-import { useState, useRef } from 'react';
+import { useRef } from 'react';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -9,16 +9,16 @@ import { useScrollByArrow } from '@/lib/utils/useScrollByArrow';
 import DoorFormSectionLoading from './loading-components/door-form-section-loading';
 import { useGetShape } from '@/hooks/modal/api-hooks/shape/useGetShape';
 import { getImageSrc } from '@/lib/utils/useImageSrc';
+import { useDecode } from '@/hooks/modal/api-hooks/use-decode';
 
 export default function DoorFormSection() {
   const { data: forms, isLoading } = useGetShape();
-  const [selected, setSelected] = useState(1);
+  const { data: decode } = useDecode();
   const scrollRef = useRef<HTMLDivElement>(null);
   const { isDragging, handleMouseDown, handleMouseMove, handleMouseUp, handleMouseLeave } =
     useMoveMouse<HTMLDivElement>(scrollRef);
   const { canScrollLeft, canScrollRight, handleScrollLeft, handleScrollRight } =
     useScrollByArrow<HTMLDivElement>(scrollRef);
-
   if (isLoading) return <DoorFormSectionLoading />;
 
   return (
@@ -74,11 +74,12 @@ export default function DoorFormSection() {
                 type="button"
                 aria-label={item.title}
                 tabIndex={0}
-                onClick={() => setSelected(Number(item.id))}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' || e.key === ' ') setSelected(Number(item.id));
-                }}
-                className={`group relative flex aspect-[5/7] h-full min-w-[90px] flex-1 cursor-pointer items-center justify-center rounded-none border-none bg-white p-0 py-3 shadow-none transition-colors duration-100 hover:bg-white focus-visible:ring-2 focus-visible:outline-none lg:h-[70px] lg:w-[60px] ${selected === Number(item.id) ? 'border-accent' : 'border-transparent'} hover:border-accent/80 focus-visible:border-accent/80`}
+                onClick={() => {}}
+                className={cn(
+                  'group relative flex aspect-[5/7] h-full min-w-[90px] flex-1 cursor-pointer items-center justify-center rounded-none border-none bg-white p-0 py-3 shadow-none transition-colors duration-100 hover:bg-white focus-visible:ring-2 focus-visible:outline-none lg:h-[70px] lg:w-[60px]',
+                  decode?.shape.id === item.id ? 'border-accent border-2' : 'border-transparent',
+                  'hover:border-accent/80 focus-visible:border-accent/80'
+                )}
               >
                 <div className="relative h-[90px] w-full lg:h-[70px]">
                   <Image src={imageSrc} alt={item.title} fill className="object-contain" />

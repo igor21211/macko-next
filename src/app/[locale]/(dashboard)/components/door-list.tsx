@@ -41,10 +41,10 @@ export default function DoorList({ cards, isLoading }: Props) {
                 <DoorCard
                   img={getImageSrc(card.image)}
                   label={card.title}
-                  id={card.id}
                   priority={card.id <= 4}
                   price={card.price}
                   salePrice={card.old_price}
+                  code={card.code}
                 />
               </motion.div>
             ))}

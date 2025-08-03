@@ -3,17 +3,20 @@ import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { cn } from '@/lib/utils';
-import { useState, useRef, useMemo, useEffect } from 'react';
+import { useState, useRef, useMemo } from 'react';
 import Image from 'next/image';
 import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react';
 import { useScrollByArrow } from '@/lib/utils/useScrollByArrow';
 import { useGetFurniture } from '@/hooks/modal/api-hooks/furniture/useGetFurniture';
 import DoorFurnitureSectionLoading from './loading-components/door-furniture-section-loading';
 import { getImageSrc } from '@/lib/utils/useImageSrc';
+import { useSideContext } from '@/providers/side-provider';
+import { useDecodeContext } from '@/providers/decode-provider';
+import { usePostFurniture } from '@/hooks/modal/api-hooks/furniture/usePostFurniture';
 
 const side = [
-  { id: '1', name: 'Ззовні' },
-  { id: '2', name: 'Зсередини' },
+  { id: 1, name: 'Ззовні', side: 'outside' },
+  { id: 2, name: 'Зсередини', side: 'inside' },
 ];
 
 const furnitureColors = [
@@ -41,9 +44,12 @@ const furnitureColors = [
 
 export default function DoorFurniture() {
   const { data: furniture, isLoading } = useGetFurniture();
-  const [selectedSide, setSelectedSide] = useState<string>('1');
-  const [selectedFurniture, setSelectedFurniture] = useState<string>('1');
-  const [selectedSize, setSelectedSize] = useState<string>('1');
+  const { mutate: updateFurniture } = usePostFurniture();
+  const { decodedData } = useDecodeContext();
+  const { inside, onOpenInside, onOpenOutside } = useSideContext();
+  const activeSide = inside ? 2 : 1;
+  const activeFurniture = decodedData?.furniture[inside ? 'inside' : 'outside'];
+
   const [selectedColor, setSelectedColor] = useState<string>('1');
   const sizeScrollRef = useRef<HTMLDivElement>(null);
   const colorScrollRef = useRef<HTMLDivElement>(null);
@@ -61,55 +67,43 @@ export default function DoorFurniture() {
     handleScrollRight: handleColorScrollRight,
   } = useScrollByArrow<HTMLDivElement>(colorScrollRef);
 
-  const handleSelectSide = (id: string) => {
-    setSelectedSide(id);
-  };
-
-  const handleSelectFurniture = (id: string) => {
-    setSelectedFurniture(id);
-  };
-
-  const handleSelectSize = (id: string) => {
-    setSelectedSize(id);
-  };
-
   const handleSelectColor = (id: string) => {
     setSelectedColor(id);
   };
 
   const furnitureItems = useMemo(() => {
     return furniture?.flatMap((item) =>
-      item.items.map((furn) => ({ id: String(furn.id), image: furn.image_png, name: furn.title }))
+      item.items.map((furn) => ({
+        id: String(furn.id),
+        image: furn.image_png,
+        name: furn.title,
+        items: furn.subitems,
+      }))
     );
   }, [furniture]);
 
-  // Найти выбранную ручку
-  const selectedFurnitureObj = useMemo(() => {
-    return furniture
-      ?.flatMap((item) => item.items)
-      .find((furn) => String(furn.id) === selectedFurniture);
-  }, [furniture, selectedFurniture]);
+  const activeFurnitureItem = useMemo(() => {
+    return furnitureItems?.find((item) => item.id === activeFurniture?.items[0].id);
+  }, [furnitureItems, activeFurniture]);
 
   // Получить размеры только для выбранной ручки
   const allFurnitureSizes: { id: string; title: string }[] = useMemo(() => {
-    if (!selectedFurnitureObj) return [];
-    return selectedFurnitureObj.subitems
-      .filter((sub) => String(sub.title) !== 'Push')
-      .map((sub) => {
-        let title = String(sub.title);
-        if (title.includes('mm')) {
-          title = title.slice(0, title.indexOf('mm') + 2).trim();
-        }
-        return { id: String(sub.id), title };
-      });
-  }, [selectedFurnitureObj]);
-
-  // При смене ручки автоматически выбирать первый размер
-  useEffect(() => {
-    if (allFurnitureSizes.length > 0) {
-      setSelectedSize(allFurnitureSizes[0].id);
-    }
-  }, [selectedFurniture]);
+    if (!activeFurnitureItem) return [];
+    return (
+      activeFurnitureItem?.items
+        .filter((sub) => String(sub.title) !== 'Push')
+        .map((sub) => {
+          let title = String(sub.title);
+          if (title.includes('mm')) {
+            title = title.slice(0, title.indexOf('mm') + 2).trim();
+          }
+          return { id: String(sub.id), title };
+        }) || []
+    );
+  }, [activeFurnitureItem]);
+  const selectedFurnitureSize = useMemo(() => {
+    return allFurnitureSizes.find((item) => item.id === activeFurniture?.items[0].subitems[0].id);
+  }, [allFurnitureSizes, activeFurniture]);
 
   if (isLoading) return <DoorFurnitureSectionLoading />;
 
@@ -141,8 +135,14 @@ export default function DoorFurniture() {
           <Button
             variant="sidebar"
             key={item.id}
-            className={cn(`h-full w-full ${selectedSide === item.id && 'border-accent border-2'}`)}
-            onClick={() => handleSelectSide(item.id)}
+            className={cn('h-full w-full', activeSide === item.id && 'border-accent border-2')}
+            onClick={() => {
+              if (item.id === 1) {
+                onOpenOutside();
+              } else {
+                onOpenInside();
+              }
+            }}
           >
             {item.name}
           </Button>
@@ -153,12 +153,12 @@ export default function DoorFurniture() {
           <div
             key={item.id}
             className="flex h-full w-full cursor-pointer flex-col items-center"
-            onClick={() => handleSelectFurniture(String(item.id))}
+            onClick={() => updateFurniture(item.items[0].id, inside ? 'inside' : 'outside')}
           >
             <div
               className={cn(
                 'relative aspect-square h-full w-full',
-                selectedFurniture === String(item.id) && 'border-accent border-2'
+                String(activeFurniture?.items[0].id) === item.id && 'border-accent border-2'
               )}
             >
               <Image
@@ -217,14 +217,16 @@ export default function DoorFurniture() {
             <div className="mb-4 grid auto-cols-[100px] grid-flow-col gap-x-3">
               {allFurnitureSizes.map((item) => {
                 const idStr = String(item.id);
+                console.log('idStr', idStr);
+
                 return (
                   <div
                     key={idStr}
                     className={cn(
                       'flex h-full w-full min-w-[100px] flex-col items-center',
-                      selectedSize === idStr && 'border-accent border-3'
+                      selectedFurnitureSize?.id === idStr && 'border-accent border-3'
                     )}
-                    onClick={() => handleSelectSize(idStr)}
+                    onClick={() => updateFurniture(item.id, inside ? 'inside' : 'outside')}
                   >
                     <Label className="text-primary w-full cursor-pointer justify-center border-none bg-white pt-2 pb-2 text-center font-sans text-[14px] font-medium">
                       {item.title}

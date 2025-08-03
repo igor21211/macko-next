@@ -1,13 +1,14 @@
 import Header from '@/components/header';
 import { Suspense } from 'react';
+import { Providers } from '@/providers/providers';
 
 export default function ModelLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex flex-col h-screen">
-       <Header />
-      <div className="flex flex-1 min-h-0 w-full h-full">
+    <div className="flex h-screen flex-col">
+      <Header />
+      <div className="flex h-full min-h-0 w-full flex-1">
         <Suspense>
-          {children}
+          <Providers>{children}</Providers>
         </Suspense>
       </div>
     </div>

@@ -4,11 +4,12 @@ import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { useGetGlass } from '@/hooks/modal/api-hooks/glass/useGetGlass';
 import DoorGlassSectionLoading from './loading-components/door-glass-section-loading';
 import { getImageSrc } from '@/lib/utils/useImageSrc';
+import { useDecodeContext } from '@/providers/decode-provider';
 
 const types = [
   { id: 1, name: 'Звичайне' },
@@ -16,6 +17,7 @@ const types = [
 ];
 
 export default function DoorGlass() {
+  const { decodedData } = useDecodeContext();
   const [selectedGlass, setSelectedGlass] = useState(1);
   const [selectedType, setSelectedType] = useState(1);
   const { data: glass, isLoading } = useGetGlass();
@@ -27,6 +29,12 @@ export default function DoorGlass() {
   const handleSelectGlass = (id: number) => {
     setSelectedGlass(id);
   };
+
+  useEffect(() => {
+    if (decodedData) {
+      setSelectedGlass(Number(decodedData.glass.id));
+    }
+  }, [decodedData]);
 
   if (isLoading) return <DoorGlassSectionLoading />;
 

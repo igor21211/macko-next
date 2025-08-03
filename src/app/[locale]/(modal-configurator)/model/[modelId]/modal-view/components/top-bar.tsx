@@ -5,7 +5,7 @@ import { useCostConfiguration } from '@/hooks/modal/use-cost-configuration';
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 import { useMedia } from 'react-use';
-import { useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { useFullScreen } from '@/hooks/modal/use-full-screen';
 
 export const TopBar = () => {
@@ -15,9 +15,10 @@ export const TopBar = () => {
   const isMobile = useMedia('(max-width: 1024px)', false);
   const isTablet = useMedia('(max-width: 1680px)', false);
   const { open } = useFullScreen();
+  const { modelId } = useParams();
 
   const handleOrder = () => {
-    router.push('/order');
+    router.push(`/order?code=${modelId}`);
   };
 
   if (open) return null;

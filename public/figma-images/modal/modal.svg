@@ -212,11 +212,8 @@
 <!-- Ручка нажимная -->
 
 <!-- Правая дверь -->	  
-	<g id="handle_type_2">
-		<polyline class="handle_cover" points="15.66 144.96 15.66 134.11 10.07 134.11 10.07 168.41 15.66 168.41 15.66 148.46"/>
-		<rect class="handle_grip grip_shadow" x="11.48" y="144.96" width="18.18" height="3.5"/>
-	    <path d="M14.12,157.08a1.39,1.39,0,1,0-2.06,1.21v1.61h0a0.68,0.68,0,0,0,1.36,0v-1.62A1.38,1.38,0,0,0,14.12,157.08Z" fill="rgb(0, 0, 0)" filter="url(#strong-inner)"/>
-		<rect class="keyhole" x="12" y="156.9" width="1.5" height="0.4" rx="0.18" ry="0.18" />
+	<g id="handle">
+
 	</g>
 
 <!-- Левая дверь 
