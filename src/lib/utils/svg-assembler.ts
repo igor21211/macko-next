@@ -46,10 +46,10 @@ export const createDoorAssemblerConfig = (
       position: side,
       priority: 1,
       // Добавляем позиционирование и размеры
-      positionX: furnitureSubitem.positionX,
-      positionY: furnitureSubitem.positionY,
-      width: furnitureSubitem.width,
-      height: furnitureSubitem.height,
+      positionX: furnitureSubitem.positionX?.toString(),
+      positionY: furnitureSubitem.positionY?.toString(),
+      width: furnitureSubitem.width?.toString(),
+      height: furnitureSubitem.height?.toString(),
     });
   }
 
@@ -64,10 +64,10 @@ export const createDoorAssemblerConfig = (
       position: side,
       priority: 1,
       // Добавляем позиционирование и размеры
-      positionX: handleSubitem.positionX,
-      positionY: handleSubitem.positionY,
-      width: handleSubitem.width,
-      height: handleSubitem.height,
+      positionX: handleSubitem.positionX?.toString(),
+      positionY: handleSubitem.positionY?.toString(),
+      width: handleSubitem.width?.toString(),
+      height: handleSubitem.height?.toString(),
     });
   }
 

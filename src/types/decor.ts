@@ -22,9 +22,15 @@ export interface BaseDecor {
 }
 
 // Наследующие интерфейсы
-export interface DecorItem extends BaseDecor {}
+export interface DecorItem extends BaseDecor {
+  slot_type: string;
+  slot_type_margin: string;
+}
 
-export interface DecorSide extends BaseDecor {}
+export interface DecorSide extends BaseDecor {
+  slot_type: string;
+  slot_type_margin: string;
+}
 
 export interface DecorResponse {
   outside: DecorSide;
