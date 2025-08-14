@@ -60,10 +60,10 @@ export default function DoorColor() {
   }, [furnitureColors, selectedTypeColor]);
 
   const loading = isPending || isLoading;
-  const handleSelectColor = (id: number) => {
+  const handleSelectColor = (id: number, type: 'outside' | 'inside') => {
     const selectedColor = furnitureColors?.find((color) => color.id === id.toString());
     if (selectedColor) {
-      updateColor(selectedColor);
+      updateColor(selectedColor, type);
     }
   };
 
@@ -141,12 +141,13 @@ export default function DoorColor() {
                 'relative h-[60px] w-[60px] cursor-pointer',
                 activeColorInside === color.id && 'border-accent border-2'
               )}
-              onClick={() => handleSelectColor(Number(color.id))}
+              onClick={() => handleSelectColor(Number(color.id), 'inside')}
               tabIndex={0}
               aria-label={t('DoorColor.selectColorInside', { colorId: color.id })}
               role="button"
               onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') handleSelectColor(Number(color.id));
+                if (e.key === 'Enter' || e.key === ' ')
+                  handleSelectColor(Number(color.id), 'inside');
               }}
             >
               {src ? (
@@ -165,6 +166,21 @@ export default function DoorColor() {
             </div>
           );
         })}
+      </div>
+      <div className="mb-4 grid min-h-[50px] grid-cols-2 gap-x-2">
+        {colors.map((color) => (
+          <Button
+            variant="sidebar"
+            key={color.id}
+            className={cn(
+              'h-full w-full',
+              selectAluminium === color.id ? 'border-accent border-2' : 'border-transparent'
+            )}
+            onClick={() => handleAluminumSelect(color.id)}
+          >
+            {color.name}
+          </Button>
+        ))}
       </div>
       <div className="mb-4 flex w-full flex-row items-center justify-between">
         <h3 className="text-textDark font-inter text-[14px] font-medium tracking-[0.06em] uppercase">
@@ -189,12 +205,13 @@ export default function DoorColor() {
                 'relative h-[60px] w-[60px] cursor-pointer',
                 activeColorOutside === color.id && 'border-accent border-2'
               )}
-              onClick={() => handleSelectColor(Number(color.id))}
+              onClick={() => handleSelectColor(Number(color.id), 'outside')}
               tabIndex={0}
               aria-label={t('DoorColor.selectColorOutside', { colorId: color.id })}
               role="button"
               onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') handleSelectColor(Number(color.id));
+                if (e.key === 'Enter' || e.key === ' ')
+                  handleSelectColor(Number(color.id), 'outside');
               }}
             >
               {src ? (

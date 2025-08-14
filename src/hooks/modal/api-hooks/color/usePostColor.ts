@@ -4,11 +4,14 @@ import { Color } from '@/types';
 export const usePostColor = () => {
   const { mutate, isPending } = usePostCode();
 
-  const updateColor = (color: Color) => {
+  const updateColor = (color: Color, type: 'outside' | 'inside') => {
     mutate((decode) => ({
       colors: {
-        outside: { ...decode.colors.outside, id: color.id },
-        inside: { ...decode.colors.inside, id: color.id },
+        ...decode.colors,
+        [type]: {
+          ...decode.colors[type],
+          id: color.id,
+        },
       },
     }));
   };

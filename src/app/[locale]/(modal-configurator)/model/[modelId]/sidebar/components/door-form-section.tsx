@@ -1,6 +1,5 @@
 'use client';
 import { useRef } from 'react';
-import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react';
@@ -10,6 +9,7 @@ import DoorFormSectionLoading from './loading-components/door-form-section-loadi
 import { useGetShape } from '@/hooks/modal/api-hooks/shape/useGetShape';
 import { getImageSrc } from '@/lib/utils/useImageSrc';
 import { useDecode } from '@/hooks/modal/api-hooks/use-decode';
+import Image from 'next/image';
 
 export default function DoorFormSection() {
   const { data: forms, isLoading } = useGetShape();
@@ -76,13 +76,19 @@ export default function DoorFormSection() {
                 tabIndex={0}
                 onClick={() => {}}
                 className={cn(
-                  'group relative flex aspect-[5/7] h-full min-w-[90px] flex-1 cursor-pointer items-center justify-center rounded-none border-none bg-white p-0 py-3 shadow-none transition-colors duration-100 hover:bg-white focus-visible:ring-2 focus-visible:outline-none lg:h-[70px] lg:w-[60px]',
-                  decode?.shape.id === item.id ? 'border-accent border-2' : 'border-transparent',
+                  'group relative grid h-[77px] w-[79px] place-items-center rounded-none border bg-white p-2 shadow-none transition-colors duration-100 hover:bg-white focus-visible:ring-2 focus-visible:outline-none',
+                  decode?.shape.id === item.id ? 'border-accent border-2' : 'border-gray-200',
                   'hover:border-accent/80 focus-visible:border-accent/80'
                 )}
               >
-                <div className="relative h-[90px] w-full lg:h-[70px]">
-                  <Image src={imageSrc} alt={item.title} fill className="object-contain" />
+                <div className="relative h-[60px] w-[75px] overflow-hidden">
+                  <Image
+                    src={imageSrc}
+                    alt={item.title}
+                    fill
+                    sizes="79px"
+                    className="object-contain"
+                  />
                 </div>
               </Button>
             );

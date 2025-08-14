@@ -75,10 +75,18 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'Failed to fetch SVG' }, { status: response.status });
     }
 
-    // Проверяем Content-Type
-    const contentType = response.headers.get('content-type');
-    if (!contentType?.includes('image/svg+xml') && !contentType?.includes('text/xml')) {
-      return NextResponse.json({ error: 'Invalid content type. Expected SVG.' }, { status: 400 });
+    // Проверяем Content-Type (ослабленная проверка - некоторые серверы отдают octet-stream)
+    const contentType = response.headers.get('content-type') || '';
+    const isLikelySvg =
+      contentType.includes('image/svg+xml') ||
+      contentType.includes('text/xml') ||
+      contentType.includes('application/xml') ||
+      contentType.includes('application/octet-stream');
+    if (!isLikelySvg) {
+      return NextResponse.json(
+        { error: 'Invalid content type. Expected SVG-like.' },
+        { status: 400 }
+      );
     }
 
     // Проверяем размер

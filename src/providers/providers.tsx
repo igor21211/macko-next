@@ -8,6 +8,7 @@ import { Toaster } from 'sonner';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { SideProvider } from './side-provider';
 import { DecodeProvider } from './decode-provider';
+import { SvgProvider } from './svg-provider';
 
 export function Providers({ children }: { children: ReactNode }) {
   const [queryClient] = useState(() => new QueryClient());
@@ -15,11 +16,13 @@ export function Providers({ children }: { children: ReactNode }) {
     <QueryClientProvider client={queryClient}>
       <SideProvider>
         <DecodeProvider>
-          <ModalProviders />
-          <SheetProviders />
-          <Toaster />
-          <ReactQueryDevtools initialIsOpen={true} />
-          {children}
+          <SvgProvider>
+            <ModalProviders />
+            <SheetProviders />
+            <Toaster />
+            <ReactQueryDevtools initialIsOpen={true} />
+            {children}
+          </SvgProvider>
         </DecodeProvider>
       </SideProvider>
     </QueryClientProvider>

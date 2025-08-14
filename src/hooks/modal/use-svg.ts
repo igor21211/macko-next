@@ -30,6 +30,16 @@ export const useSvg = ({ svgString, svgUrl, additionalSvgs = [] }: UseSvgProps) 
     async (doc: Svg) => {
       for (const { svgString, svgUrl, targetSelector, positionX, positionY } of additionalSvgs) {
         try {
+          // debug
+          console.info('[useSvg] insertAdditionalSvg:start', {
+            targetSelector,
+            hasString: !!svgString,
+            svgUrl,
+            positionX,
+            positionY,
+          });
+        } catch {}
+        try {
           const targetElement = doc.findOne(targetSelector) as Dom;
           if (!targetElement) continue;
 
@@ -41,6 +51,7 @@ export const useSvg = ({ svgString, svgUrl, additionalSvgs = [] }: UseSvgProps) 
           // Если передан URL, загружаем SVG
           if (!finalSvgString && svgUrl) {
             const response = await fetch(svgUrl);
+            console.info('[useSvg] fetch additional svg', svgUrl, response.ok, response.status);
             finalSvgString = await response.text();
           }
 
@@ -52,6 +63,10 @@ export const useSvg = ({ svgString, svgUrl, additionalSvgs = [] }: UseSvgProps) 
           const svgElement = tempDiv.querySelector('svg');
 
           if (svgElement) {
+            // Удаляем возможные глобальные стили из дополнительного SVG, чтобы не сбивались заливки основной двери
+            try {
+              svgElement.querySelectorAll('style').forEach((s) => s.parentNode?.removeChild(s));
+            } catch {}
             // Применяем позиционирование к rect элементу перед вставкой
             const handleElement = svgElement.querySelector('#handle_1000_mm');
             if (handleElement && (positionX || positionY)) {
@@ -85,6 +100,11 @@ export const useSvg = ({ svgString, svgUrl, additionalSvgs = [] }: UseSvgProps) 
 
             // Вставляем содержимое SVG в целевой элемент
             targetElement.svg(svgElement.innerHTML);
+            try {
+              const node = (targetElement as unknown as { node?: SVGElement }).node;
+              const childCount = node ? node.children?.length : 'n/a';
+              console.info('[useSvg] insertAdditionalSvg:done', { targetSelector, childCount });
+            } catch {}
           }
         } catch (error) {
           console.error('Error inserting additional SVG:', error);
@@ -119,6 +139,13 @@ export const useSvg = ({ svgString, svgUrl, additionalSvgs = [] }: UseSvgProps) 
         // Если передан URL, загружаем SVG
         if (!finalSvgString && svgUrl) {
           const response = await fetch(svgUrl);
+          console.info(
+            '[useSvg] fetch main svg',
+            svgUrl,
+            response.ok,
+            response.status,
+            response.headers.get('content-type')
+          );
           if (!response.ok) {
             throw new Error(`Не удалось загрузить SVG: ${response.status} ${response.statusText}`);
           }
@@ -141,13 +168,101 @@ export const useSvg = ({ svgString, svgUrl, additionalSvgs = [] }: UseSvgProps) 
           svgElement.setAttribute('height', '100%');
           svgElement.setAttribute('preserveAspectRatio', 'xMidYMid meet');
 
+          // Убеждаемся, что есть <defs> и базовый градиент BG-gradient (как во Vue)
+          try {
+            const rootSvg = svgElement as unknown as SVGSVGElement;
+            let defs = rootSvg.querySelector('defs');
+            if (!defs) {
+              defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
+              rootSvg.insertBefore(defs, rootSvg.firstChild);
+            }
+            let bgGrad = defs.querySelector('#BG-gradient') as SVGLinearGradientElement | null;
+            if (!bgGrad) {
+              bgGrad = document.createElementNS(
+                'http://www.w3.org/2000/svg',
+                'linearGradient'
+              ) as SVGLinearGradientElement;
+              bgGrad.setAttribute('id', 'BG-gradient');
+              bgGrad.setAttribute('x1', '0');
+              bgGrad.setAttribute('y1', '0');
+              bgGrad.setAttribute('x2', '100%');
+              bgGrad.setAttribute('y2', '100%');
+              const stops: Array<{ offset: string; color: string }> = [
+                { offset: '25%', color: '#f9f9f9' },
+                { offset: '67%', color: '#e8e8e8' },
+                { offset: '79%', color: '#e2e2e2' },
+              ];
+              stops.forEach(({ offset, color }) => {
+                const stop = document.createElementNS('http://www.w3.org/2000/svg', 'stop');
+                stop.setAttribute('offset', offset);
+                stop.setAttribute('stop-color', color);
+                bgGrad!.appendChild(stop);
+              });
+              defs.appendChild(bgGrad);
+            }
+          } catch {}
+
           // Прикрепляем SVG к контейнеру и создаем экземпляр SVG.js
           container.appendChild(svgElement);
           const doc = new Svg(svgElement);
           setSvgDoc(doc);
 
+          // Фолбэк-заливка: если основные элементы без fill, задаём BG-gradient
+          try {
+            const root = svgElement as unknown as SVGSVGElement;
+            const baseSelectors = [
+              '.doorbackground',
+              '.doorleaf',
+              '.frame',
+              '.top-frame',
+              '.left-frame',
+              '.right-frame',
+              '#BG',
+              '#frame',
+              '#doorleaf',
+            ];
+            for (const sel of baseSelectors) {
+              const nodes = root.querySelectorAll(sel);
+              nodes.forEach((el) => {
+                const current = (el as SVGElement).getAttribute('fill');
+                if (!current || current === 'none') {
+                  (el as SVGElement).setAttribute('fill', 'url(#BG-gradient)');
+                }
+              });
+              try {
+                console.info('[useSvg] fallbackFill:applied', baseSelectors.join(','));
+              } catch {}
+            }
+          } catch {}
+
           // Вставляем дополнительные SVG
           await insertAdditionalSvgs(doc);
+
+          // Повторная фолбэк-заливка после вставки доп. SVG
+          try {
+            const root = (doc as unknown as { node: SVGSVGElement }).node;
+            const baseSelectors = [
+              '.doorbackground',
+              '.doorleaf',
+              '.frame',
+              '.top-frame',
+              '.left-frame',
+              '.right-frame',
+              '#BG',
+              '#frame',
+              '#doorleaf',
+            ];
+            for (const sel of baseSelectors) {
+              const nodes = root.querySelectorAll(sel);
+              nodes.forEach((el: Element) => {
+                const current = (el as SVGElement).getAttribute('fill');
+                if (!current || current === 'none') {
+                  (el as SVGElement).setAttribute('fill', 'url(#BG-gradient)');
+                }
+              });
+            }
+            console.info('[useSvg] fallbackFill:reapplied', baseSelectors.join(','));
+          } catch {}
 
           setIsLoading(false);
         }

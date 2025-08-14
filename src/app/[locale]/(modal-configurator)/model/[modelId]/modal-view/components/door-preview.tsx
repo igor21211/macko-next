@@ -1,7 +1,7 @@
 'use client';
 
 import { useSvg } from '@/hooks/modal/use-svg';
-import { CSSProperties, useMemo, memo } from 'react';
+import { CSSProperties, useMemo, memo, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { TopBar } from './top-bar';
 import { BottomBar } from './bottom-bar';
@@ -10,6 +10,7 @@ import { useFullScreen } from '@/hooks/modal/use-full-screen';
 import { useSideContext } from '@/providers/side-provider';
 import { useDecodeContext } from '@/providers/decode-provider';
 import { createDoorAssemblerConfig, configToUseSvgProps } from '@/lib/utils/svg-assembler';
+import { useSvgRegistry } from '@/providers/svg-provider';
 
 // Выносим статические объекты из компонента
 const DOOR_DIMENSIONS = {
@@ -30,12 +31,17 @@ const DOOR_SHAPE = {
 const DoorPreview = memo(
   ({ isDoorReduced, side }: { isDoorReduced: boolean; side: 'inside' | 'outside' }) => {
     const { decodedData } = useDecodeContext();
+    const mainSvgUrl = useMemo<string | undefined>(() => {
+      const url = decodedData?.model?.image_svg;
+      if (!url) return undefined;
+      return `/api/proxy-svg?url=${encodeURIComponent(url)}`;
+    }, [decodedData?.model?.image_svg]);
 
     // Создаем конфигурацию для сборки двери используя SVG Assembler
     const assemblerConfig = useMemo(() => {
-      if (!decodedData) return null;
-      return createDoorAssemblerConfig(decodedData, side);
-    }, [decodedData, side]);
+      if (!decodedData || !mainSvgUrl) return null;
+      return createDoorAssemblerConfig(decodedData, side, mainSvgUrl);
+    }, [decodedData, side, mainSvgUrl]);
 
     // Преобразуем конфигурацию для хукаuseSvg
     const svgProps = useMemo(() => {
@@ -44,8 +50,18 @@ const DoorPreview = memo(
     }, [assemblerConfig]);
 
     const isDataReady = !!decodedData?.furniture && !!svgProps;
+    const isDecodeReady = !!decodedData;
+    const isMissingMainSvg = isDecodeReady && !decodedData?.model?.image_svg;
 
-    const { containerRef } = useSvg(svgProps || { svgUrl: '/figma-images/modal/modal.svg' });
+    const { containerRef, error: svgError, svgDoc } = useSvg(svgProps || { svgUrl: mainSvgUrl });
+    const { registerSvg } = useSvgRegistry();
+
+    useEffect(() => {
+      if (!svgDoc) return;
+      const svgEl = (svgDoc as unknown as { node: SVGSVGElement }).node;
+      registerSvg(side, svgEl || null);
+      return () => registerSvg(side, null);
+    }, [svgDoc, registerSvg, side]);
 
     const { inside, outside } = useSideContext();
     const isMobile = useMedia('(max-width: 1024px)', false);
@@ -129,6 +145,15 @@ const DoorPreview = memo(
           >
             {isDataReady ? (
               <div ref={containerRef} className="h-full w-full" />
+            ) : svgError ? (
+              <div className="flex h-full w-full items-center justify-center text-center text-sm text-red-600">
+                Ошибка загрузки SVG: {svgError}
+              </div>
+            ) : isMissingMainSvg ? (
+              <div className="flex h-full w-full items-center justify-center text-center text-sm text-red-600">
+                Не найден основной SVG модели. Обратитесь в поддержку или проверьте конфигурацию
+                модели.
+              </div>
             ) : (
               <div className="flex h-full w-full items-center justify-center">
                 <div className="h-12 w-12 animate-spin rounded-full border-4 border-gray-300 border-t-gray-600"></div>

@@ -2,6 +2,7 @@
 
 import { useCallback } from 'react';
 import { useDecodeContext } from '@/providers/decode-provider';
+import { useSvgRegistry } from '@/providers/svg-provider';
 import { createDoorAssemblerConfig, configToUseSvgProps } from '@/lib/utils/svg-assembler';
 import DOMPurify from 'dompurify';
 
@@ -19,34 +20,42 @@ interface ExportResult {
 
 export const useExportDoor = () => {
   const { decodedData } = useDecodeContext();
+  const { getSvg } = useSvgRegistry();
 
   /**
    * Создает SVG элемент из конфигурации
    */
   const createSvgElement = useCallback(
     async (side: 'inside' | 'outside'): Promise<SVGElement | null> => {
-      if (!decodedData) return null;
+      // 1) Пытаемся взять уже смонтированный SVG из превью
+      const mounted = getSvg(side);
+      if (mounted) {
+        const cloned = mounted.cloneNode(true) as SVGElement;
+        cloned.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+        return cloned;
+      }
+
+      // 2) Фоллбек: собираем SVG из данных (если превью не смонтирован, например на странице заказа)
+      if (!decodedData?.model?.image_svg) return null;
 
       try {
-        // Создаем конфигурацию для сборки двери
-        const assemblerConfig = createDoorAssemblerConfig(decodedData, side);
+        const mainUrl = `/api/proxy-svg?url=${encodeURIComponent(decodedData.model.image_svg)}`;
+        const assemblerConfig = createDoorAssemblerConfig(decodedData, side, mainUrl);
         const svgProps = configToUseSvgProps(assemblerConfig);
 
         // Загружаем главный SVG
         const mainSvgResponse = await fetch(svgProps.svgUrl);
+        if (!mainSvgResponse.ok) return null;
         const mainSvgText = await mainSvgResponse.text();
 
-        // Создаем временный div для парсинга
+        // Создаем временный div для парсинга и санитизируем
         const tempDiv = document.createElement('div');
-        // Санитизируем SVG контент
         tempDiv.innerHTML = DOMPurify.sanitize(mainSvgText, {
           USE_PROFILES: { svg: true, svgFilters: true },
         });
         const svgElement = tempDiv.querySelector('svg');
-
         if (!svgElement) return null;
 
-        // Клонируем SVG для безопасности
         const clonedSvg = svgElement.cloneNode(true) as SVGElement;
 
         // Добавляем дополнительные SVG компоненты
@@ -54,82 +63,46 @@ export const useExportDoor = () => {
           try {
             let svgContent = additionalSvg.svgString;
 
-            // Если передан URL, загружаем SVG
             if (!svgContent && additionalSvg.svgUrl) {
               const response = await fetch(additionalSvg.svgUrl);
+              if (!response.ok) continue;
               svgContent = await response.text();
             }
 
             if (!svgContent) continue;
 
-            // Находим целевой элемент
             const targetElement = clonedSvg.querySelector(additionalSvg.targetSelector);
             if (!targetElement) continue;
 
-            // Парсим и санитизируем SVG строку
-            const tempDiv = document.createElement('div');
-            tempDiv.innerHTML = DOMPurify.sanitize(svgContent, {
+            const extraDiv = document.createElement('div');
+            extraDiv.innerHTML = DOMPurify.sanitize(svgContent, {
               USE_PROFILES: { svg: true, svgFilters: true },
             });
-            const additionalSvgElement = tempDiv.querySelector('svg');
-
+            const additionalSvgElement = extraDiv.querySelector('svg');
             if (additionalSvgElement) {
-              // Применяем позиционирование если есть
-              if (additionalSvg.positionX || additionalSvg.positionY) {
-                const handleElement = additionalSvgElement.querySelector('#handle_1000_mm');
-                if (handleElement) {
-                  const originalX = parseFloat(handleElement.getAttribute('x') || '0');
-                  const originalY = parseFloat(handleElement.getAttribute('y') || '0');
-
-                  const newX = additionalSvg.positionX
-                    ? parseFloat(additionalSvg.positionX)
-                    : originalX;
-                  const newY = additionalSvg.positionY
-                    ? parseFloat(additionalSvg.positionY)
-                    : originalY;
-
-                  const deltaX = newX - originalX;
-                  const deltaY = newY - originalY;
-
-                  // Обновляем позицию rect
-                  handleElement.setAttribute('x', newX.toString());
-                  handleElement.setAttribute('y', newY.toString());
-
-                  // Находим и обновляем градиент
-                  const gradientElement = additionalSvgElement.querySelector('#linear-gradient');
-                  if (gradientElement && (deltaX !== 0 || deltaY !== 0)) {
-                    const x1 = parseFloat(gradientElement.getAttribute('x1') || '0') + deltaX;
-                    const y1 = parseFloat(gradientElement.getAttribute('y1') || '0') + deltaY;
-                    const x2 = parseFloat(gradientElement.getAttribute('x2') || '0') + deltaX;
-                    const y2 = parseFloat(gradientElement.getAttribute('y2') || '0') + deltaY;
-
-                    gradientElement.setAttribute('x1', x1.toString());
-                    gradientElement.setAttribute('y1', y1.toString());
-                    gradientElement.setAttribute('x2', x2.toString());
-                    gradientElement.setAttribute('y2', y2.toString());
-                  }
-                }
-              }
-
-              // Очищаем целевой элемент и вставляем санитизированное содержимое
-              targetElement.innerHTML = '';
-              const sanitizedContent = DOMPurify.sanitize(additionalSvgElement.innerHTML, {
+              let inner = additionalSvgElement.innerHTML;
+              inner = inner
+                .replace(/id="linear-gradient"/g, 'id="handle-linear-gradient"')
+                .replace(/url\(#linear-gradient\)/g, 'url(#handle-linear-gradient)')
+                .replace(/fill="url\(#linear-gradient\)"/g, 'fill("url(#handle-linear-gradient)")');
+              const sanitizedContent = DOMPurify.sanitize(inner, {
                 USE_PROFILES: { svg: true, svgFilters: true },
               });
               targetElement.innerHTML = sanitizedContent;
             }
           } catch (error) {
-            console.error('Error processing additional SVG:', error);
+            console.error('Error processing additional SVG (fallback):', error);
           }
         }
 
+        clonedSvg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
         return clonedSvg;
       } catch (error) {
-        console.error('Error creating SVG element:', error);
+        console.error('Error creating SVG element (fallback):', error);
         return null;
       }
     },
-    [decodedData]
+    [getSvg, decodedData]
   );
 
   /**
@@ -177,10 +150,11 @@ export const useExportDoor = () => {
           // Добавляем xmlns для корректного отображения
           clonedSvg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
 
-          // Сериализуем SVG в строку
-          const svgData = new XMLSerializer().serializeToString(clonedSvg);
-
-          // Отладка: выводим SVG содержимое
+          // Сериализуем SVG в строку и санитизируем
+          const rawSvg = new XMLSerializer().serializeToString(clonedSvg);
+          const svgData = DOMPurify.sanitize(rawSvg, {
+            USE_PROFILES: { svg: true, svgFilters: true },
+          });
 
           // Создаем data URL напрямую для SVG
           const svgDataUrl =

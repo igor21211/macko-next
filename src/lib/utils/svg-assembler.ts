@@ -31,7 +31,8 @@ export interface AssemblerConfig {
  */
 export const createDoorAssemblerConfig = (
   decodedData: DecodeResponse,
-  side: 'inside' | 'outside'
+  side: 'inside' | 'outside',
+  mainSvgUrl: string
 ): AssemblerConfig => {
   const components: SvgComponent[] = [];
 
@@ -94,7 +95,7 @@ export const createDoorAssemblerConfig = (
   components.sort((a, b) => (a.priority || 999) - (b.priority || 999));
 
   return {
-    mainSvgUrl: '/figma-images/modal/modal.svg',
+    mainSvgUrl,
     components: components.filter((comp) => comp.position === side),
     side,
   };
@@ -117,6 +118,9 @@ export const configToUseSvgProps = (config: AssemblerConfig) => {
       width: comp.width,
       height: comp.height,
     })),
+    // Проксируем главный SVG через наш API для стабильного content-type/cors
+    // (если уже проксирован выше, это не повредит)
+    // Оставляем как есть: mainSvgUrl в сборке уже содержит /api/proxy-svg
   };
 };
 
