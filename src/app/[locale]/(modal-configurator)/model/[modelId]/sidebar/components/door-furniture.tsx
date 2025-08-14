@@ -227,9 +227,7 @@ export default function DoorFurniture() {
                       'flex h-full w-full min-w-[100px] flex-col items-center',
                       selectedFurnitureSize?.id === idStr && 'border-accent border-3'
                     )}
-                    onClick={() =>
-                      updateFurniture(item.id, inside ? 'inside' : 'outside')
-                    }
+                    onClick={() => updateFurniture(item.id, inside ? 'inside' : 'outside')}
                   >
                     <Label className="text-primary w-full cursor-pointer justify-center border-none bg-white pt-2 pb-2 text-center font-sans text-[14px] font-medium">
                       {item.title}

@@ -13,11 +13,15 @@ interface Molding {
   code: string;
 }
 
-export const useGetMolding = () => {
+export const useGetMolding = (modelId: number) => {
   return useQuery<Molding[], Error>({
-    queryKey: ['molding'],
+    queryKey: ['molding', modelId],
+    enabled: typeof modelId === 'number' && !Number.isNaN(modelId),
     queryFn: async () => {
-      const response = await api.get<Molding[]>('/molding');
+      if (typeof modelId !== 'number' || Number.isNaN(modelId)) {
+        return [];
+      }
+      const response = await api.get<Molding[]>(`/molding/?model=${modelId}`);
       return response.data;
     },
     staleTime: 1000 * 60 * 60 * 24, // 24 часа (86400000 мс)

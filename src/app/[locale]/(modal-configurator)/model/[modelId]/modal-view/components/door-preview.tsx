@@ -11,6 +11,18 @@ import { useSideContext } from '@/providers/side-provider';
 import { useDecodeContext } from '@/providers/decode-provider';
 import { createDoorAssemblerConfig, configToUseSvgProps } from '@/lib/utils/svg-assembler';
 import { useSvgRegistry } from '@/providers/svg-provider';
+import { buildDoorAppearance } from '@/lib/svg/appearance';
+import {
+  ensureDefs,
+  createPatternImage,
+  setFillFor,
+  setStrokeFor,
+  setPatternPosition,
+  setPatternImageOffset,
+  setInlineFillFor,
+  setInlineStrokeFor,
+} from '@/lib/svg/postprocess';
+import { computeGlassOffsets } from '@/lib/svg/glassOffsets';
 
 // Выносим статические объекты из компонента
 const DOOR_DIMENSIONS = {
@@ -56,13 +68,6 @@ const DoorPreview = memo(
     const { containerRef, error: svgError, svgDoc } = useSvg(svgProps || { svgUrl: mainSvgUrl });
     const { registerSvg } = useSvgRegistry();
 
-    useEffect(() => {
-      if (!svgDoc) return;
-      const svgEl = (svgDoc as unknown as { node: SVGSVGElement }).node;
-      registerSvg(side, svgEl || null);
-      return () => registerSvg(side, null);
-    }, [svgDoc, registerSvg, side]);
-
     const { inside, outside } = useSideContext();
     const isMobile = useMedia('(max-width: 1024px)', false);
     const { open } = useFullScreen();
@@ -101,6 +106,129 @@ const DoorPreview = memo(
     );
 
     const doorTotalHeight = useMemo(() => doorHeight + doorTopHeight, [doorHeight, doorTopHeight]);
+    useEffect(() => {
+      if (!svgDoc) return;
+      const svgEl = (svgDoc as unknown as { node: SVGSVGElement }).node;
+      registerSvg(side, svgEl || null);
+
+      const applyAppearance = () => {
+        try {
+          if (!decodedData || !svgEl) return;
+          const app = buildDoorAppearance(decodedData, side);
+          try {
+            console.groupCollapsed('[door-preview] applyAppearance');
+            console.info('side', side);
+            console.info('decode.black', decodedData.black);
+            console.info('color', decodedData.colors?.[side]);
+            console.info('appearance', app);
+          } catch {}
+          const defs = ensureDefs(svgEl);
+          const bgSelectors = [
+            '.doorbackground',
+            '.doorleaf',
+            '.frame',
+            '.top-frame',
+            '.left-frame',
+            '.right-frame',
+            '#BG',
+            '#frame',
+            '#doorleaf',
+          ];
+          const glassSelectors = ['.glass', '#Top-Glass', '#Left-Glass', '#Right-Glass'];
+
+          // Пробиваем inline-стилями, т.к. в модельном SVG есть style с .doorBG/.Solid
+          setFillFor(svgEl, bgSelectors, app.fillColor);
+          setInlineFillFor(svgEl, ['.doorBG', '.Solid'], app.fillColor);
+          if (app.lamination) {
+            console.info('[door-preview] lamination -> pattern', app.lamination.id);
+            let lamW = app.lamination.w;
+            let lamH = app.lamination.h;
+            try {
+              const target =
+                (svgEl.querySelector('#BG') as SVGGraphicsElement | null) ||
+                (svgEl.querySelector('.doorBG') as SVGGraphicsElement | null);
+              if (target && typeof target.getBBox === 'function') {
+                const { width, height } = target.getBBox();
+                if (width > 0 && height > 0) {
+                  lamW = width;
+                  lamH = height;
+                }
+                console.info('[door-preview] lamination bbox', { width, height });
+              }
+            } catch {}
+            createPatternImage(defs, app.lamination.id, app.lamination.href, lamW, lamH);
+            setFillFor(svgEl, bgSelectors, `url(#${app.lamination.id})`);
+            setInlineFillFor(svgEl, ['.doorBG', '.Solid'], `url(#${app.lamination.id})`);
+          }
+          if (app.glass) {
+            console.info('[door-preview] glass -> pattern', app.glass.id);
+            const pattern = createPatternImage(
+              defs,
+              app.glass.id,
+              app.glass.href,
+              app.glass.w,
+              app.glass.h
+            );
+            const offsets = computeGlassOffsets({
+              modelCode: (decodedData.model.url || decodedData.model.title || '').toLowerCase(),
+              doorWidth,
+              doorHeight,
+              doorLeftWidth,
+              doorRightWidth,
+              doorTopHeight,
+              glassW: app.glass.w,
+              glassH: app.glass.h,
+            });
+            setPatternPosition(pattern, offsets.patternX, 0);
+            setPatternImageOffset(pattern, offsets.imageX, offsets.imageY);
+            setFillFor(svgEl, glassSelectors, `url(#${app.glass.id})`);
+            console.info('[door-preview] glass offsets', offsets);
+          }
+          if (app.strokeColor) {
+            setStrokeFor(svgEl, bgSelectors, app.strokeColor);
+            setInlineStrokeFor(svgEl, ['.doorBG', '.doorstroke', '.Solid'], app.strokeColor);
+          }
+          try {
+            const count = (sel: string) => svgEl.querySelectorAll(sel).length;
+            const bgEl = svgEl.querySelector('#BG') as SVGElement | null;
+            const solidEl = svgEl.querySelector('.Solid') as SVGElement | null;
+            console.info('[door-preview] targets', {
+              bgCount: count(bgSelectors.join(',')),
+              glassCount: count(glassSelectors.join(',')),
+            });
+            console.info('[door-preview] sample fills', {
+              BG_fill: bgEl?.getAttribute('fill'),
+              BG_style: bgEl?.getAttribute('style'),
+              Solid_fill: solidEl?.getAttribute('fill'),
+              Solid_style: solidEl?.getAttribute('style'),
+            });
+            console.groupEnd();
+          } catch {}
+        } catch (e) {
+          console.error('SVG appearance apply failed', e);
+        }
+      };
+
+      // Деферим на кадр, затем повторяем через микрозадержку — при смене decode и перерисовке SVG
+      requestAnimationFrame(applyAppearance);
+      const t = setTimeout(applyAppearance, 50);
+
+      return () => {
+        clearTimeout(t);
+        registerSvg(side, null);
+      };
+    }, [
+      svgDoc,
+      registerSvg,
+      side,
+      decodedData,
+      doorWidth,
+      doorHeight,
+      doorLeftWidth,
+      doorRightWidth,
+      doorTopHeight,
+      mainSvgUrl,
+    ]);
 
     // Стили для позиционирования
     const doorStyle: CSSProperties = useMemo(

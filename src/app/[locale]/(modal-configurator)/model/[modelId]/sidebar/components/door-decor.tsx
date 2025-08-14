@@ -19,8 +19,10 @@ export default function DoorDecor() {
   const { inside, onOpenInside, onOpenOutside } = useSideContext();
   const activeSide = inside ? 2 : 1;
   const activeDecor = decodedData?.decor[inside ? 'inside' : 'outside'].id;
-  const { data: inox, isLoading: isLoadingInox } = useGetInox();
-  const { data: molding, isLoading: isLoadingMolding } = useGetMolding();
+  const { data: inox, isLoading: isLoadingInox } = useGetInox(Number(decodedData?.model?.id));
+  const { data: molding, isLoading: isLoadingMolding } = useGetMolding(
+    Number(decodedData?.model?.id)
+  );
   const decor = [...(inox || []), ...(molding || [])];
 
   if (isLoadingInox || isLoadingMolding) return <DoorDecorLoading />;

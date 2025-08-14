@@ -33,11 +33,15 @@ interface Inox {
   slot_type: string;
 }
 
-export const useGetInox = () => {
+export const useGetInox = (modelId: number) => {
   return useQuery<Inox[], Error>({
-    queryKey: ['inox'],
+    queryKey: ['inox', modelId],
+    enabled: typeof modelId === 'number' && !Number.isNaN(modelId),
     queryFn: async () => {
-      const response = await api.get<InoxApi[]>('/inox');
+      if (typeof modelId !== 'number' || Number.isNaN(modelId)) {
+        return [];
+      }
+      const response = await api.get<InoxApi[]>(`/inox/?model=${modelId}`);
       return response.data.map(({ image_png, ...rest }) => ({
         ...rest,
         image: image_png,

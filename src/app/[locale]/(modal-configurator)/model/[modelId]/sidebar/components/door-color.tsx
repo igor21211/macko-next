@@ -44,7 +44,11 @@ export default function DoorColor() {
   const { data: decode } = useDecode();
   const activeColorInside = decode?.colors.inside.id;
   const activeColorOutside = decode?.colors.outside.id;
-  const selectAluminium = decode?.colors.inside.is_alu ? 2 : 1;
+  const isAluInside = !!decode?.colors.inside.is_alu;
+  const isAluOutside = !!decode?.colors.outside.is_alu;
+
+  const selectAluminiumInside = isAluInside ? 1 : 2;
+  const selectAluminiumOutside = isAluOutside ? 1 : 2;
 
   const [selectedTypeColor, setSelectedTypeColor] = useState('');
   const { data: furnitureColors, isLoading } = useGetColor();
@@ -109,7 +113,7 @@ export default function DoorColor() {
             key={color.id}
             className={cn(
               'h-full w-full',
-              selectAluminium === color.id ? 'border-accent border-2' : 'border-transparent'
+              selectAluminiumInside === color.id ? 'border-accent border-2' : 'border-transparent'
             )}
             onClick={() => handleAluminumSelect(color.id)}
           >
@@ -174,7 +178,7 @@ export default function DoorColor() {
             key={color.id}
             className={cn(
               'h-full w-full',
-              selectAluminium === color.id ? 'border-accent border-2' : 'border-transparent'
+              selectAluminiumOutside === color.id ? 'border-accent border-2' : 'border-transparent'
             )}
             onClick={() => handleAluminumSelect(color.id)}
           >

@@ -20,7 +20,7 @@ export default function OpenWaySection() {
 
   return (
     <section className="w-full border-b border-b-gray-200 px-6 py-4 shadow-sm">
-      <h3 className="text-heading-sidebar text-textDark mb-4 font-sans font-medium tracking-wider uppercase">
+      <h3 className="font-inter mb-4 text-[18px] leading-[1.21] font-medium tracking-[0.06em] text-[#1A202C] uppercase">
         Напрямок відкривання
       </h3>
       <div
@@ -36,9 +36,8 @@ export default function OpenWaySection() {
           <Button
             key={idx}
             className={cn(
-              'hover:bg-accent/10 flex h-[60px] flex-shrink-0 cursor-pointer flex-col items-center justify-center rounded-none border bg-white shadow-none',
-              isMobile ? 'w-[128px]' : 'w-[128px]',
-              id === item.id ? 'border-accent border-2' : 'border-transparent'
+              'hover:bg-accent/10 focus-visible:ring-accent/60 flex h-[60px] w-[128px] flex-shrink-0 cursor-pointer flex-col items-center justify-center rounded-none border bg-white shadow-none transition-colors focus-visible:ring-2 focus-visible:outline-none',
+              id === item.id ? 'border-accent border-2' : 'border-[#E2E7ED]'
             )}
             onClick={() => handleClick(item.id)}
           >
@@ -51,7 +50,7 @@ export default function OpenWaySection() {
                   className="object-contain"
                 />
               </div>
-              <div className="text-textLight flex flex-1 items-center text-left font-sans text-[0.75rem] leading-[1.21em] font-medium">
+              <div className="font-inter flex flex-1 items-center text-left text-[12px] leading-[1.21] font-medium text-[#718096]">
                 {item.title}
               </div>
             </div>

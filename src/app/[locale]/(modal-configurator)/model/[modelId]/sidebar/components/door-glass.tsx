@@ -7,6 +7,7 @@ import { cn } from '@/lib/utils';
 import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { useGetGlass } from '@/hooks/modal/api-hooks/glass/useGetGlass';
+import { usePostGlass } from '@/hooks/modal/api-hooks/glass/usePostGlass';
 import DoorGlassSectionLoading from './loading-components/door-glass-section-loading';
 import { getImageSrc } from '@/lib/utils/useImageSrc';
 import { useDecodeContext } from '@/providers/decode-provider';
@@ -18,21 +19,22 @@ const types = [
 
 export default function DoorGlass() {
   const { decodedData } = useDecodeContext();
-  const [selectedGlass, setSelectedGlass] = useState(1);
+
   const [selectedType, setSelectedType] = useState(1);
-  const { data: glass, isLoading } = useGetGlass();
+  const modelId = Number(decodedData?.model?.id);
+  const { data: glass, isLoading } = useGetGlass(Number.isNaN(modelId) ? undefined : modelId);
+  const { mutate: postGlass, isPending } = usePostGlass();
+  const [isSafeGlass, setIsSafeGlass] = useState(false);
 
   const handleSelectType = (id: number) => {
     setSelectedType(id);
   };
 
-  const handleSelectGlass = (id: number) => {
-    setSelectedGlass(id);
-  };
+  // removed: inline onClick handles selection and post
 
   useEffect(() => {
     if (decodedData) {
-      setSelectedGlass(Number(decodedData.glass.id));
+      setIsSafeGlass(Number(decodedData.glass.safeglass) === 1);
     }
   }, [decodedData]);
 
@@ -50,7 +52,17 @@ export default function DoorGlass() {
           <Label htmlFor="safe-glass" className="text-primary font-sans text-[14px] font-medium">
             Безпечне скло
           </Label>
-          <Switch id="safe-glass" />
+          <Switch
+            id="safe-glass"
+            checked={isSafeGlass}
+            onCheckedChange={(checked) => {
+              setIsSafeGlass(!!checked);
+              if (!decodedData) return;
+              postGlass(decodedData.glass, { safeglass: checked });
+            }}
+            disabled={isPending || !decodedData?.glass?.is_canbesafe}
+            aria-label="toggle safe glass"
+          />
         </div>
       </div>
       <div className="mb-5 grid min-h-[50px] grid-cols-2 gap-x-2">
@@ -71,9 +83,12 @@ export default function DoorGlass() {
             key={image.id}
             className={cn(
               'relative h-full w-full cursor-pointer',
-              selectedGlass === Number(image.id) && 'border-accent border-3'
+              Number(decodedData?.glass?.id) === Number(image.id) && 'border-accent border-3'
             )}
-            onClick={() => handleSelectGlass(Number(image.id))}
+            onClick={() => {
+              const selected = glass?.find((g) => Number(g.id) === Number(image.id));
+              if (selected) postGlass(selected);
+            }}
           >
             <Image
               key={image.id}
