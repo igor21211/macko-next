@@ -87,5 +87,9 @@
   "DoorPreview": {
     "adjustment_indicator": "Регулювання позиції",
     "adjustment_tooltip": "Використовуйте ↑↓ для регулювання, R для скидання"
+  },
+  "DoorColor": {
+    "selectColorInside": "Обрати колір зсередини: {colorId}",
+    "selectColorOutside": "Обрати колір ззовні: {colorId}"
   }
 }

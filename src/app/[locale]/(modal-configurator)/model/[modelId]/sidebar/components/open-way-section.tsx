@@ -50,8 +50,8 @@ export default function OpenWaySection() {
                   className="object-contain"
                 />
               </div>
-              <div className="font-inter flex flex-1 items-center text-left text-[12px] leading-[1.21] font-medium text-[#718096]">
-                {item.title}
+              <div className="font-inter flex flex-1 items-center text-left text-[12px] leading-[1.21] font-medium whitespace-pre-line text-[#718096]">
+                {item.title?.trim().replace(/\s+/g, '\n')}
               </div>
             </div>
           </Button>
